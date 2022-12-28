@@ -65,27 +65,6 @@ $(document).ready(function() {
     $('#dimming-value').html(dimming);
 
 
- // unless the value of the option includes "Round" in the value, hide the "diameter" option's parent div as well as the "diameter" value's parent div
-    // and show the "height" and "width" option's parent div as well as the "height" and "width" value's parent div
-    if (!style.includes("Round")) {
-        $('#diameter').parent().hide();
-        $('#diameter-value').parent().hide();
-        $('#quote-diameter').parent().hide();
-        $('#height').parent().show();
-        $('#height-sku').show();
-        $('#height-value').parent().show();
-        $('#width').parent().show();
-        $('#width-value').parent().show();
-        $('#orientation-grid').parent().show();
-        $('#orientation-value').parent().show();
-    }
- 
-    // Unless the value of the selected style option includes "Inset" or "Frost" in the value, hide the "Idirect" option's parent div
-
-    if (!style.includes("Inset") || !style.includes("Frost")) {
-        $('#Indirect').parent().hide();
-    }
-
     // When a selection is made get the attribute "data-sku" in each option group and display the value in the element with the id {section}-sku. For example the style option group has a display area with the id "style-sku" and the orientation option group has a display area with the id "orientation-sku".
 
     // get the value of the style option group's data-sku attribute and display it in the style-sku div
@@ -182,65 +161,7 @@ function checkRequired() {
         $('#width-sku').html('');
 
 
-
-
         
-        // if the value of the option includes "Round" in the value, show the "diameter" option's parent div as well as the "diameter" 
-        // value's parent div, and hide the "height" and "width" option's parent div as well as the "height" and "width" value's parent div
-        if (style.includes("Round")) {
-            $('#Night-Light').parent().hide();
-            $('#Anti-Fog-Night-Light').parent().hide();
-            $('#Night-Light-Touch-Sensors').parent().hide();
-            $('#All-Accessories').parent().hide();
-            $('#diameter').parent().show();
-            $('#diameter-value').parent().show();
-            $('#quote-diameter').parent().show();
-            $('#height').parent().hide();
-            // height sku value is 00
-            $('#height-sku').html('00');
-            $('#quote-height').parent().hide();
-            $('#height-value').parent().hide();
-            $('#width').parent().hide();
-            $('#quote-width').parent().hide();
-            $('#width-value').parent().hide();
-            $('#orientation-grid').parent().hide();
-            $('#quote-orientation').parent().hide();
-            $('#orientation-value').parent().hide();
-        } else {
-            $('#Night-Light').parent().show();
-            $('#Anti-Fog-Night-Light').parent().show();
-            $('#Night-Light-Touch-Sensors').parent().show();
-            $('#All-Accessories').parent().show();
-            $('#diameter').parent().hide();
-            $('#diameter-value').parent().hide();
-            $('#quote-diameter').parent().hide();
-            $('#height').parent().show();
-            $('#height-value').parent().show();
-            $('#width').parent().show();
-            $('#width-value').parent().show();
-            $('#orientation-grid').parent().show();
-            $('#orientation-value').parent().show();
-        }  // end if
-
-        
-
-        // if the value of the clicked option includes "Edge", show the "#indirect" option's parent div and hide the "#Both-Direct-And-Indirect" option's parent div
-        if (style.includes("Edge")) {
-            $('#indirect').show();
-            $('#direct').show();
-            $('#both').hide();
-        } else {
-            $('#indirect').hide();
-            $('#direct').show();
-            $('#both').show();
-        } // end if
-
-         // if the value of the clicked option includes "Frost" or "Round", show the "#indirect" option's parent div and hide the "#both" option's parent div and the "#direct" option's parent div
-        if (style.includes("Frost") || style.includes("Round")) {
-            $('#indirect').show();
-            $('#direct').hide();
-            $('#both').hide();
-        } 
        
         
         // need to add logic to update the sku based on this selection
@@ -327,8 +248,8 @@ function checkRequired() {
         // need to add logic to update the sku based on this selection
         // find the element with data-sku attribute and display the value in a div with the id "size-sku" this one is a little simpler
         $('#quote-diameter').html(diameter);
-        $('#width-sku').html(diameter);
-        $('#height-sku').html('00'); // set the height sku to 00 since it's not used for diameter
+        $('#height-sku').html(diameter);
+        $('#width-sku').html('00'); // set the height sku to 00 since it's not used for diameter
         console.log('diameter: ' + diameter); // console log the value of the option
     }
     );
