@@ -499,6 +499,7 @@ function checkRequired() {
 
         // create an event listener for the submit button
         submitButton.addEventListener('click', function() {
+            if (pdfStatus === true) {
             var skuArray = [];
             var skuString = '';
             $('#sku-wrapper').find('td').each(function() {
@@ -521,6 +522,10 @@ function checkRequired() {
             formQuantity.value = $('#quantity-value').html();
             var formQuantityLabel = document.getElementById('form-quantity-label');
             formQuantityLabel.innerHTML = $('#quantity-value').html();
+        } else {
+            // if the pdfStatus is false, show the error message
+            document.getElementById('error-message').classList.remove('hide');
+        }
         });
 
     
