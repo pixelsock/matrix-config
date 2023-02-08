@@ -1,41 +1,79 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>My App</title>
-    <!-- Provide proper viewport information so that the layout works on mobile devices. -->
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-  </head>
-  <body>
-    <!-- Element where PSPDFKit will be mounted. -->
-    <!-- create a table to style the pdf export using https://uploads-ssl.webflow.com/638fbc9b6d164e234dc677d7/639c79dc4e82c16cece3b02e_svgLogo.svg for the logo-->
-    <table>
-        <tr>
-        <td id="style-sku">L01</td>
-        <td>-</td>
-        <td id="direction-sku"></td>
-        <td>-</td>
-        <td id="width-sku"></td>
-        <td>-</td>
-        <td id="height-sku"></td>
-        <td>-</td>
-        <td id="diameter-sku"></td>
-        <td>-</td>
-        <td id="output-sku"></td>
-        <td>-</td>
-        <td id="temp-sku"></td>
-        <td>-</td>
-        <td id="dimming-sku"></td>
-        <td>-</td>
-        <td id="mounting-sku"></td>
-        <td>-</td>
-        <td id="accessory-sku"></td>
-        <td>-</td>
-        </tr>
-        </table>
-
-   
-  </body>
+<head>
+<meta charset="UTF-8">
+<title>State Table</title>
+</head>
+<body>
+<h1>State Table</h1>
+<table id="stateTable" class="stateTable">
+</table>
+<script>
+    var states = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Iowa","Kansas","Kentucky","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri (St. Louis)","Montana","Nebraska","Nevada","New Hampshire","New Mexico","New York","North Carolina","North Dakota","Ohio (Cincinnati)","Oklahoma","Oregon","Rhode Island","South Carolina","South Dakota","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming","District Of Columbia","Indiana (North)","Indiana (South)","Louisiana (North)","Louisiana (South)","Missouri","Missouri (Kansas City)","New Jersey (North)","New Jersey (South)","Ohio (North)","Ohio (Central)","Ohio (South)","Pennsylvania (East)","Pennsylvania (West)","Tennessee (East)","Tennessee (West)","Texas (North)","Texas (South)"];
+    
+    // create a table with all the states in rows
+    var table = document.createElement("table");
+    table.setAttribute("id", "stateTable");
+    table.setAttribute("class", "stateTable");
+    var tbody = document.createElement("tbody");
+    var tr = document.createElement("tr");
+    var td = document.createElement("td");
+    var text = document.createTextNode("Alabama");
+    td.appendChild(text);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    table.appendChild(tbody);
+    document.getElementById("stateTable").appendChild(table);
+    
+    // add the states to the table
+    for (var i = 1; i < states.length; i++) {
+    var tr = document.createElement("tr");
+    var td = document.createElement("td");
+    var text = document.createTextNode(states[i]);
+    td.appendChild(text);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+    table.appendChild(tbody);
+    document.getElementById("stateTable").appendChild(table);
+    }
+    
+    // add the table to the page
+    document.getElementById("stateTable").appendChild(table);
+    </script>
+    
+</body>
 </html>
+
+
+<script>
+var states = ["Alabama","Alaska","Arizona","Arkansas","California","Colorado","Connecticut","Delaware","Florida","Georgia","Hawaii","Idaho","Illinois","Iowa","Kansas","Kentucky","Maine","Maryland","Massachusetts","Michigan","Minnesota","Mississippi","Missouri (St. Louis)","Montana","Nebraska","Nevada","New Hampshire","New Mexico","New York","North Carolina","North Dakota","Ohio (Cincinnati)","Oklahoma","Oregon","Rhode Island","South Carolina","South Dakota","Utah","Vermont","Virginia","Washington","West Virginia","Wisconsin","Wyoming","District Of Columbia","Indiana (North)","Indiana (South)","Louisiana (North)","Louisiana (South)","Missouri","Missouri (Kansas City)","New Jersey (North)","New Jersey (South)","Ohio (North)","Ohio (Central)","Ohio (South)","Pennsylvania (East)","Pennsylvania (West)","Tennessee (East)","Tennessee (West)","Texas (North)","Texas (South)"];
+
+// create a table with all the states in rows
+var table = document.createElement("table");
+table.setAttribute("id", "stateTable");
+table.setAttribute("class", "stateTable");
+var tbody = document.createElement("tbody");
+var tr = document.createElement("tr");
+var td = document.createElement("td");
+var text = document.createTextNode("Alabama");
+td.appendChild(text);
+tr.appendChild(td);
+tbody.appendChild(tr);
+table.appendChild(tbody);
+document.getElementById("stateTable").appendChild(table);
+
+// add the states to the table
+for (var i = 1; i < states.length; i++) {
+var tr = document.createElement("tr");
+var td = document.createElement("td");
+var text = document.createTextNode(states[i]);
+td.appendChild(text);
+tr.appendChild(td);
+tbody.appendChild(tr);
+table.appendChild(tbody);
+document.getElementById("stateTable").appendChild(table);
+}
+
+// add the table to the page
+document.getElementById("stateTable").appendChild(table);
+</script>
