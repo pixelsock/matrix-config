@@ -5,104 +5,156 @@ const { jsPDF } = window.jspdf;
 
 const doc = new jsPDF();
 
-    
-  
+function updatedStandardRoundSizes() {
+    // if the toggle switch is off and the selected style option includes the word "round" 
+    if ($('#Toggle-Switch').prop('checked') == false && $('#style-grid').find('input:checked').val().includes('Round')) {
+        var standardRoundSize = $('#standard-round-sizes').val();
+        var selectedOptionValue = $('#standard-round-sizes').find('option:selected').html();
+                // split after two characters and store the values in an array
+                var standardRoundSizeArray = standardRoundSize.match(/.{1,2}/g);
+                var diameter = standardRoundSizeArray[1];
+                $('#diameter-value').html(selectedOptionValue.replace(' Diameter', '')); // remove the word "Diameter" from the selected option value
+                // need to add logic to update the sku based on this selection
+                // find the element with data-sku attribute and display the value in a div with the id "size-sku" this one is a little simpler
+                $('#quote-diameter').html(diameter);
+                $('#height-sku').html(diameter);
+                $('#width-sku').html('00'); // set the height sku to 00 since it's not used for diameter
+    }
+}
 
+
+function updateStandardSizes() {
+    // if the toggle switch is off and the selected style option does not include the word "round" 
+    if ($('#Toggle-Switch').prop('checked') == false && !$('#style-grid').find('input:checked').val().includes('Round')) {
+        var standardSize = $('#standard-sizes').val();
+                // split after two characters and store the values in an array
+                var standardSizeArray = standardSize.match(/.{1,2}/g);
+                var height = standardSizeArray[1];
+                var width = standardSizeArray[0];
+                $('#height-value').html(height + '"');
+                $('#width-value').html(width + '"');
+                // need to add logic to update the sku based on this selection
+                // find the element with data-sku attribute and display the value in a div with the id "size-sku" this one is a little simpler
+                $('#quote-height').html(height);
+                $('#quote-width').html(width);
+                $('#height-sku').html(height);
+                $('#width-sku').html(width);
+    }
+}
+
+  
 // on page load
 $(document).ready(function() {
+
+ 
+      
+    // check the option that is selected so the logic can run
+      // get the selected style from the url perameter data-sku={sku} if it exists
+      var url = window.location.href;
+      var urlSku = url.split('data-sku=')[1];
+      var baseUrl = url.split('?')[0];
+      if (urlSku) {
+          
+        $(`[data-sku=${urlSku}]`).click();
+          // if the url ends (before the ?) with "deco" then check the deco option
+            if (baseUrl.endsWith('deco')) {
+                $('#specs-diameter').hide();
+                // if deco and the url is 02,04,06,08 or 10 the click data-sku="T". Else click data-sku="W"
+                if (urlSku == '02' || urlSku == '04' || urlSku == '06' || urlSku == '08' || urlSku == '10') {
+                    $('[data-sku="W"]').click();
+                    $('[data-sku="W"]').prop('checked', true);
+                    // if the url contains a sku, check the option that matches the sku
+          $(`[data-sku=${urlSku}]`).click();
+                }
+                if (baseUrl.endsWith('deco')) {
+                    // if deco and the url is 01,03,05,07 or 09 the click data-sku="W".
+                    if (urlSku == '01' || urlSku == '03' || urlSku == '05' || urlSku == '07' || urlSku == '09' || urlSku == '11') {
+                        $('[data-sku="T"]').click();
+                        $('[data-sku="T"]').prop('checked', true);
+                        // if the url contains a sku, check the option that matches the sku
+            $(`[data-sku=${urlSku}]`).click();
+                    }
+                }
+            }
+            
+
+
+          
+
+      } else {
+          $('[data-sku="01"]').click();
+            $('[data-sku="01"]').prop('checked', true);
+            $('[data-sku="T"]').click();
+            
+      }
+
+      // show .lottieanimation for 1.5 seconds and then hide it
+      $('.lottie-animation').show();
+      $('#list').animate({
+          opacity: 0
+      }, 1000);
+      
+     
+      setTimeout(function() {
+          $('.lottie-animation').hide();
+          $('#list').show();
+          $('#product-details').show();
+          // animate the list opacity
+          $('#list').animate({
+              opacity: 1
+          }, 1000);
+  
+      }, 1500);
+
+  
     // set the values of the options to the selected values. 
     // each option group has form fields and the group (class="grid-options") which has a unique id's: style-grid, orientation-grid, direction-grid, temp-grid, size-grid (made up of input fields: height, width, diameter, and quantity), accessories-grid, output-grid, and dimming-grid.
     // each time a user selects an option the app will update and display the values of the selected options.
     // each option group has a display area that will display the selected options. These are the divs with the id "{option}-value".
     // for example, the style option group has a display area with the id "style-value" and the orientation option group has a display area with the id "orientation-value".
    
-    // set the values of the style options
-    var style = $('#style-grid').find('input:checked').val();
-    $('#style-value').html(style);
-    $('#quote-style').html(style);
-    var styleSku = $('#style-grid').find('input:checked').parent().attr('data-sku');
+    // set the values for the product line
+    var productLine = $('#product-line').html();
+    if (productLine == 'Classic') {
+          $('#product-line-sku').html('L');
+          $('#product-line-value').html('Classic');
+      } else if (productLine == 'Future') {
+          $('#product-line-sku').html('F');
+            $('#product-line-value').html('Future');
+      } else if (productLine == 'Deco') {
+          // get the data-sku attribute of of the selected frame thickness
+          var frameThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
+          var frameColorValue = $('#frame-color-grid').find('input:checked').val();
+          $('#product-line-sku').html(frameThickness);
+            $('#product-line-value').html(frameColorValue);
+      }
+
+   
+      // change on click if the options are changed
+      // if any form element is changed, run the function
+       $('form').on('change', function() {
+           $('#error-message').addClass('hide');
+           checkRequired();
+           updateStandardSizes();
+           updatedStandardRoundSizes();
+        
+          
+       });
+
+ 
+
+
+
+
     
 
-    // set the values of the orientation options
-    var orientation = $('#orientation-grid').find('input:checked').val();
-    $('#orientation-value').html(orientation);
-    $('#quote-orientation').html(orientation);
-    var orientationSku = $('#orientation-grid').find('input:checked').parent().attr('data-sku');
-    $('#mounting-sku').html(orientationSku);
 
-    // set the values of the direction options
-    var direction = $('#direction-grid').find('input:checked').val();
-    $('#direction-value').html(direction);
-    $('#quote-direction').html(direction);
-    var directionSku = $('#direction-grid').find('input:checked').parent().attr('data-sku');
-    $('#direction-sku').html(directionSku);
+}
 
-    // set the values of the temp options
-    var temp = $('#temp-grid').find('input:checked').val();
-    $('#temp-value').html(temp);
-
-    // set the values of the size options (height, width, diameter, quantity)
-    var height = $('#height').val();
-    $('#height-value').html(height);
-    var width = $('#width').val();
-    $('#width-value').html(width);
-    var diameter = $('#diameter').val();
-    $('#diameter-value').html(diameter);
-    var quantity = $('#quantity').val();
-    $('#quantity-value').html(quantity);
+); // end of document ready
 
 
-    // set the values of the accessories options
-    var accessories = $('#accessories-grid').find('input:checked').val();
-    $('#accessories-value').html(accessories);
-
-    // set the values of the output options
-    var output = $('#output-grid').find('input:checked').val();
-    $('#output-value').html(output);
-
-    // set the values of the dimming options
-    var dimming = $('#dimming-grid').find('input:checked').val();
-    $('#dimming-value').html(dimming);
-
-
-    // When a selection is made get the attribute "data-sku" in each option group and display the value in the element with the id {section}-sku. For example the style option group has a display area with the id "style-sku" and the orientation option group has a display area with the id "orientation-sku".
-
-    // get the value of the style option group's data-sku attribute and display it in the style-sku div
-    var styleSku = $('#style-grid').parent().attr('data-sku');
-    $('#style-sku').html(styleSku);
-    var skuWrapper = $('#sku-wrapper').html();
-    $('#quote-sku').html(skuWrapper);
-
-
-    // get the value of the orientation option group's data-sku attribute and display it in the orientation-sku div
-    var orientationSku = $('#orientation-grid').parent().attr('data-sku');
-    $('#mounting-sku').html(orientationSku);
-
-    // get the value of the direction option group's data-sku attribute and display it in the direction-sku div
-    var directionSku = $('#direction-grid').parent().attr('data-sku');
-    $('#direction-sku').html(directionSku);
-
-    // get the value of the temp option group's data-sku attribute and display it in the temp-sku div
-    var tempSku = $('#temp-grid').parent().attr('data-sku');
-    $('#temp-sku').html(tempSku);
-
-    // get the value of the accessories option group's data-sku attribute and display it in the accessories-sku div
-    var accessoriesSku = $('#accessories-grid').parent().attr('data-sku');
-    $('#accessories-sku').html(accessoriesSku);
-
-    // get the value of the output option group's data-sku attribute and display it in the output-sku div
-    var outputSku = $('#output-grid').parent().attr('data-sku');
-    $('#output-sku').html(outputSku);
-
-    // get the value of the dimming option group's data-sku attribute and display it in the dimming-sku div
-    var dimmingSku = $('#dimming-grid').parent().attr('data-sku');
-    $('#dimming-sku').html(dimmingSku);
-
-
-
-
-}); // end of document ready
-
+     
 var pdfStatus = false;
 var submitButton = document.getElementById('submit-button');
 var disabledSubmit = document.getElementById('disabled-submit');
@@ -144,21 +196,524 @@ function checkRequired() {
 
 
 
+// create a function to update the standard sizes
+    
 
-   // change on click if the options are changed
-   // if any form element is changed, run the function
-    $('form').on('change', function() {
-        $('#error-message').addClass('hide');
-        checkRequired();
+
+   
+ 
+    // custom logic based off of style selection
+    // for data-sku="01" inset lit
+    $('[data-sku="01"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').show(); // show the vertical orientation
+        $('[data-sku="1"]').click(); // click the vertical orientation
+        $('[data-sku="2"]').show(); // show the horizontal orientation
+        // direction
+        $('[data-sku="D"]').show(); // show the direct direction
+        $('[data-sku="D"]').click(); // click the direct direction
+        $('[data-sku="B"]').show(); // show the both direction
+        $('[data-sku="I"]').hide(); // hide the indirect direction
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').show(); // show the Night Light Accessory
+        $('[data-sku="NT"]').show(); // show night light and touch sensor accessory
+        $('[data-sku="TS"]').show(); // show touch sensor accessory
+        $('[data-sku="AN"]').show(); // show the anti-fog & night light accessory
     });
+    
+    // for data-sku="02" edge lit
+    $('[data-sku="02"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').show(); // show the vertical orientation
+        $('[data-sku="1"]').click(); // click the vertical orientation
+        $('[data-sku="2"]').show(); // show the horizontal orientation
+        // direction
+        $('[data-sku="D"]').show(); // show the direct direction
+        $('[data-sku="D"]').click(); // click the direct direction
+        $('[data-sku="B"]').hide(); // hide the both direction
+        $('[data-sku="I"]').show(); // show the indirect direction
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').hide(); // hide the Night Light Accessory
+        $('[data-sku="NT"]').hide(); // hide night light and touch sensor accessory
+        $('[data-sku="TS"]').hide(); // hide touch sensor accessory
+        $('[data-sku="AN"]').hide(); // hide the anti-fog & night light accessory
+    });
+
+
+    // for data-sku="03" inset lit
+    $('[data-sku="03"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').click();
+        $('[data-sku="2"]').show();
+        // direction
+        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').click();
+        $('[data-sku="B"]').show();
+        $('[data-sku="I"]').hide();
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').show();
+        $('[data-sku="NT"]').show();
+        $('[data-sku="TS"]').show();
+        $('[data-sku="AN"]').show();
+    });
+
+
+    // for data-sku="04" edge lit
+    $('[data-sku="04"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').click();
+        $('[data-sku="2"]').show();
+        // direction
+        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').click();
+        $('[data-sku="B"]').hide();
+        $('[data-sku="I"]').show();
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').hide();
+        $('[data-sku="NT"]').hide();
+        $('[data-sku="TS"]').hide();
+        $('[data-sku="AN"]').hide();
+    });
+
+
+
+    // for data-sku="05" no frost indirect only
+    $('[data-sku="05"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').click();
+        $('[data-sku="2"]').show();
+        // direction
+        $('[data-sku="D"]').hide();
+        $('[data-sku="I"]').click();
+        $('[data-sku="B"]').hide();
+        $('[data-sku="I"]').show();
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').show();
+        $('[data-sku="NT"]').show();
+        $('[data-sku="TS"]').show();
+        $('[data-sku="AN"]').show();
+    });
+
+
+    // for data-sku="06" edge lit
+    $('[data-sku="06"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').click();
+        $('[data-sku="2"]').show();
+        // direction
+        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').click();
+        $('[data-sku="B"]').hide();
+        $('[data-sku="I"]').show();
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').hide();
+        $('[data-sku="NT"]').hide();
+        $('[data-sku="TS"]').hide();
+        $('[data-sku="AN"]').hide();
+    });
+
+
+    // for data-sku="07" inset lit
+    $('[data-sku="07"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').click();
+        $('[data-sku="2"]').show();
+        // direction
+        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').click();
+        $('[data-sku="B"]').show();
+        $('[data-sku="I"]').hide();
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').show();
+        $('[data-sku="NT"]').show();
+        $('[data-sku="TS"]').show();
+        $('[data-sku="AN"]').show();
+    });
+
+    // for data-sku="08" edge lit single side (horizontal only for now, will add vertical options later)
+    $('[data-sku="08"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').hide();
+        $('[data-sku="2"]').show();
+        $('[data-sku="2"]').click();
+        // direction
+        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').click();
+        $('[data-sku="B"]').hide();
+        $('[data-sku="I"]').show();
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').hide();
+        $('[data-sku="NT"]').hide();
+        $('[data-sku="TS"]').hide();
+        $('[data-sku="AN"]').hide();
+    });
+
+    // for data-sku="09" inset lit single side (horizontal only for now, will add vertical options later)
+    $('[data-sku="09"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').hide();
+        $('[data-sku="2"]').show();
+        $('[data-sku="2"]').click();
+        // direction
+        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').click();
+        $('[data-sku="B"]').show();
+        $('[data-sku="I"]').hide();
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').show();
+        $('[data-sku="NT"]').show();
+        $('[data-sku="TS"]').show();
+        $('[data-sku="AN"]').show();
+    });
+
+    // for data-sku="10" edge lit single side (vertical only for now, will add horizontal options later)
+    $('[data-sku="10"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').click();
+        $('[data-sku="2"]').hide();
+        // direction
+        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').click();
+        $('[data-sku="B"]').hide();
+        $('[data-sku="I"]').show();
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').hide();
+        $('[data-sku="NT"]').hide();
+        $('[data-sku="TS"]').hide();
+        $('[data-sku="AN"]').hide();
+    });
+
+    // for data-sku="11" inset lit single side (vertical only for now, will add horizontal options later)
+    $('[data-sku="11"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').show();
+        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').click();
+        $('[data-sku="2"]').hide();
+        // direction
+        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').click();
+        $('[data-sku="B"]').show();
+        $('[data-sku="I"]').hide();
+        // for sizes
+        $('#standard-round-sizes').parent().hide();
+        $('#standard-sizes').parent().show();
+        $('#diameter').parent().hide();
+        $('#width').parent().show();
+        $('#height').parent().show();
+        $('[specs-data="diameter"]').hide();
+        $('[specs-data="width"]').show();
+        $('[specs-data="height"]').show();
+        // accessories
+        $('[data-sku="NL"]').show();
+        $('[data-sku="NT"]').show();
+        $('[data-sku="TS"]').show();
+        $('[data-sku="AN"]').show();
+    });
+
+    // for data-sku="21" round edge lit
+    $('[data-sku="21"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').hide();
+        $('[data-sku="1"]').click();
+        // direction
+        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').click();
+        $('[data-sku="B"]').hide();
+        $('[data-sku="I"]').show();
+        // for sizes
+        $('#standard-round-sizes').parent().show();
+        $('#standard-sizes').parent().hide();
+        $('#diameter').parent().show();
+        $('#width').parent().hide();
+        $('#height').parent().hide();
+        $('[specs-data="diameter"]').show();
+        $('[specs-data="width"]').hide();
+        $('[specs-data="height"]').hide();
+        // accessories
+        $('[data-sku="NL"]').hide();
+        $('[data-sku="NT"]').hide();
+        $('[data-sku="TS"]').hide();
+        $('[data-sku="AN"]').hide();
+    });
+
+    // for data-sku="51" round no frost
+    $('[data-sku="51"]').on('click', function() {
+        // orientation
+        $('#single-side-orientation').hide();
+        $('#orientation-section').hide();
+        $('[data-sku="1"]').click();
+        // direction
+        $('[data-sku="D"]').hide();
+        $('[data-sku="I"]').click();
+        $('[data-sku="B"]').hide();
+        $('[data-sku="I"]').show();
+        // for sizes
+        $('#standard-round-sizes').parent().show();
+        $('#standard-sizes').parent().hide();
+        $('#diameter').parent().show();
+        $('#width').parent().hide();
+        $('#height').parent().hide();
+        $('[specs-data="diameter"]').show();
+        $('[specs-data="width"]').hide();
+        $('[specs-data="height"]').hide();
+        // for accessories
+        $('[data-sku="NL"]').hide();
+        $('[data-sku="NT"]').hide();
+        $('[data-sku="TS"]').hide();
+        $('[data-sku="AN"]').hide();
+        
+    });
+    
+
+    // for data-sku="T" thin frame
+        $('[data-sku="T"]').on('click', function() {
+            $('#wide-specsheet').hide();
+            $('#thin-specsheet').show();
+            // get the currently checked size
+            var currentSize = $('input[name="Modern-Style"]:checked').attr('value');
+            console.log(currentSize)
+            $('[data-sku="02"],[data-sku="04"],[data-sku="06"],[data-sku="08"],[data-sku="10"]').hide();
+            // if the user selects a wide frame size, then switch to thin frame size 01, otherwise keep the same size
+            // if currentSize contains the word "Edge" then switch to thin frame size 01
+            if (currentSize.indexOf("Edge") >= 0) {
+                $('[data-sku="01"]').click();
+            }
+              
+              
+              
+              
+
+        });
+
+        // for data-sku="W" wide frame
+        $('[data-sku="W"]').on('click', function() {
+            $('#thin-specsheet').hide();
+            $('#wide-specsheet').show();
+            $('[data-sku="02"],[data-sku="04"],[data-sku="06"],[data-sku="08"],[data-sku="10"]').show();
+            
+        });
+
+        var touchSensorItems = $('[data-sku="TR"],[data-sku="HC"],[data-sku="TS"],[data-sku="NT"],[data-sku="NL"],[data-sku="AL"]');
+        var nonTouchSensorItems = $('[data-sku="NA"],[data-sku="NL"],[data-sku="AF"],[data-sku="AN"]');
+        var nonAdjustableTemperatureItems = $('[data-sku="27"],[data-sku="30"],[data-sku="35"],[data-sku="40"],[data-sku="50"]');
+
+    // for data-sku="00" accessories
+    $('[data-sku="00"]').on('click', function() {
+        // light output
+        $('[data-sku="H"]').click();
+        $('[data-sku="H"]').show();
+        $('[data-sku="S"]').hide();
+        nonTouchSensorItems.hide();
+        touchSensorItems.show();
+    });
+
+    // non adjustable temperature items
+    nonAdjustableTemperatureItems.on('click', function() {
+        touchSensorItems.show();
+        nonTouchSensorItems.show();
+        $('[data-sku="S"]').show();
+        $('[data-sku="H"]').show();
+    });
+
+
+    // touch sensor items
+    touchSensorItems.on('click', function() {
+        $('[data-sku="N"]').show();
+        $('[data-sku="N"]').click();
+        $('[data-sku="E"]').hide();
+        $('[data-sku="V"]').hide();
+    });
+
+    // non touch sensor items
+    nonTouchSensorItems.on('click', function() {
+        $('[data-sku="N"]').show();
+        $('[data-sku="E"]').show();
+        $('[data-sku="V"]').show();
+    });
+
+
+    // color temperature
+    nonAdjustableTemperatureItems.on('click', function() {
+        $('data-sku="S"],[data-sku="H"]').show();
+    });
+
+
+
+    // if data-sku = 27,30,35,40  or 50 then show data-sku="S"
+    $('[data-sku="27"],[data-sku="30"],[data-sku="35"],[data-sku="40"],[data-sku="50"]').on('click', function() {
+        $('[data-sku="S"]').show();
+        $('[data-sku="S"]').click();
+    });
+
+    // if data-sku = AL, AT, NT, TS, TR then show and click data-sku="N". Hide E & V.
+    $('[data-sku="AL"],[data-sku="AT"],[data-sku="NT"],[data-sku="TS"],[data-sku="TR"]').on('click', function() {
+        $('[data-sku="N"]').show();
+        $('[data-sku="N"]').click();
+        $('[data-sku="E"]').hide();
+        $('[data-sku="V"]').hide();
+    });
+
+
+
+
+
+
+
+
+    // for Frame Thickness
+    $('#frame-thickness-grid').find('input').on('change', function() {
+        
+              var frameThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
+              $('#product-line-sku').html(frameThickness);
+              
+          });
+
+        // for Frame Color 
+        $('#frame-color-grid').find('input').on('change', function() {
+            var frameColor = $(this).val();
+            $('#product-line-value').html(frameColor);
+        });
+            
+
+
+
    // for style
     $('#style-grid').find('input').on('change', function() {
         var style = $(this).val();
         $('#style-value').html(style);
         $('#quote-style').html(style);
-        // reset the sku values
+        $('#style-name-for-button').html(style);
+        // #style-spec-button: change the url to the selected style's data-specsheet-url attribute
+        $('#style-spec-button').attr('href', $(this).parent().attr('data-specsheet-url'));
+        // Unless the "Toggle-Switch" is NOT checked, reset the sku values for height, width, and diameter and clear the input fields
+        if ($('#Toggle-Switch').is(':checked')) {
         $('#height-sku').html('');
         $('#width-sku').html('');
+        $('#diameter-sku').html('');
+        $('#height').val('');
+        $('#width').val('');
+        $('#diameter').val('');
+        } 
+
 
 
         
@@ -166,11 +721,14 @@ function checkRequired() {
         
         // need to add logic to update the sku based on this selection
         // find the element with data-sku attribute and display the value in a div with the id "style-sku"
+        
         var styleSku = $(this).parent().attr('data-sku');
         $('#style-sku').html(styleSku);
+     
+    
+        
        
 
-       console.log('styleSku: ' + styleSku); // console log the value of the option 
     } // end function
     );
 
@@ -254,9 +812,61 @@ function checkRequired() {
     }
     );
 
+
+        // if Toggle-Switch is checked on change clear the values in the width and height divs
+        $('#Toggle-Switch').on('change', function() {
+            if ($('#Toggle-Switch').prop('checked') == true) {
+                $('#width-value').html('');
+                $('#height-value').html('');
+                $('#width-sku').html('');
+                $('#height-sku').html('');
+                $('#quote-height').html('');
+                $('#quote-width').html('');
+            } else { 
+                // if Toggle-Switch is NOT checked on change take the value of the selected option and split it into two values for width and height and display them in the divs with the id's "width-value" and "height-value".
+                // if Toggle-Switch is NOT checked STANDARD SIZES is visible.
+                if ($('#standard-sizes').is(':visible')) {
+                var standardSize = $('#standard-sizes').val();
+                // split after two characters and store the values in an array
+                var standardSizeArray = standardSize.match(/.{1,2}/g);
+                var width = standardSizeArray[0];
+                var height = standardSizeArray[1];
+                $('#width-value').html(width + '"');
+                $('#height-value').html(height + '"');
+                // need to add logic to update the sku based on this selection
+                // find the element with data-sku attribute and display the value in a div with the id "size-sku" this one is a little simpler
+                $('#width-sku').html(width);
+                $('#height-sku').html(height);
+                $('#quote-height').html(height);
+                $('#quote-width').html(width);
+                } else {
+                    // if Toggle-Switch is NOT checked STANDARD ROUND SIZES is visible.
+                    var standardRoundSize = $('#standard-round-sizes').val();
+                    // split after two characters and store the values in an array
+                    var standardRoundSizeArray = standardRoundSize.match(/.{1,2}/g);
+                    var diameter = standardRoundSizeArray[0];
+                    $('#diameter-value').html(diameter + '"');
+                    // need to add logic to update the sku based on this selection
+                    // find the element with data-sku attribute and display the value in a div with the id "size-sku" this one is a little simpler
+                    $('#quote-diameter').html(diameter);
+                    $('#height-sku').html(diameter);
+                    $('#width-sku').html('00'); // set the height sku to 00 since it's not used for diameter
+                }
+            }
+        }
+        
+
+        
+            );
+
+
+    
+   
+
     
     // for quantity the option is a number input field so we need to get the value of the input field as the user types and click the up and down arrows to change the value so we need to use keyup OR change.
-    $('#quantity').on('keyup change', function() {
+    $('#quantity').on('keyup change', function() { 
+
         var quantity = $('#quantity').val();
         $('#quantity-value').html(quantity);
         $('#quote-quantity').html(quantity);
@@ -341,14 +951,15 @@ function checkRequired() {
             // get the current selected photo and add it to the pdf
             var photo = $('#selected-image').attr('src');
             doc.addImage(photo, 'PNG', 100, 55, 100, 100);
-
+            
 
             // place a light grey rectangle behind the style name
             doc.setFillColor( 230, 230, 230 );
             doc.rect(100, 155.5, 100.25, 10, 'F');
 
             // get the style name and add it to the pdf under the photo centered
-            var styleName = $('#style-value').html();
+            // styleName is the #product-line-value + a space + #style-value
+            var styleName = $('#product-line-value').html() + ' ' + $('#style-value').html();
             doc.setFont("helvetica", "bold");
             doc.text('Style: ' + styleName, 150, 161, 'center');
 
@@ -458,9 +1069,25 @@ function checkRequired() {
     doc.setFont("helvetica", "bold");
     doc.text("Matrix Mirrors Custom Spec Sheet", 195, 22, 'right');
 
+   // create a footer with the company name and address, logo and current date. Give the footer a light grey background
+    doc.setFillColor( 230, 230, 230 );
+    doc.rect(0, 280, 210, 20, 'F');
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(10);
+    // all one line centered in the footer
+    
+    doc.text('5965 Peachtree Corners East, Suite-A1, Norcross, GA, 30071 - (678) 580-5717 - matrixmirrors.com', 105, 290, 'center');
+    // get the current date and add it to the footer formatted as mm/dd/yyyy
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    // put the date below the sku number in the header
+    doc.text("Date: " + month + "/" + day + "/" + year, 195, 40, 'right');
+
+    
+
    
-
-
     
     var downloadButton = document.getElementById('download-button');
     var submitButton = document.getElementById('submit-button');
