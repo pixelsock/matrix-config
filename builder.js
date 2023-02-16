@@ -411,7 +411,8 @@ function checkRequired() {
         $('[data-sku="TS"]').hide();
         $('[data-sku="AN"]').hide();
     });
-
+// add the word TEST to the top of the page in bold red header text
+    $('body').prepend('<h1 style="color:red; font-weight:bold;">TEST</h1>');
 
     // for data-sku="07" inset lit
     $('[data-sku="07"]').on('click', function() {
