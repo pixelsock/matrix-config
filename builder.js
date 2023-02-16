@@ -423,8 +423,9 @@ function checkRequired() {
         $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
-        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click();
+        $('[data-sku="D"]').show();
         $('[data-sku="B"]').show();
         $('[data-sku="I"]').hide();
         // for sizes
