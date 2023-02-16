@@ -214,8 +214,7 @@ function checkRequired() {
 
 
 
-// create a function to update the standard sizes
-    
+
 
 
    
@@ -262,11 +261,20 @@ function checkRequired() {
         $('[data-sku="1"]').show(); // show the vertical orientation
         $('[data-sku="2"]').show(); // show the horizontal orientation
         // direction
-        $('[data-sku="D"]').hide(); // to keep the page from jumping around.
+        if ($('#product-line').html() == 'Future') {
+            $('[data-sku="I"]').hide(); // to keep the page from jumping around.
+            $('[data-sku="I"]').click(); // click the direct direction
+            $('[data-sku="I"]').show(); // show the direct direction
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
+        } else {
+            $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click(); // click the direct direction
         $('[data-sku="D"]').show(); // show the direct direction
         $('[data-sku="B"]').hide(); // hide the both direction
         $('[data-sku="I"]').show(); // show the indirect direction
+        }
+        
         // for sizes
         $('#standard-round-sizes').parent().hide();
         $('#standard-sizes').parent().show();
@@ -326,11 +334,19 @@ function checkRequired() {
         $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
+        if ($('#product-line').html() == 'Future') {
+            $('[data-sku="I"]').hide(); // to keep the page from jumping around.
+            $('[data-sku="I"]').click(); // click the direct direction
+            $('[data-sku="I"]').show(); // show the direct direction
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
+        } else {
         $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click();
         $('[data-sku="D"]').show();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
+        }
         // for sizes
         $('#standard-round-sizes').parent().hide();
         $('#standard-sizes').parent().show();
@@ -391,11 +407,19 @@ function checkRequired() {
         $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
+        if ($('#product-line').html() == 'Future') {
+            $('[data-sku="I"]').hide(); // to keep the page from jumping around.
+            $('[data-sku="I"]').click(); // click the direct direction
+            $('[data-sku="I"]').show(); // show the direct direction
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
+        } else {
         $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
         $('[data-sku="D"]').show();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
+        }
         // for sizes
         $('#standard-round-sizes').parent().hide();
         $('#standard-sizes').parent().show();
@@ -454,11 +478,19 @@ function checkRequired() {
         $('[data-sku="2"]').click();
         $('[data-sku="2"]').show();
         // direction
+        if ($('#product-line').html() == 'Future') {
+            $('[data-sku="I"]').hide(); // to keep the page from jumping around.
+            $('[data-sku="I"]').click(); // click the direct direction
+            $('[data-sku="I"]').show(); // show the direct direction
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
+        } else {
         $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
         $('[data-sku="D"]').show();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
+        }
         // for sizes
         $('#standard-round-sizes').parent().hide();
         $('#standard-sizes').parent().show();
@@ -516,11 +548,19 @@ function checkRequired() {
         $('[data-sku="1"]').show();
         $('[data-sku="2"]').hide();
         // direction
+        if ($('#product-line').html() == 'Future') {
+            $('[data-sku="I"]').hide(); // to keep the page from jumping around.
+            $('[data-sku="I"]').click(); // click the direct direction
+            $('[data-sku="I"]').show(); // show the direct direction
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
+        } else {
         $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
         $('[data-sku="D"]').show();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
+        }
         // for sizes
         $('#standard-round-sizes').parent().hide();
         $('#standard-sizes').parent().show();
@@ -668,6 +708,9 @@ function checkRequired() {
         $('[data-sku="H"]').hide(); // to keep the page from scrolling when clicked
         $('[data-sku="H"]').click();
         $('[data-sku="H"]').show();
+        $('[data-sku="TS"]').hide(); // to keep the page from scrolling when clicked
+        $('[data-sku="TS"]').click();
+        $('[data-sku="TS"]').show();
         $('[data-sku="S"]').hide();
         nonTouchSensorItems.hide();
         touchSensorItems.show();
@@ -914,7 +957,6 @@ function checkRequired() {
 
 
     
-   
 
     
     // for quantity the option is a number input field so we need to get the value of the input field as the user types and click the up and down arrows to change the value so we need to use keyup OR change.
@@ -983,11 +1025,9 @@ function checkRequired() {
      doc.rect(0, 0, 210, 50, 'F');
 
      
-function newFunction() {
-    $('[data-sku="N"]').show().get(0).dispatchEvent(event);
-    $('[data-sku="E"]').hide();
-    $('[data-sku="V"]').hide();
-}
+
+
+
 
      // create a function to get the value for product sku by going through the divs with the id's that start with "sku" and adding the values to an array IF the div has a value.
         function getValuesForPDF() {
