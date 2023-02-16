@@ -8,6 +8,14 @@ const doc = new jsPDF();
 function updatedStandardRoundSizes() {
     // if the toggle switch is off and the selected style option includes the word "round" 
     if ($('#Toggle-Switch').prop('checked') == false && $('#style-grid').find('input:checked').val().includes('Round')) {
+        // clear the height and width values
+        $('#height-value').html('');
+        $('#width-value').html('');
+        $('#quote-height').html('');
+        $('#quote-width').html('');
+        $('#height-sku').html('');
+        $('#width-sku').html('');
+
         var standardRoundSize = $('#standard-round-sizes').val();
         var selectedOptionValue = $('#standard-round-sizes').find('option:selected').html();
                 // split after two characters and store the values in an array
@@ -26,6 +34,10 @@ function updatedStandardRoundSizes() {
 function updateStandardSizes() {
     // if the toggle switch is off and the selected style option does not include the word "round" 
     if ($('#Toggle-Switch').prop('checked') == false && !$('#style-grid').find('input:checked').val().includes('Round')) {
+        // clear the diameter value
+        $('#diameter-value').html('');
+        $('#quote-diameter').html('');
+        $('#diameter-sku').html('');
         var standardSize = $('#standard-sizes').val();
                 // split after two characters and store the values in an array
                 var standardSizeArray = standardSize.match(/.{1,2}/g);
@@ -82,9 +94,13 @@ $(document).ready(function() {
           
 
       } else {
+        $('[data-sku="01"]').hide(); // to keep the page from jumping around.
           $('[data-sku="01"]').click();
+          $('[data-sku="01"]').show();
             $('[data-sku="01"]').prop('checked', true);
+            $('[data-sku="T"]').hide(); // to keep the page from jumping around.
             $('[data-sku="T"]').click();
+            $('[data-sku="T"]').show();
             
       }
 
@@ -96,6 +112,7 @@ $(document).ready(function() {
       
      
       setTimeout(function() {
+        getValuesForErrors();
           $('.lottie-animation').hide();
           $('#list').show();
           $('#product-details').show();
@@ -137,6 +154,7 @@ $(document).ready(function() {
            checkRequired();
            updateStandardSizes();
            updatedStandardRoundSizes();
+           getValuesForErrors();
         
           
        });
@@ -144,15 +162,13 @@ $(document).ready(function() {
  
 
 
-
-
     
 
 
 }
 
-); // end of document ready
 
+); // end of document ready
 
      
 var pdfStatus = false;
@@ -166,6 +182,8 @@ function checkRequired() {
         for (var i = 0; i < required.length; i++) {
              // if the quantity input filed is empty, set the pdfStatus to false
         if (document.getElementById('quantity').value === '') {
+            
+
             pdfStatus = false;
             console.log('pdfStatus is false');
 
@@ -208,12 +226,14 @@ function checkRequired() {
         // orientation
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
-        $('[data-sku="1"]').show(); // show the vertical orientation
+        $('[data-sku="1"]').hide(); // to keep the page from jumping around.
         $('[data-sku="1"]').click(); // click the vertical orientation
+        $('[data-sku="1"]').show(); // show the vertical orientation
         $('[data-sku="2"]').show(); // show the horizontal orientation
         // direction
-        $('[data-sku="D"]').show(); // show the direct direction
+        $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click(); // click the direct direction
+        $('[data-sku="D"]').show(); // show the direct direction
         $('[data-sku="B"]').show(); // show the both direction
         $('[data-sku="I"]').hide(); // hide the indirect direction
         // for sizes
@@ -237,12 +257,14 @@ function checkRequired() {
         // orientation
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
-        $('[data-sku="1"]').show(); // show the vertical orientation
+        $('[data-sku="1"]').hide(); // to keep the page from jumping around.
         $('[data-sku="1"]').click(); // click the vertical orientation
+        $('[data-sku="1"]').show(); // show the vertical orientation
         $('[data-sku="2"]').show(); // show the horizontal orientation
         // direction
-        $('[data-sku="D"]').show(); // show the direct direction
+        $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click(); // click the direct direction
+        $('[data-sku="D"]').show(); // show the direct direction
         $('[data-sku="B"]').hide(); // hide the both direction
         $('[data-sku="I"]').show(); // show the indirect direction
         // for sizes
@@ -267,12 +289,14 @@ function checkRequired() {
         // orientation
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
-        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').hide(); // to keep the page from jumping around.
         $('[data-sku="1"]').click();
+        $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
-        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click();
+        $('[data-sku="D"]').show();
         $('[data-sku="B"]').show();
         $('[data-sku="I"]').hide();
         // for sizes
@@ -297,12 +321,14 @@ function checkRequired() {
         // orientation
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
-        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').hide(); // to keep the page from jumping around.
         $('[data-sku="1"]').click();
+        $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
-        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click();
+        $('[data-sku="D"]').show();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
         // for sizes
@@ -328,11 +354,13 @@ function checkRequired() {
         // orientation
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
-        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').hide(); // to keep the page from jumping around.
         $('[data-sku="1"]').click();
+        $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
         $('[data-sku="D"]').hide();
+        $('[data-sku="I"]').hide(); // to keep the page from jumping around.
         $('[data-sku="I"]').click();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
@@ -358,12 +386,14 @@ function checkRequired() {
         // orientation
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
-        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').hide(); // to keep the page from jumping around.
         $('[data-sku="1"]').click();
+        $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
-        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
+        $('[data-sku="D"]').show();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
         // for sizes
@@ -388,8 +418,9 @@ function checkRequired() {
         // orientation
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
-        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').hide();
         $('[data-sku="1"]').click();
+        $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
         $('[data-sku="D"]').show();
@@ -418,11 +449,13 @@ function checkRequired() {
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
         $('[data-sku="1"]').hide();
-        $('[data-sku="2"]').show();
+        $('[data-sku="2"]').hide();
         $('[data-sku="2"]').click();
+        $('[data-sku="2"]').show();
         // direction
-        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
+        $('[data-sku="D"]').show();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
         // for sizes
@@ -447,11 +480,13 @@ function checkRequired() {
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
         $('[data-sku="1"]').hide();
-        $('[data-sku="2"]').show();
+        $('[data-sku="2"]').hide();
         $('[data-sku="2"]').click();
+        $('[data-sku="2"]').show();
         // direction
-        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
+        $('[data-sku="D"]').show();
         $('[data-sku="B"]').show();
         $('[data-sku="I"]').hide();
         // for sizes
@@ -475,12 +510,14 @@ function checkRequired() {
         // orientation
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
-        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').hide();
         $('[data-sku="1"]').click();
+        $('[data-sku="1"]').show();
         $('[data-sku="2"]').hide();
         // direction
-        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
+        $('[data-sku="D"]').show();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
         // for sizes
@@ -504,12 +541,14 @@ function checkRequired() {
         // orientation
         $('#single-side-orientation').hide();
         $('#orientation-section').show();
-        $('[data-sku="1"]').show();
+        $('[data-sku="1"]').hide();
         $('[data-sku="1"]').click();
+        $('[data-sku="1"]').show();
         $('[data-sku="2"]').hide();
         // direction
-        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
+        $('[data-sku="D"]').show();
         $('[data-sku="B"]').show();
         $('[data-sku="I"]').hide();
         // for sizes
@@ -535,8 +574,9 @@ function checkRequired() {
         $('#orientation-section').hide();
         $('[data-sku="1"]').click();
         // direction
-        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').hide(); // to keep the page from scrolling.
         $('[data-sku="D"]').click();
+        $('[data-sku="D"]').show();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
         // for sizes
@@ -563,6 +603,7 @@ function checkRequired() {
         $('[data-sku="1"]').click();
         // direction
         $('[data-sku="D"]').hide();
+        $('[data-sku="I"]').hide();
         $('[data-sku="I"]').click();
         $('[data-sku="B"]').hide();
         $('[data-sku="I"]').show();
@@ -588,14 +629,16 @@ function checkRequired() {
         $('[data-sku="T"]').on('click', function() {
             $('#wide-specsheet').hide();
             $('#thin-specsheet').show();
-            // get the currently checked size
-            var currentSize = $('input[name="Modern-Style"]:checked').attr('value');
-            console.log(currentSize)
+            // get the currently checked thinkness
+            var currentThickness = $('input[name="Modern-Style"]:checked').attr('value');
+            console.log(currentThickness)
             $('[data-sku="02"],[data-sku="04"],[data-sku="06"],[data-sku="08"],[data-sku="10"]').hide();
             // if the user selects a wide frame size, then switch to thin frame size 01, otherwise keep the same size
-            // if currentSize contains the word "Edge" then switch to thin frame size 01
-            if (currentSize.indexOf("Edge") >= 0) {
+            // if currentThickness contains the word "Edge" then switch to thin frame size 01
+            if (currentThickness.indexOf("Edge") >= 0) {
+                $('[data-sku="01"]').hide(); // to keep the page from scrolling.
                 $('[data-sku="01"]').click();
+                $('[data-sku="01"]').show();
             }
               
               
@@ -615,16 +658,22 @@ function checkRequired() {
         var touchSensorItems = $('[data-sku="TR"],[data-sku="HC"],[data-sku="TS"],[data-sku="NT"],[data-sku="NL"],[data-sku="AL"]');
         var nonTouchSensorItems = $('[data-sku="NA"],[data-sku="NL"],[data-sku="AF"],[data-sku="AN"]');
         var nonAdjustableTemperatureItems = $('[data-sku="27"],[data-sku="30"],[data-sku="35"],[data-sku="40"],[data-sku="50"]');
-
+       
+        
+        
     // for data-sku="00" accessories
     $('[data-sku="00"]').on('click', function() {
         // light output
+        $('[data-sku="H"]').hide(); // to keep the page from scrolling when clicked
         $('[data-sku="H"]').click();
         $('[data-sku="H"]').show();
         $('[data-sku="S"]').hide();
         nonTouchSensorItems.hide();
         touchSensorItems.show();
     });
+
+
+
 
     // non adjustable temperature items
     nonAdjustableTemperatureItems.on('click', function() {
@@ -637,8 +686,9 @@ function checkRequired() {
 
     // touch sensor items
     touchSensorItems.on('click', function() {
-        $('[data-sku="N"]').show();
+        $('[data-sku="N"]').hide(); // to keep the page from scrolling.
         $('[data-sku="N"]').click();
+        $('[data-sku="N"]').show();
         $('[data-sku="E"]').hide();
         $('[data-sku="V"]').hide();
     });
@@ -653,21 +703,23 @@ function checkRequired() {
 
     // color temperature
     nonAdjustableTemperatureItems.on('click', function() {
-        $('data-sku="S"],[data-sku="H"]').show();
+        $('[data-sku="S"],[data-sku="H"]').show();
     });
 
 
 
     // if data-sku = 27,30,35,40  or 50 then show data-sku="S"
     $('[data-sku="27"],[data-sku="30"],[data-sku="35"],[data-sku="40"],[data-sku="50"]').on('click', function() {
-        $('[data-sku="S"]').show();
+        $('[data-sku="S"]').hide();
         $('[data-sku="S"]').click();
+        $('[data-sku="S"]').show();
     });
 
     // if data-sku = AL, AT, NT, TS, TR then show and click data-sku="N". Hide E & V.
     $('[data-sku="AL"],[data-sku="AT"],[data-sku="NT"],[data-sku="TS"],[data-sku="TR"]').on('click', function() {
-        $('[data-sku="N"]').show();
+        $('[data-sku="N"]').hide();
         $('[data-sku="N"]').click();
+        $('[data-sku="N"]').show();
         $('[data-sku="E"]').hide();
         $('[data-sku="V"]').hide();
     });
@@ -702,8 +754,6 @@ function checkRequired() {
         $('#style-value').html(style);
         $('#quote-style').html(style);
         $('#style-name-for-button').html(style);
-        // #style-spec-button: change the url to the selected style's data-specsheet-url attribute
-        $('#style-spec-button').attr('href', $(this).parent().attr('data-specsheet-url'));
         // Unless the "Toggle-Switch" is NOT checked, reset the sku values for height, width, and diameter and clear the input fields
         if ($('#Toggle-Switch').is(':checked')) {
         $('#height-sku').html('');
@@ -731,6 +781,8 @@ function checkRequired() {
 
     } // end function
     );
+   
+    
 
    // for orientation
     $('#orientation-grid').find('input').on('change', function() {
@@ -930,6 +982,12 @@ function checkRequired() {
      doc.rect(0, 0, 210, 50, 'F');
 
      
+function newFunction() {
+    $('[data-sku="N"]').show().get(0).dispatchEvent(event);
+    $('[data-sku="E"]').hide();
+    $('[data-sku="V"]').hide();
+}
+
      // create a function to get the value for product sku by going through the divs with the id's that start with "sku" and adding the values to an array IF the div has a value.
         function getValuesForPDF() {
             var skuArray = [];
@@ -1093,24 +1151,57 @@ function checkRequired() {
     var submitButton = document.getElementById('submit-button');
     var disabledSubmit = document.getElementById('disabled-submit');
 
+    // create a fuction to get all error messages and add them to a variable
+    function getValuesForErrors() {
+        // clear the error list
+        $('#error-list').html('');
+        if (document.getElementById('quantity').value === '') {
+            
+            $('#error-list').append('<li>Quantity</li>');
+        }
 
-    var pdfStatus = false;
-    
-    // if pdfStatus is false hide the "disabled-submit" button. 
-    if (pdfStatus === false) {
-        submitButton.classList.add('hide');
-
+        $('.required').each(function() {
+            if ($(this).html() === '') {
+               
+                 // for each required field not filled out, set the pdfStatus to false get the data-error attribute and store it in the error variable.
+                 var error = $(this).data('error');
+                 // append each error to the error-message div as a list item 
+                    $('#error-list').append('<li>' + error + '</li>');
+                    
+            } 
+            
+        });
     }
+
+    // var pdfStatus = false;
+    
+    // // if pdfStatus is false hide the "disabled-submit" button. 
+    // if (pdfStatus === false) {
+    //     submitButton.classList.add('hide');
+
+    // }
     downloadButton.addEventListener('click', function() {
-        getValuesForPDF();
+       
+        
+        
+        
             
             
         // if the pdfStatus is true, create the pdf
         if (pdfStatus === true) {
+            getValuesForPDF();
             pdfobjectnewwindow = window.open(doc.output('bloburl'), '_blank');
             pdfobjectnewwindow.focus();
+            // then refresh the page
+            location.reload();
+            
         } else {
+           
+           
+          
+            
             // if the pdfStatus is false, show the error message
+            
             document.getElementById('error-message').classList.remove('hide');
         }
 
