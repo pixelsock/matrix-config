@@ -54,9 +54,42 @@ function updateStandardSizes() {
     }
 }
 
+// product-header4_main-image-wrapper // product image class
+// view-image // view image button ID
+// mobile-spec // mobile spec button ID
+// desktop-spec // desktop spec button ID
+
+    // on click of the view image button show the product image and change the button text to "x Close"
+    $('#view-image').on('click', function() {
+       // if #selected-image has class "hide-image" then remove the class and change the button text to "x Close"
+        if ($('#selected-image').hasClass('hide-image')) {
+            $('#selected-image').removeClass('hide-image');
+            $('#view-image').html('x Close');
+        } else {
+            // else add the class "hide-image" and change the button text to "View Image"
+            $('#selected-image').addClass('hide-image');
+            $('#view-image').html('View Image');
+        }
+    });
+
+
+    // when the close error button is clicked, hide the error message
+    $('#close-error').on('click', function() {
+        $('#error-message').addClass('hide');
+    });
+    
+    // on click of the mobile spec button, get the href attribute of the desktop spec button and change the href attribute of the mobile spec button to match. open the mobile spec button in a new window.
+    $('#mobile-spec').on('click', function() {
+        var desktopSpecHref = $('#desktop-spec').attr('href');
+        $(this).attr('href', desktopSpecHref);
+    });
+
+
   
 // on page load
 $(document).ready(function() {
+
+    
 
  
       
