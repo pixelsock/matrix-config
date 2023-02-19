@@ -188,6 +188,7 @@ $(document).ready(function() {
            updateStandardSizes();
            updatedStandardRoundSizes();
            getValuesForErrors();
+           ifDeco();
         
           
        });
@@ -207,6 +208,36 @@ $(document).ready(function() {
 var pdfStatus = false;
 var submitButton = document.getElementById('submit-button');
 var disabledSubmit = document.getElementById('disabled-submit');
+
+function ifDeco() {
+    var productLine = $('#product-line').html();
+        // if the product line is Deco then we need to get the value for accessories from data-color element
+
+ // if the product line is Deco AND accessories is selected.
+        if (productLine == 'Deco' && $('#accessories-sku').html() !== '') {
+            var formAccessory = document.getElementById('Configured-Accessory');
+            formAccessory.value = $('#accessories-value').html();
+            // create a switch statement to get the value of the data-color attribute value
+            var frameColorGrid = $('#frame-color-grid').find('input:checked').val();
+            switch (frameColorGrid) {
+                case 'Black Metal':
+                    $('#accessories-sku').html('BF');
+                        
+                    break;
+                case 'Gold Metal':
+                    $('#accessories-sku').html('GF');
+                    break;
+                case 'Silver Metal':
+                    $('#accessories-sku').html('SF');
+                    break;
+            
+
+            }
+    } else {
+        return false;
+    }
+}
+
 
 // create a function to check if the required fields are filled out
 function checkRequired() {
@@ -1002,7 +1033,6 @@ function checkRequired() {
     }
     );
 
-
     
     // for accessories
     $('#accessories-grid').find('input').on('change', function() {
@@ -1010,13 +1040,16 @@ function checkRequired() {
         $('#accessories-value').html(accessories);
         // need to add logic to update the sku based on this selection
         // find the element with data-sku attribute and display the value in a div with the id "accessories-sku"
+        
+      
+            
+
         var accessoriesSku = $(this).parent().attr('data-sku');
         $('#accessories-sku').html(accessoriesSku);
         $('#quote-accessories').html(accessories);
 
         console.log('accessories: ' + accessories); // console log the value of the option
-    }
-    );
+    });
 
     // for output
     $('#output-grid').find('input').on('change', function() {
@@ -1308,12 +1341,14 @@ function checkRequired() {
             console.log(skuString);
             var formSku = document.getElementById('form-sku');
             formSku.value = skuString;
+            
             var formSkuLabel = document.getElementById('form-sku-label');
             formSkuLabel.innerHTML = skuString;
             var formQuantity = document.getElementById('form-quantity');
             formQuantity.value = $('#quantity-value').html();
             var formQuantityLabel = document.getElementById('form-quantity-label');
             formQuantityLabel.innerHTML = $('#quantity-value').html();
+            
         } else {
             // if the pdfStatus is false, show the error message
             document.getElementById('error-message').classList.remove('hide');
