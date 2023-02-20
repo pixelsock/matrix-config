@@ -683,7 +683,7 @@ function checkRequired() {
         $('[data-sku="I"]').click();
         $('[data-sku="I"]').show();
         $('[data-sku="B"]').hide();
-        $('[data-sku="D"]').show();
+        $('[data-sku="D"]').hide();
         // for sizes
         $('#standard-round-sizes').parent().show();
         $('#standard-sizes').parent().hide();
