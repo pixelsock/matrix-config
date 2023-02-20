@@ -679,11 +679,11 @@ function checkRequired() {
         $('#orientation-section').hide();
         $('[data-sku="1"]').click();
         // direction
-        $('[data-sku="D"]').hide(); // to keep the page from scrolling.
-        $('[data-sku="D"]').click();
-        $('[data-sku="D"]').show();
-        $('[data-sku="B"]').hide();
+        $('[data-sku="I"]').hide(); // to keep the page from scrolling.
+        $('[data-sku="I"]').click();
         $('[data-sku="I"]').show();
+        $('[data-sku="B"]').hide();
+        $('[data-sku="D"]').show();
         // for sizes
         $('#standard-round-sizes').parent().show();
         $('#standard-sizes').parent().hide();
