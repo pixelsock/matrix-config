@@ -1297,9 +1297,12 @@ function checkRequired() {
         // if the pdfStatus is true, create the pdf
         if (pdfStatus === true) {
             getValuesForPDF();
-            pdfobjectnewwindow = window.open(doc.output('bloburl'), '_blank');
-            pdfobjectnewwindow.focus();
-            // then refresh the page
+            // output the pdf
+            // create objecturl for the pdf
+         doc.output('pdfobjectnewwindow');
+            
+            
+
             location.reload();
             
         } else {
