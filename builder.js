@@ -325,12 +325,14 @@ function checkRequired() {
         $('[data-sku="1"]').show(); // show the vertical orientation
         $('[data-sku="2"]').show(); // show the horizontal orientation
         // direction
-        if ($('#product-line').html() == 'Future') {
+        // if the product line is Future or deco thin frame, then the default direction is indirect
+        var currentThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
+        if ($('#product-line').html() == 'Future' || currentThickness == 'T') {
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
             $('[data-sku="I"]').hide(); // to keep the page from jumping around.
             $('[data-sku="I"]').click(); // click the direct direction
             $('[data-sku="I"]').show(); // show the direct direction
-            $('[data-sku="B"]').hide(); // hide the both direction
-            $('[data-sku="D"]').hide(); // show the indirect direction
         } else {
             $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click(); // click the direct direction
@@ -398,12 +400,14 @@ function checkRequired() {
         $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
-        if ($('#product-line').html() == 'Future') {
+        // if the product line is Future or deco thin frame, then the default direction is indirect
+        var currentThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
+        if ($('#product-line').html() == 'Future' || currentThickness == 'T') {
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
             $('[data-sku="I"]').hide(); // to keep the page from jumping around.
             $('[data-sku="I"]').click(); // click the direct direction
             $('[data-sku="I"]').show(); // show the direct direction
-            $('[data-sku="B"]').hide(); // hide the both direction
-            $('[data-sku="D"]').hide(); // show the indirect direction
         } else {
         $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click();
@@ -471,12 +475,14 @@ function checkRequired() {
         $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
-        if ($('#product-line').html() == 'Future') {
+        // if the product line is Future or deco thin frame, then the default direction is indirect
+        var currentThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
+        if ($('#product-line').html() == 'Future' || currentThickness == 'T') {
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
             $('[data-sku="I"]').hide(); // to keep the page from jumping around.
             $('[data-sku="I"]').click(); // click the direct direction
             $('[data-sku="I"]').show(); // show the direct direction
-            $('[data-sku="B"]').hide(); // hide the both direction
-            $('[data-sku="D"]').hide(); // show the indirect direction
         } else {
         $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
@@ -542,12 +548,14 @@ function checkRequired() {
         $('[data-sku="2"]').click();
         $('[data-sku="2"]').show();
         // direction
-        if ($('#product-line').html() == 'Future') {
+        // if the product line is Future or deco thin frame, then the default direction is indirect
+        var currentThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
+        if ($('#product-line').html() == 'Future' || currentThickness == 'T') {
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
             $('[data-sku="I"]').hide(); // to keep the page from jumping around.
             $('[data-sku="I"]').click(); // click the direct direction
             $('[data-sku="I"]').show(); // show the direct direction
-            $('[data-sku="B"]').hide(); // hide the both direction
-            $('[data-sku="D"]').hide(); // show the indirect direction
         } else {
         $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
@@ -612,12 +620,14 @@ function checkRequired() {
         $('[data-sku="1"]').show();
         $('[data-sku="2"]').hide();
         // direction
-        if ($('#product-line').html() == 'Future') {
+        // if the product line is Future or deco thin frame, then the default direction is indirect
+        var currentThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
+        if ($('#product-line').html() == 'Future' || currentThickness == 'T') {
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
             $('[data-sku="I"]').hide(); // to keep the page from jumping around.
             $('[data-sku="I"]').click(); // click the direct direction
             $('[data-sku="I"]').show(); // show the direct direction
-            $('[data-sku="B"]').hide(); // hide the both direction
-            $('[data-sku="D"]').hide(); // show the indirect direction
         } else {
         $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
@@ -728,6 +738,22 @@ function checkRequired() {
         $('[data-sku="AN"]').hide();
         
     });
+
+    // for edge styles in deco line
+    var edgeStyles = $('[data-sku="02"],[data-sku="04"],[data-sku="06"],[data-sku="08"],[data-sku="10"]');
+    // if thin frame is selected
+    if (currentThickness == 'Thin Frame') {
+        // when someone clicks on an edge style
+        edgeStyles.on('click', function() {
+            // click indirect direction and hide direct direction
+            $('[data-sku="D"]').hide(); 
+            $('[data-sku="D"]').click();
+            $('[data-sku="D"]').show();
+            $('[data-sku="I"]').hide();
+            // hide both direction
+            $('[data-sku="B"]').hide();
+        });
+    }
     
 
     // for data-sku="T" thin frame
@@ -735,20 +761,8 @@ function checkRequired() {
             $('#wide-specsheet').hide();
             $('#thin-specsheet').show();
             // get the currently checked thinkness
-            var currentThickness = $('input[name="Modern-Style"]:checked').attr('value');
-            console.log(currentThickness)
-            $('[data-sku="02"],[data-sku="04"],[data-sku="06"],[data-sku="08"],[data-sku="10"]').hide();
-            // if the user selects a wide frame size, then switch to thin frame size 01, otherwise keep the same size
-            // if currentThickness contains the word "Edge" then switch to thin frame size 01
-            if (currentThickness.indexOf("Edge") >= 0) {
-                $('[data-sku="01"]').hide(); // to keep the page from scrolling.
-                $('[data-sku="01"]').click();
-                $('[data-sku="01"]').show();
-            }
-              
-              
-              
-              
+            var currentThickness = $('input[name="Thickness"]:checked').attr('value');
+            console.log('current thickness:', currentThickness)    
 
         });
 
@@ -852,7 +866,8 @@ function checkRequired() {
             var frameColor = $(this).val();
             $('#product-line-value').html(frameColor);
         });
-            
+
+           
 
 
 
