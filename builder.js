@@ -1,4 +1,4 @@
-// This is a jquery plugin that will build the logic for a configuration page for a product customization tool.
+// This is a jquery plugin that will build the logic for a configuration page for a product customization tool for an LED mirror brand called Matrix Mirrors.
 // The app will listen for specific events and then build the logic to display the selected options.
 // Once the user has selected all of the options the app will export the data in a downloadable pdf. 
 const { jsPDF } = window.jspdf;
