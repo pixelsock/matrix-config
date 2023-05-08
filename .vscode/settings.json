@@ -2,5 +2,7 @@
     "liveServer.settings.port": 5501,
     "githubPullRequests.ignoredPullRequestBranches": [
         "master"
-    ]
+    ],
+    "CodeGPT.maxTokens": 8192,
+    "CodeGPT.model": "gpt-4"
 }

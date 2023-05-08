@@ -1,4 +1,4 @@
-// This is a jquery plugin that will build the logic for a configuration page for a product customization tool for an LED mirror brand called Matrix Mirrors.
+// This is a jquery plugin that will build the logic for a configuration page for a product customization tool for an LED mirror brand called Matrix Mirrors for an LED mirror brand called Matrix Mirrors.
 // The app will listen for specific events and then build the logic to display the selected options.
 // Once the user has selected all of the options the app will export the data in a downloadable pdf. 
 const { jsPDF } = window.jspdf;
@@ -325,14 +325,12 @@ function checkRequired() {
         $('[data-sku="1"]').show(); // show the vertical orientation
         $('[data-sku="2"]').show(); // show the horizontal orientation
         // direction
-        // if the product line is Future or deco thin frame, then the default direction is indirect
-        var currentThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
-        if ($('#product-line').html() == 'Future' || currentThickness == 'T') {
-            $('[data-sku="B"]').hide(); // hide the both direction
-            $('[data-sku="D"]').hide(); // show the indirect direction
+        if ($('#product-line').html() == 'Future') {
             $('[data-sku="I"]').hide(); // to keep the page from jumping around.
             $('[data-sku="I"]').click(); // click the direct direction
             $('[data-sku="I"]').show(); // show the direct direction
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
         } else {
             $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click(); // click the direct direction
@@ -400,14 +398,12 @@ function checkRequired() {
         $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
-        // if the product line is Future or deco thin frame, then the default direction is indirect
-        var currentThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
-        if ($('#product-line').html() == 'Future' || currentThickness == 'T') {
-            $('[data-sku="B"]').hide(); // hide the both direction
-            $('[data-sku="D"]').hide(); // show the indirect direction
+        if ($('#product-line').html() == 'Future') {
             $('[data-sku="I"]').hide(); // to keep the page from jumping around.
             $('[data-sku="I"]').click(); // click the direct direction
             $('[data-sku="I"]').show(); // show the direct direction
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
         } else {
         $('[data-sku="D"]').hide(); // to keep the page from jumping around.
         $('[data-sku="D"]').click();
@@ -475,14 +471,12 @@ function checkRequired() {
         $('[data-sku="1"]').show();
         $('[data-sku="2"]').show();
         // direction
-        // if the product line is Future or deco thin frame, then the default direction is indirect
-        var currentThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
-        if ($('#product-line').html() == 'Future' || currentThickness == 'T') {
-            $('[data-sku="B"]').hide(); // hide the both direction
-            $('[data-sku="D"]').hide(); // show the indirect direction
+        if ($('#product-line').html() == 'Future') {
             $('[data-sku="I"]').hide(); // to keep the page from jumping around.
             $('[data-sku="I"]').click(); // click the direct direction
             $('[data-sku="I"]').show(); // show the direct direction
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
         } else {
         $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
@@ -548,14 +542,12 @@ function checkRequired() {
         $('[data-sku="2"]').click();
         $('[data-sku="2"]').show();
         // direction
-        // if the product line is Future or deco thin frame, then the default direction is indirect
-        var currentThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
-        if ($('#product-line').html() == 'Future' || currentThickness == 'T') {
-            $('[data-sku="B"]').hide(); // hide the both direction
-            $('[data-sku="D"]').hide(); // show the indirect direction
+        if ($('#product-line').html() == 'Future') {
             $('[data-sku="I"]').hide(); // to keep the page from jumping around.
             $('[data-sku="I"]').click(); // click the direct direction
             $('[data-sku="I"]').show(); // show the direct direction
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
         } else {
         $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
@@ -620,14 +612,12 @@ function checkRequired() {
         $('[data-sku="1"]').show();
         $('[data-sku="2"]').hide();
         // direction
-        // if the product line is Future or deco thin frame, then the default direction is indirect
-        var currentThickness = $('#frame-thickness-grid').find('input:checked').parent().attr('data-sku');
-        if ($('#product-line').html() == 'Future' || currentThickness == 'T') {
-            $('[data-sku="B"]').hide(); // hide the both direction
-            $('[data-sku="D"]').hide(); // show the indirect direction
+        if ($('#product-line').html() == 'Future') {
             $('[data-sku="I"]').hide(); // to keep the page from jumping around.
             $('[data-sku="I"]').click(); // click the direct direction
             $('[data-sku="I"]').show(); // show the direct direction
+            $('[data-sku="B"]').hide(); // hide the both direction
+            $('[data-sku="D"]').hide(); // show the indirect direction
         } else {
         $('[data-sku="D"]').hide();
         $('[data-sku="D"]').click();
@@ -738,22 +728,6 @@ function checkRequired() {
         $('[data-sku="AN"]').hide();
         
     });
-
-    // for edge styles in deco line
-    var edgeStyles = $('[data-sku="02"],[data-sku="04"],[data-sku="06"],[data-sku="08"],[data-sku="10"]');
-    // if thin frame is selected
-    if (currentThickness == 'Thin Frame') {
-        // when someone clicks on an edge style
-        edgeStyles.on('click', function() {
-            // click indirect direction and hide direct direction
-            $('[data-sku="D"]').hide(); 
-            $('[data-sku="D"]').click();
-            $('[data-sku="D"]').show();
-            $('[data-sku="I"]').hide();
-            // hide both direction
-            $('[data-sku="B"]').hide();
-        });
-    }
     
 
     // for data-sku="T" thin frame
@@ -761,8 +735,20 @@ function checkRequired() {
             $('#wide-specsheet').hide();
             $('#thin-specsheet').show();
             // get the currently checked thinkness
-            var currentThickness = $('input[name="Thickness"]:checked').attr('value');
-            console.log('current thickness:', currentThickness)    
+            var currentThickness = $('input[name="Modern-Style"]:checked').attr('value');
+            console.log(currentThickness)
+            $('[data-sku="02"],[data-sku="04"],[data-sku="06"],[data-sku="08"],[data-sku="10"]').hide();
+            // if the user selects a wide frame size, then switch to thin frame size 01, otherwise keep the same size
+            // if currentThickness contains the word "Edge" then switch to thin frame size 01
+            if (currentThickness.indexOf("Edge") >= 0) {
+                $('[data-sku="01"]').hide(); // to keep the page from scrolling.
+                $('[data-sku="01"]').click();
+                $('[data-sku="01"]').show();
+            }
+              
+              
+              
+              
 
         });
 
@@ -866,8 +852,7 @@ function checkRequired() {
             var frameColor = $(this).val();
             $('#product-line-value').html(frameColor);
         });
-
-           
+            
 
 
 
@@ -950,29 +935,53 @@ function checkRequired() {
     );
 
     // for size
-    // for height the options are input fields so we need to get the value of the input field as the user types
-    $('#height').on('keyup', function() {
-        var height = $('#height').val();
-        $('#height-value').html(height + '"'); // add the " to the value to display it as inches
-        // need to add logic to update the sku based on this selection
-        // find the element with data-sku attribute and display the value in a div with the id "size-sku" this one is a little simpler
-        $('#height-sku').html(height);
-        $('#quote-height').html(height);
-        console.log('height: ' + height); // console log the value of the option
-    }
-    );
+   // for height
+$('#height').on('focusout', function() {
+    var height = $('#height').val();
+    var width = $('#width').val();
 
-    // for width the options are input fields so we need to get the value of the input field as the user types
-    $('#width').on('keyup', function() {
-        var width = $('#width').val();
-        $('#width-value').html(width + '"'); // add the " to the value to display it as inches
-        // need to add logic to update the sku based on this selection
-        // find the element with data-sku attribute and display the value in a div with the id "size-sku" this one is a little simpler
-        $('#width-sku').html(width);
-        $('#quote-width').html(width);
-        console.log('width: ' + width); // console log the value of the option
+    $('#height-value').html(height + '"');
+    $('#height-sku').html(height);
+    $('#quote-height').html(height);
+    console.log('height: ' + height);
+
+    if (parseInt(height) > parseInt(width)) {
+        $('[data-sku="1"]').hide(); // so the page doesn't shift
+        $('[data-sku="1"]').click(); // click the element with data-sku="1" for vertical orientation
+        $('[data-sku="1"]').show();
+        $('[data-sku="2"]').hide(); // so the option isn't available
+    } else if (parseInt(height) < parseInt(width)) {
+        $('[data-sku="2"]').hide(); // so the page doesn't shift
+        $('[data-sku="2"]').click(); // click the element with data-sku="2" for horizontal orientation
+        $('[data-sku="2"]').show();
+        $('[data-sku="1"]').hide(); // so the option isn't available
     }
-    );
+});
+
+// for width
+$('#width').on('focusout', function() {
+    var width = $('#width').val();
+    var height = $('#height').val();
+
+    $('#width-value').html(width + '"');
+    $('#width-sku').html(width);
+    $('#quote-width').html(width);
+    console.log('width: ' + width);
+
+    if (parseInt(height) > parseInt(width)) {
+        $('[data-sku="1"]').hide(); // so the page doesn't shift
+        $('[data-sku="1"]').click(); // click the element with data-sku="1" for vertical orientation
+        $('[data-sku="1"]').show();
+        $('[data-sku="2"]').hide(); // so the option isn't available
+    } else if (parseInt(height) < parseInt(width)) {
+        $('[data-sku="2"]').hide(); // so the page doesn't shift
+        $('[data-sku="2"]').click(); // click the element with data-sku="2" for horizontal orientation
+        $('[data-sku="2"]').show();
+        $('[data-sku="1"]').hide(); // so the option isn't available
+    }
+});
+
+
 
     // for diameter the options are input fields so we need to get the value of the input field as the user types
     $('#diameter').on('keyup', function() {
@@ -997,6 +1006,9 @@ function checkRequired() {
                 $('#height-sku').html('');
                 $('#quote-height').html('');
                 $('#quote-width').html('');
+                // if the width value is greater than the height value then click the horizontal button and hide the vertical button
+                
+
             } else { 
                 // if Toggle-Switch is NOT checked on change take the value of the selected option and split it into two values for width and height and display them in the divs with the id's "width-value" and "height-value".
                 // if Toggle-Switch is NOT checked STANDARD SIZES is visible.
@@ -1091,6 +1103,7 @@ function checkRequired() {
         console.log('dimming: ' + dimming); // console log the value of the option
     }
     );
+    
     // this function refreshes the quote-sku anytime any section is changed
     $('#custom-form').find('input').on('change', function() {
         var skuWrapper = $('#sku-wrapper').html();
@@ -1295,13 +1308,7 @@ function checkRequired() {
         });
     }
 
-    // var pdfStatus = false;
     
-    // // if pdfStatus is false hide the "disabled-submit" button. 
-    // if (pdfStatus === false) {
-    //     submitButton.classList.add('hide');
-
-    // }
     downloadButton.addEventListener('click', function() {
        
         

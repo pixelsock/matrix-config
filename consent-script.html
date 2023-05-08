@@ -1,0 +1,74 @@
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TH72T7M');</script>
+    <!-- End Google Tag Manager -->
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script>
+        // Initialize the data layer for Google Tag Manager (this should mandatorily be done before the Privacy Controls and Cookie Solution is loaded)
+        window.dataLayer = window.dataLayer || [];
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        // Default consent mode is "denied" for both ads and analytics as well as the optional types, but delay for 2 seconds until the Privacy Controls and Cookie Solution is loaded
+        gtag("consent", "default", {
+            ad_storage: "denied",
+            analytics_storage: "denied",
+            functionality_storage: "denied", // optional
+            personalization_storage: "denied", // optional
+            security_storage: "denied", // optional
+            wait_for_update: 2000 // milliseconds
+        });
+        // Improve ad click measurement quality (optional)
+        gtag('set', 'url_passthrough', true);
+        // Further redact your ads data (optional)
+        gtag("set", "ads_data_redaction", true);
+        
+        // Google Tag Manager
+        (function(w, d, s, l, i) {
+            w[l] = w[l] || [];
+            w[l].push({
+                'gtm.start': new Date().getTime(),
+                event: 'gtm.js'
+            });
+            var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : '';
+            j.async = true;
+            j.src =
+                'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+            f.parentNode.insertBefore(j, f);
+        })(window, document, 'script', 'dataLayer', 'GTM-TH72T7M'); //replace GTM-XXXXXX with the ID of your Google Analytics property
+    </script>
+    <!-- iubenda Privacy Controls and Cookie Solution -->
+    <script>    
+        var _iub = _iub || [];
+        
+        _iub.csConfiguration = {
+            lang: "en",
+            siteId: 3094260, //use your siteId
+            cookiePolicyId: 59955302, //use your cookiePolicyId
+            countryDetection: true,
+            perPurposeConsent: true,
+            purposes: "1,4,5",
+            consentOnContinuedBrowsing: false,
+            banner: {
+                position: "float-top-center",
+                acceptButtonDisplay: true,
+                customizeButtonDisplay: true,
+                rejectButtonDisplay: true
+            }
+        };
+    </script>
+    <script src="https://cdn.iubenda.com/cs/iubenda_cs.js" charset="UTF-8" async></script>
+    
+    <!-- Please keep this css code to improve the font quality-->
+    <style>
+      * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    </style>
