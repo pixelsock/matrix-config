@@ -1078,7 +1078,13 @@ $('#width').on('focusout', function() {
                     $('#quote-diameter').html(diameter);
                     $('#height-sku').html(diameter);
                     $('#width-sku').html('00'); // set the height sku to 00 since it's not used for diameter
-                    
+                    // show both the vertical and horizontal buttons if applicable
+                    $('[data-sku="1"]').show();
+                    $('[data-sku="2"]').show();
+                    $('#style-grid').find('input:checked').click();
+                    // reset the width and height values to empty
+                    $('#width').val('');
+                    $('#height').val('');
                     
                 }
             }
