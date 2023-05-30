@@ -84,6 +84,13 @@ function updateStandardSizes() {
         $(this).attr('href', desktopSpecHref);
     });
 
+    // on click of the mobile-revit button, get the href attribute of the desktop-revit button and change the href attribute of the mobile-revit button to match. open the mobile-revit button in a new window.
+    $('#mobile-revit').on('click', function() {
+        var desktopRevitHref = $('#desktop-revit').attr('href');
+        $(this).attr('href', desktopRevitHref);
+    });
+    
+
 
   
 // on page load
