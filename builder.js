@@ -1029,6 +1029,9 @@ $('#width').on('focusout', function() {
 
         // if Toggle-Switch is checked on change clear the values in the width and height divs
         $('#Toggle-Switch').on('change', function() {
+            
+
+            
             if ($('#Toggle-Switch').prop('checked') == true) {
                 $('#width-value').html('');
                 $('#height-value').html('');
@@ -1036,12 +1039,19 @@ $('#width').on('focusout', function() {
                 $('#height-sku').html('');
                 $('#quote-height').html('');
                 $('#quote-width').html('');
+                $('#width').val('');
+                $('#height').val('');
+                // find the selected style and re-click it.
+                $('#style-grid').find('input:checked').click();
+                
+            
                 // if the width value is greater than the height value then click the horizontal button and hide the vertical button
                 
 
             } else { 
                 // if Toggle-Switch is NOT checked on change take the value of the selected option and split it into two values for width and height and display them in the divs with the id's "width-value" and "height-value".
                 // if Toggle-Switch is NOT checked STANDARD SIZES is visible.
+               
                 if ($('#standard-sizes').is(':visible')) {
                 var standardSize = $('#standard-sizes').val();
                 // split after two characters and store the values in an array
@@ -1068,6 +1078,8 @@ $('#width').on('focusout', function() {
                     $('#quote-diameter').html(diameter);
                     $('#height-sku').html(diameter);
                     $('#width-sku').html('00'); // set the height sku to 00 since it's not used for diameter
+                    
+                    
                 }
             }
         }
