@@ -90,6 +90,11 @@ function updateStandardSizes() {
 $(document).ready(function() {
 
     
+        // save original sizes to data attributes when the page loads
+        $('#standard-sizes').find('option').each(function() {
+            $(this).attr('data-original-value', $(this).val());
+            $(this).attr('data-original-text', $(this).text());
+        });
 
  
       
@@ -892,19 +897,37 @@ function checkRequired() {
    
     
 
-   // for orientation
-    $('#orientation-grid').find('input').on('change', function() {
-        var orientation = $(this).val();
-        $('#orientation-value').html(orientation);
-        // need to add logic to update the sku based on this selection
-        // find the element with data-sku attribute and display the value in a div with the id "mounting-sku"
-        var orientationSku = $(this).parent().attr('data-sku');
-        $('#mounting-sku').html(orientationSku);
-        $('#quote-orientation').html(orientation);
+    
+    
+        // for orientation
+        $('#orientation-grid').find('input').on('change', function() {
+            var orientation = $(this).val();
+            $('#orientation-value').html(orientation);
+            var orientationSku = $(this).parent().attr('data-sku');
+            $('#mounting-sku').html(orientationSku);
+            $('#quote-orientation').html(orientation);
+    
+            console.log('orientation: ' + orientation);
+    
+            // first reset all sizes to their original values
+            $('#standard-sizes').find('option').each(function() {
+                $(this).val($(this).attr('data-original-value'));
+                $(this).html($(this).attr('data-original-text'));
+            });
+    
+            // then perform the swap if orientation is horizontal
+            if (orientation == 'Horizontal') {
+                $('#standard-sizes').find('option').each(function() {
+                    var currentOption = $(this).val();
+                    var newOption = currentOption.substring(2,4) + currentOption.substring(0,2);
+                    $(this).val(newOption);
+                    $(this).html(newOption.substring(0,2) + '" x ' + newOption.substring(2,4) + '"');
+                });
+            }
+        });
+    
+    
 
-        console.log('orientation: ' + orientation); // console log the value of the option
-    }
-    );
 
     // for direction
     $('#direction-grid').find('input').on('change', function() {
