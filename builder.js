@@ -29,7 +29,40 @@ function updatedStandardRoundSizes() {
                 $('#width-sku').html('00'); // set the height sku to 00 since it's not used for diameter
     }
 }
+var overlayImageValue;
+function overlayImage() {
+    // if the orientation is horizontal and the element with attribute overlay-image="3" is selected then show the image
+    if ($('#accessories-value').html() != '') {
+        
+        
+    if ($('#orientation-value').html() == 'Horizontal' && overlayImageValue == '3') {
+        $('.overlay-image-h3').show();
+        $('.overlay-image-v3').hide();
+        $('.overlay-image-v2').hide();
 
+    } else if ($('#orientation-value').html() == 'Vertical' && overlayImageValue == '3') {
+        $('.overlay-image-v3').show();
+        $('.overlay-image-h3').hide();
+        $('.overlay-image-v2').hide();
+
+    } else if ($('#orientation-value').html() == 'Horizontal' && overlayImageValue == '2') {
+        $('.overlay-image-h2').show();
+        $('.overlay-image-v2').hide();
+        $('.overlay-image-v3').hide();
+
+    } else if ($('#orientation-value').html() == 'Vertical' && overlayImageValue == '2') {
+        $('.overlay-image-v2').show();
+        $('.overlay-image-h2').hide();
+        $('.overlay-image-v3').hide();
+
+    } else if ($('#orientation-value').html() != '' && overlayImageValue == '0') {
+        $('.overlay-image-v2').hide();
+        $('.overlay-image-v3').hide();
+        $('.overlay-image-h2').hide();
+        $('.overlay-image-h3').hide();
+    }
+}
+}
 
 function updateStandardSizes() {
     // if the toggle switch is off and the selected style option does not include the word "round" 
@@ -165,6 +198,7 @@ $(document).ready(function() {
           $('#list').animate({
               opacity: 1
           }, 1000);
+          
   
       }, 1500);
 
@@ -201,10 +235,10 @@ $(document).ready(function() {
            updatedStandardRoundSizes();
            getValuesForErrors();
            ifDeco();
+           
         
           
        });
-
  
 
 
@@ -216,6 +250,15 @@ $(document).ready(function() {
 
 ); // end of document ready
 
+$('form').on('change', function() {
+    $('#error-message').addClass('hide');
+    checkRequired();
+    updateStandardSizes();
+    updatedStandardRoundSizes();
+    getValuesForErrors();
+    ifDeco();
+    overlayImage();
+});
      
 var pdfStatus = false;
 var submitButton = document.getElementById('submit-button');
@@ -902,9 +945,7 @@ function checkRequired() {
     } // end function
     );
    
-    
-
-    
+   
     
         // for orientation
         $('#orientation-grid').find('input').on('change', function() {
@@ -1112,6 +1153,8 @@ $('#width').on('focusout', function() {
     // for accessories
     $('#accessories-grid').find('input').on('change', function() {
         var accessories = $(this).val();
+        var accessoriesOverlay = $(this).parent().attr('overlay-image');
+        
         $('#accessories-value').html(accessories);
         // need to add logic to update the sku based on this selection
         // find the element with data-sku attribute and display the value in a div with the id "accessories-sku"
@@ -1124,6 +1167,7 @@ $('#width').on('focusout', function() {
         $('#quote-accessories').html(accessories);
 
         console.log('accessories: ' + accessories); // console log the value of the option
+        overlayImageValue=accessoriesOverlay;
     });
 
     // for output
@@ -1317,7 +1361,7 @@ $('#width').on('focusout', function() {
     doc.setFontSize(10);
     // all one line centered in the footer
     
-    doc.text('5965 Peachtree Corners East, Suite-A1, Norcross, GA, 30071 - (678) 580-5717 - matrixmirrors.com', 105, 290, 'center');
+    doc.text('6464 Warren Drive, Norcross, GA 30093 - (678) 580-5717 - matrixmirrors.com', 105, 290, 'center');
     // get the current date and add it to the footer formatted as mm/dd/yyyy
     var date = new Date();
     var month = date.getMonth() + 1;
