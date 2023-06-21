@@ -29,7 +29,7 @@ function updatedStandardRoundSizes() {
                 $('#width-sku').html('00'); // set the height sku to 00 since it's not used for diameter
     }
 }
-let overlayImageValue;
+var overlayImageValue;
 function overlayImage() {
     var orientation = $('#orientation-value').html();
 
@@ -45,8 +45,6 @@ function overlayImage() {
     // Show the relevant overlay images
     $(classToShow).removeClass('hide');
 }
-
-
 
 
 
