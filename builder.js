@@ -29,40 +29,26 @@ function updatedStandardRoundSizes() {
                 $('#width-sku').html('00'); // set the height sku to 00 since it's not used for diameter
     }
 }
-var overlayImageValue;
+let overlayImageValue;
 function overlayImage() {
-    // if the orientation is horizontal and the element with attribute overlay-image="3" is selected then show the image
-    if ($('#accessories-value').html() != '') {
-        
-        
-    if ($('#orientation-value').html() == 'Horizontal' && overlayImageValue == '3') {
-        $('.overlay-image-h3').show();
-        $('.overlay-image-v3').hide();
-        $('.overlay-image-v2').hide();
+    var orientation = $('#orientation-value').html();
 
-    } else if ($('#orientation-value').html() == 'Vertical' && overlayImageValue == '3') {
-        $('.overlay-image-v3').show();
-        $('.overlay-image-h3').hide();
-        $('.overlay-image-v2').hide();
+    // Hide all overlay images initially
+    $('.overlay-image-h2, .overlay-image-h3, .overlay-image-v2, .overlay-image-v3').addClass('hide');
 
-    } else if ($('#orientation-value').html() == 'Horizontal' && overlayImageValue == '2') {
-        $('.overlay-image-h2').show();
-        $('.overlay-image-v2').hide();
-        $('.overlay-image-v3').hide();
+    // If overlayImageValue is '0', we don't need to do anything else
+    if (overlayImageValue === '0') return;
 
-    } else if ($('#orientation-value').html() == 'Vertical' && overlayImageValue == '2') {
-        $('.overlay-image-v2').show();
-        $('.overlay-image-h2').hide();
-        $('.overlay-image-v3').hide();
+    // Construct the class selector based on orientation and overlayImageValue
+    var classToShow = '.overlay-image-' + orientation.toLowerCase().charAt(0) + overlayImageValue;
 
-    } else if ($('#orientation-value').html() != '' && overlayImageValue == '0') {
-        $('.overlay-image-v2').hide();
-        $('.overlay-image-v3').hide();
-        $('.overlay-image-h2').hide();
-        $('.overlay-image-h3').hide();
-    }
+    // Show the relevant overlay images
+    $(classToShow).removeClass('hide');
 }
-}
+
+
+
+
 
 function updateStandardSizes() {
     // if the toggle switch is off and the selected style option does not include the word "round" 
@@ -235,7 +221,7 @@ $(document).ready(function() {
            updatedStandardRoundSizes();
            getValuesForErrors();
            ifDeco();
-           
+           overlayImage();
         
           
        });
@@ -250,15 +236,6 @@ $(document).ready(function() {
 
 ); // end of document ready
 
-$('form').on('change', function() {
-    $('#error-message').addClass('hide');
-    checkRequired();
-    updateStandardSizes();
-    updatedStandardRoundSizes();
-    getValuesForErrors();
-    ifDeco();
-    overlayImage();
-});
      
 var pdfStatus = false;
 var submitButton = document.getElementById('submit-button');
