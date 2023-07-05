@@ -19,9 +19,9 @@ function generateSKU() {
         'horizontal': '2'
     };
     var colorTempCodes = {
-        'Warm Light (2700k)': '27',
-        'Warm Light (3000k)': '30',
-        'Adjustable': '00'
+        '2700': '27',
+        '3000': '30',
+        'adjustable': '00'
     };
     $('#product-configurator select, #product-configurator input').each(function() {
         if (this.id === 'style') {
