@@ -18,11 +18,6 @@ function generateSKU() {
         'vertical': '1',
         'horizontal': '2'
     };
-    var colorTempCodes = {
-        '2700': '27',
-        '3000': '30',
-        'adjustable': '00'
-    };
     $('#product-configurator select, #product-configurator input').each(function() {
         if (this.id === 'style') {
             sku += styleCodes[$(this).val()];
@@ -30,8 +25,6 @@ function generateSKU() {
             sku += $(this).val().replace('x', '');
         } else if (this.id === 'orientation') {
             sku += orientationCodes[$(this).val()];
-        } else if (this.id === 'colorTemp') {
-            sku += colorTempCodes[$(this).val()];
         } else {
             sku += $(this).val();
         }
