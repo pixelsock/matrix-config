@@ -14,8 +14,17 @@ $(document).ready(function() {
 
 function generateSKU() {
     var sku = '';
+    var styleCodes = {
+        'full-frame-inset': '01',
+        'full-frame-edge': '02',
+        // Add the rest of the style codes here
+    };
     $('#product-configurator select, #product-configurator input').each(function() {
-        sku += $(this).val();
+        if (this.id === 'style') {
+            sku += styleCodes[$(this).val()];
+        } else {
+            sku += $(this).val();
+        }
     });
     $('#product-details').text('SKU: ' + sku);
 }
