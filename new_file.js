@@ -31,6 +31,8 @@ function generateSKU() {
     $('#product-configurator select, #product-configurator input').each(function() {
         if (this.id === 'style') {
             sku += styleCodes[$(this).val()];
+        } else if (this.id === 'size') {
+            sku += $(this).val().replace('x', '');
         } else {
             sku += $(this).val();
         }
