@@ -1,16 +1,22 @@
 const swell = require('swell-node');
 
-swell.init('your-store-id', 'your-secret-key');
+swell.init('matrix', '75Xly12eYCN0MEiv7M7NZl3hOkYTnUob');
 
-// Function to update a product
-async function updateProduct(productId, productData) {
-    try {
-        const updatedProduct = await swell.products.update(productId, productData);
-        console.log(updatedProduct);
-    } catch (error) {
-        console.error(error);
+async function getVariantsWithImages() {
+  try {
+    const products = await swell.products.list();
+    const variantsWithImages = [];
+    for (const product of products) {
+      for (const variant of product.variants) {
+        if (variant.image) {
+          variantsWithImages.push(variant);
+        }
+      }
     }
+    return variantsWithImages;
+  } catch (error) {
+    console.error('Error getting variants with images:', error);
+  }
 }
 
-// TODO: Call the function with actual product id and data
-// updateProduct('product-id', { name: 'New Product Name' });
+getVariantsWithImages().then(variants => console.log(variants));
