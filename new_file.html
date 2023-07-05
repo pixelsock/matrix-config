@@ -18,10 +18,53 @@
             <option value="gold">Gold Metal</option>
             <option value="silver">Silver Metal</option>
         </select>
-        <!-- Add the rest of the options in a similar way -->
+        <select id="frame-thickness">
+            <option value="thin">Thin Frame</option>
+            <option value="wide">Wide Frame</option>
+        </select>
+        <select id="style">
+            <option value="full-frame-inset">Full Frame Inset</option>
+            <!-- Add the rest of the styles in a similar way -->
+        </select>
+        <select id="orientation">
+            <option value="vertical">Vertical Mounting</option>
+            <option value="horizontal">Horizontal Mounting</option>
+        </select>
+        <select id="light-direction">
+            <option value="direct">Direct</option>
+            <option value="indirect">Indirect</option>
+            <option value="both">Both Direct And Indirect</option>
+        </select>
+        <select id="size">
+            <option value="18x36">18"x36"</option>
+            <!-- Add the rest of the sizes in a similar way -->
+        </select>
         <input type="number" id="custom-width" placeholder="Custom Width">
         <input type="number" id="custom-height" placeholder="Custom Height">
         <input type="number" id="quantity" placeholder="Quantity">
+        <select id="color-temperature">
+            <option value="2700">Warm Light (2700k)</option>
+            <!-- Add the rest of the color temperatures in a similar way -->
+        </select>
+        <select id="controls">
+            <option value="touch-sensors">Touch Sensors</option>
+            <option value="matrix">Matrix Touch System</option>
+            <option value="handheld">Handheld Controller</option>
+        </select>
+        <select id="accessories">
+            <option value="none">None</option>
+            <option value="night-light">Night Light</option>
+            <option value="anti-fog">Anti-Fog</option>
+        </select>
+        <select id="lighting-output">
+            <option value="standard">Standard</option>
+            <option value="high">High</option>
+        </select>
+        <select id="dimming">
+            <option value="non-dimming">Non-Dimming</option>
+            <option value="elv">ELV Dimmable</option>
+            <option value="0-10">0-10 Dimmable</option>
+        </select>
     </form>
     <button id="download-pdf">Download PDF</button>
 </body>
