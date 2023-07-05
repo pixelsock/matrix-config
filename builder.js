@@ -29,23 +29,6 @@ function updatedStandardRoundSizes() {
                 $('#width-sku').html('00'); // set the height sku to 00 since it's not used for diameter
     }
 }
-var overlayImageValue;
-function overlayImage() {
-    var orientation = $('#orientation-value').html();
-
-    // Hide all overlay images initially
-    $('.overlay-image-h2, .overlay-image-h3, .overlay-image-v2, .overlay-image-v3').addClass('hide');
-
-    // If overlayImageValue is '0', we don't need to do anything else
-    if (overlayImageValue === '0') return;
-
-    // Construct the class selector based on orientation and overlayImageValue
-    var classToShow = '.overlay-image-' + orientation.toLowerCase().charAt(0) + overlayImageValue;
-
-    // Show the relevant overlay images
-    $(classToShow).removeClass('hide');
-}
-
 
 
 function updateStandardSizes() {
@@ -182,7 +165,6 @@ $(document).ready(function() {
           $('#list').animate({
               opacity: 1
           }, 1000);
-          
   
       }, 1500);
 
@@ -219,10 +201,10 @@ $(document).ready(function() {
            updatedStandardRoundSizes();
            getValuesForErrors();
            ifDeco();
-           overlayImage();
         
           
        });
+
  
 
 
@@ -920,7 +902,9 @@ function checkRequired() {
     } // end function
     );
    
-   
+    
+
+    
     
         // for orientation
         $('#orientation-grid').find('input').on('change', function() {
@@ -1128,8 +1112,6 @@ $('#width').on('focusout', function() {
     // for accessories
     $('#accessories-grid').find('input').on('change', function() {
         var accessories = $(this).val();
-        var accessoriesOverlay = $(this).parent().attr('overlay-image');
-        
         $('#accessories-value').html(accessories);
         // need to add logic to update the sku based on this selection
         // find the element with data-sku attribute and display the value in a div with the id "accessories-sku"
@@ -1142,7 +1124,6 @@ $('#width').on('focusout', function() {
         $('#quote-accessories').html(accessories);
 
         console.log('accessories: ' + accessories); // console log the value of the option
-        overlayImageValue=accessoriesOverlay;
     });
 
     // for output
@@ -1336,7 +1317,7 @@ $('#width').on('focusout', function() {
     doc.setFontSize(10);
     // all one line centered in the footer
     
-    doc.text('6464 Warren Drive, Norcross, GA 30093 - (678) 580-5717 - matrixmirrors.com', 105, 290, 'center');
+    doc.text('5965 Peachtree Corners East, Suite-A1, Norcross, GA, 30071 - (678) 580-5717 - matrixmirrors.com', 105, 290, 'center');
     // get the current date and add it to the footer formatted as mm/dd/yyyy
     var date = new Date();
     var month = date.getMonth() + 1;
