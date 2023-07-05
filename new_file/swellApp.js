@@ -7,3 +7,10 @@ swell.products.list().then(products => {
 }).catch(error => {
   console.error(error);
 });
+const swell = require('@swell/store');
+
+swell.init('your-store-id', 'your-secret-key');
+
+swell.products.list().then((products) => {
+  console.log(products);
+});
