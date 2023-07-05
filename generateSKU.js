@@ -14,11 +14,17 @@ function generateSKU() {
         'round-full-frame-edge': '11',
         'round-no-frost': '12'
     };
+    var orientationCodes = {
+        'vertical': '1',
+        'horizontal': '2'
+    };
     $('#product-configurator select, #product-configurator input').each(function() {
         if (this.id === 'style') {
             sku += styleCodes[$(this).val()];
         } else if (this.id === 'size') {
             sku += $(this).val().replace('x', '');
+        } else if (this.id === 'orientation') {
+            sku += orientationCodes[$(this).val()];
         } else {
             sku += $(this).val();
         }
