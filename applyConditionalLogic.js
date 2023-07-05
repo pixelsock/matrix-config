@@ -1,9 +1,9 @@
 function applyConditionalLogic() {
-    // Fetch the values from the form fields
-    var style = $('#style').html();
-    console.log(style);
-    var lightDirection = $('#light-direction').val();
-    var orientation = $('#orientation').val();
+function applyConditionalLogic() {
+    // Fetch the text of the selected options
+    var style = $('#style option:selected').text();
+    var lightDirection = $('#light-direction option:selected').text();
+    var orientation = $('#orientation option:selected').text();
 
     // Apply the conditional logic
     if (style.includes('Inset')) {

@@ -1,17 +1,17 @@
 function updateSelectedOptions() {
-    // Fetch the values from each form field
-    var frameColor = $('#frame-color').val();
-    var frameThickness = $('#frame-thickness').val();
-    var style = $('#style').val();
-    var orientation = $('#orientation').val();
-    var lightDirection = $('#light-direction').val();
-    var size = $('#size').val();
+    // Fetch the text of the selected options
+    var frameColor = $('#frame-color option:selected').text();
+    var frameThickness = $('#frame-thickness option:selected').text();
+    var style = $('#style option:selected').text();
+    var orientation = $('#orientation option:selected').text();
+    var lightDirection = $('#light-direction option:selected').text();
+    var size = $('#size option:selected').text();
     var quantity = $('#quantity').val();
-    var colorTemperature = $('#color-temperature').val();
-    var controls = $('#controls').val();
-    var accessories = $('#accessories').val();
-    var lightingOutput = $('#lighting-output').val();
-    var dimming = $('#dimming').val();
+    var colorTemperature = $('#color-temperature option:selected').text();
+    var controls = $('#controls option:selected').text();
+    var accessories = $('#accessories option:selected').text();
+    var lightingOutput = $('#lighting-output option:selected').text();
+    var dimming = $('#dimming option:selected').text();
 
     // Update the corresponding option
     $('#selected-frame-color').text(frameColor);
