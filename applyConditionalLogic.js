@@ -1,6 +1,7 @@
 function applyConditionalLogic() {
     // Fetch the values from the form fields
-    var style = $('#style').val();
+    var style = $('#style').html();
+    console.log(style);
     var lightDirection = $('#light-direction').val();
     var orientation = $('#orientation').val();
 
