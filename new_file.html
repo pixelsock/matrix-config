@@ -13,7 +13,15 @@
         <!-- SKU code and selected options will be displayed here -->
     </div>
     <form id="product-configurator">
-        <!-- All the options will be added here -->
+        <select id="frame-color">
+            <option value="black">Black Metal</option>
+            <option value="gold">Gold Metal</option>
+            <option value="silver">Silver Metal</option>
+        </select>
+        <!-- Add the rest of the options in a similar way -->
+        <input type="number" id="custom-width" placeholder="Custom Width">
+        <input type="number" id="custom-height" placeholder="Custom Height">
+        <input type="number" id="quantity" placeholder="Quantity">
     </form>
     <button id="download-pdf">Download PDF</button>
 </body>
