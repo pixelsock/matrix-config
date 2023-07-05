@@ -7,19 +7,24 @@ function applyConditionalLogic() {
     // Apply the conditional logic
     if (style.includes('Inset')) {
         if (lightDirection === 'I') {
-            alert('Inset Styles can\'t have an indirect light direction');
+            $('#light-direction option[value="I"]').hide();
+        } else {
+            $('#light-direction option[value="I"]').show();
         }
     }
 
     if (style.includes('Edge')) {
         if (lightDirection === 'B') {
-            alert('Edge Styles can\'t have Both Direct And Indirect option for light direction');
+            $('#light-direction option[value="B"]').hide();
+        } else {
+            $('#light-direction option[value="B"]').show();
         }
     }
 
     if (style.includes('Single Short Side')) {
-        if (orientation !== '1') {
-            alert('Single Short Side Styles can only have Vertical Orientation');
-        }
+        $('#orientation option[value="2"]').hide();
+        $('#orientation').val('1');
+    } else {
+        $('#orientation option[value="2"]').show();
     }
 }
