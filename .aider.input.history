@@ -1,0 +1,465 @@
+
+# 2023-07-05 00:59:13.674006
++rewrite the `builder.js` file so that it uses the best DRY development practices. 
+
+# 2023-07-05 00:59:49.284469
++/help
+
+# 2023-07-05 01:00:11.472912
++what is this file doing?
+
+# 2023-07-05 01:00:54.697528
++/exit
+
+# 2023-07-05 01:01:09.705871
++what is this file about?
+
+# 2023-07-05 01:01:18.557762
++what is this repo?
+
+# 2023-07-05 01:08:37.078315
++recreate the builder
+
+# 2023-07-05 01:09:57.151065
++use --map-tokens to resize
+
+# 2023-07-05 01:10:14.468951
++--map-tokens to resize
+
+# 2023-07-05 01:10:22.631921
++resize
+
+# 2023-07-05 01:10:36.597935
++--map-tokens
+
+# 2023-07-05 01:10:47.732143
++/drop
+
+# 2023-07-05 01:11:13.614822
++/exit
+
+# 2023-07-05 12:06:42.659118
++Write a jquery powered product configurator for a custom LED mirror website.
++
++The product configurator has the following opitons:
++
++Frame Color
++  - Black Metal
++  - Gold Metal
++  - Silver Metal
++  - 
++Frame Thickness
++  - Thin Frame
++  - Wide Frame
++
++Style
++  - Full Frame Inset
++  - Full Frame Edge
++  - Double Long Side Inset
++  - Double Long Side Edge
++  - No Frost
++  - Double Short Side Edge
++  - Double Short Side Inset
++  - Single Long Side Edge
++  - Single Short Side Edge
++  - Single Short Side Inset
++  - Round Full Frame Edge
++  - Round No Frost
++
++Orientation
++  - Vertical Mounting
++  - Horizontal Mounting
++
++Light Direction
++- Direct
++- Indirect
++- Both Direct And Indirect
++
++Size In Inches
++: standard sizes dropdown
++-18"x36"
++-24"x36"
++-30"x36"
++: Custom Sizes
++-Width
++-Height
++
++Quantity
++
++Color Temperature
++- Warm Light (2700k)
++- Warm Light (3000k)
++- Mid-Warm Light (3500k)
++- Cool Light (5000k)
++- Adjustable (2700K-6500k)
++
++Controls
++- Touch Sensors
++- Matrix Touch System
++- Handheld Controller
++
++Accessories
++- None
++- Night Light
++- Anti-Fog
++
++Lighting Output
++- Standard
++- High
++
++Dimming
++- Non-Dimming
++- ELV Dimmable
++- 0-10 Dimmable
++
++These options are all on the right side of the screen and on the left is the product image. When options are selected, the product image updates in real time to show the selected configuration. The options that change the image are Style, Orientation, and a combination of Light Direction and Accessories selected. 
++
++Under the product image is text summary of options selected and change as options are selected. It also generates a SKU code based on every option selected. 
++
++Once the form has been filled out, the customer can click a "Download PDF" and the image and all selected options are generated into a PDF with product details called SPEC Sheet. 
++
++Here's some of the conditial logic:
++1. Inset Styles can't have an indirect light direction
++2. Edge Styles can't have Both Direct And Indirect option for light direction
++3. Single Short Side Styles can only have Vertical Orientation
++4. Round Styles can only be Vertical Orienation
++5. Single Long Side Styles can only have Horizontal Orientation
++6. No Frost Styles must be Indirect Light Direction
++7. If Horizontal Orientation is selected then the height and width fields swap their order on size option. 
++8. If Matrix Touch System is selected then Non-Dimming must be selected for Dimming Option and High - 6W/ft (750lm/ft) for Light Output, and all Accessories are removed as options.
++9. Adjustable Must have Touch Sensor Controls or Matrix Touch System
++
++Touch Sensor Overlay Images:
++There are 3 availble touch sensor slots. There can only be 3 touch sensors in a configuration, but there can be less than 3 or none. This configurator should overlay the correct touch sensor images on the product image based on this logic.
++1. Controlls on/off and dimming
++2. Controlls Color Temprature
++3. Controlls The Night Light Or Anti-fog 
+
+# 2023-07-05 12:26:39.433609
++#### Write a jquery powered product configurator for a custom LED mirror website.  
++####   
++#### The product configurator has the following opitons:  
++####   
++#### Frame Color  
++####   - Black Metal  
++####   - Gold Metal  
++####   - Silver Metal  
++####   -   
++#### Frame Thickness  
++####   - Thin Frame  
++####   - Wide Frame  
++####   
++#### Style  
++####   - Full Frame Inset  
++####   - Full Frame Edge  
++####   - Double Long Side Inset  
++####   - Double Long Side Edge  
++####   - No Frost  
++####   - Double Short Side Edge  
++####   - Double Short Side Inset  
++####   - Single Long Side Edge  
++####   - Single Short Side Edge  
++####   - Single Short Side Inset  
++####   - Round Full Frame Edge  
++####   - Round No Frost  
++####   
++#### Orientation  
++####   - Vertical Mounting  
++####   - Horizontal Mounting  
++####   
++#### Light Direction  
++#### - Direct  
++#### - Indirect  
++#### - Both Direct And Indirect  
++####   
++#### Size In Inches  
++#### : standard sizes dropdown  
++#### -18"x36"  
++#### -24"x36"  
++#### -30"x36"  
++#### : Custom Sizes  
++#### -Width  
++#### -Height  
++####   
++#### Quantity  
++####   
++#### Color Temperature  
++#### - Warm Light (2700k)  
++#### - Warm Light (3000k)  
++#### - Mid-Warm Light (3500k)  
++#### - Cool Light (5000k)  
++#### - Adjustable (2700K-6500k)  
++####   
++#### Controls  
++#### - Touch Sensors  
++#### - Matrix Touch System  
++#### - Handheld Controller  
++####   
++#### Accessories  
++#### - None  
++#### - Night Light  
++#### - Anti-Fog  
++####   
++#### Lighting Output  
++#### - Standard  
++#### - High  
++####   
++#### Dimming  
++#### - Non-Dimming  
++#### - ELV Dimmable  
++#### - 0-10 Dimmable  
++####   
++#### These options are all on the right side of the screen and on the left is the product image. When options are selected, the product image updates in real time to show the selected configuration. The options that change the image are Style, Orientation, and a combination of Light Direction and Accessories selected.   
++####   
++#### Under the product image is text summary of options selected and change as options are selected. It also generates a SKU code based on every option selected.   
++####   
++#### Once the form has been filled out, the customer can click a "Download PDF" and the image and all selected options are generated into a PDF with product details called SPEC Sheet.   
++####   
++#### Here's some of the conditial logic:  
++#### 1. Inset Styles can't have an indirect light direction  
++#### 2. Edge Styles can't have Both Direct And Indirect option for light direction  
++#### 3. Single Short Side Styles can only have Vertical Orientation  
++#### 4. Round Styles can only be Vertical Orienation  
++#### 5. Single Long Side Styles can only have Horizontal Orientation  
++#### 6. No Frost Styles must be Indirect Light Direction  
++#### 7. If Horizontal Orientation is selected then the height and width fields swap their order on size option.   
++#### 8. If Matrix Touch System is selected then Non-Dimming must be selected for Dimming Option and High - 6W/ft (750lm/ft) for Light Output, and all Accessories are removed as options.  
++#### 9. Adjustable Must have Touch Sensor Controls or Matrix Touch System  
++####   
++#### Touch Sensor Overlay Images:  
++#### There are 3 availble touch sensor slots. There can only be 3 touch sensors in a configuration, but there can be less than 3 or none. This configurator should overlay the correct touch sensor images on the product image based on this logic.  
++#### 1. Controlls on/off and dimming  
++#### 2. Controlls Color Temprature  
++#### 3. Controlls The Night Light Or Anti-fog
+
+# 2023-07-05 12:28:30.074529
++this works let's proceed
+
+# 2023-07-05 12:29:16.452546
++can you add all of the options?
+
+# 2023-07-05 12:31:01.692609
++createa a readme.md file with my full original prompt so I can compair
+
+# 2023-07-05 12:32:51.972687
++add all of these styles to the html file: - Full Frame Inset
++  - Full Frame Edge
++  - Double Long Side Inset
++  - Double Long Side Edge
++  - No Frost
++  - Double Short Side Edge
++  - Double Short Side Inset
++  - Single Long Side Edge
++  - Single Short Side Edge
++  - Single Short Side Inset
++  - Round Full Frame Edge
++  - Round No Frost
+
+# 2023-07-05 12:34:21.043871
++add these sizes to the dropdown for standard sizes: - 18"x36"
++  - 24"x36"
++  - 30"x36"
+
+# 2023-07-05 12:35:01.244709
++<!-- Add the rest of the color temperatures in a similar way -->
+
+# 2023-07-05 12:35:43.709019
++this looks good let's proceed
+
+# 2023-07-05 12:36:13.063802
++let's proceed
+
+# 2023-07-05 12:36:44.908397
++proceed
+
+# 2023-07-05 12:37:14.791030
++looks good
+
+# 2023-07-05 12:37:57.328409
++how can i test?
+
+# 2023-07-05 12:48:29.774603
++{the sku is built using codes for different options. The style is represented like this: 
+
+# 2023-07-05 12:48:56.263762
++Full Frame Inset is "01"
+
+# 2023-07-05 12:49:20.444428
++Full Frame Edge is "02" 
+
+# 2023-07-05 12:49:28.602914
++etc and so on for styles
+
+# 2023-07-05 12:50:03.733176
++}
+
+# 2023-07-05 12:50:46.964523
++// Add the rest of the style codes here
+
+# 2023-07-05 12:50:53.804220
++add the rest of the style codes
+
+# 2023-07-05 12:51:48.840063
++/drop new_file.css new_file.html
+
+# 2023-07-05 12:51:56.383720
++add the rest of the style codes
+
+# 2023-07-05 12:52:46.094004
++/drop readme.md
+
+# 2023-07-05 12:54:00.975573
++the size sku is simply the width and height with no x so 18"x36" is 1836
+
+# 2023-07-05 13:00:02.973363
++mountin orinitation sku is simply 1 for vertical and 2 for horizontal. 
+
+# 2023-07-05 13:01:43.833840
++I'm running into token limits. Should we devide this file up into components?
+
+# 2023-07-05 13:02:45.844544
++/clear
+
+# 2023-07-05 13:02:48.844475
++I'm running into token limits. Should we devide this file up into components?
+
+# 2023-07-05 13:03:07.110535
++yes
+
+# 2023-07-05 13:04:17.521000
++do we need to delete new_file.js?
+
+# 2023-07-05 13:05:18.328543
++mountin orinitation sku is simply 1 for vertical and 2 for horizontal. 
+
+# 2023-07-05 13:08:52.404814
++The color temperature sku is based on the lumens for example Warm Light (2700k) is 27, Warm Light (3000k) is 30 and so on. Adjustable is 00
+
+# 2023-07-05 13:12:00.562735
++update the head of `new_file.html` to reflect the components stucture
+
+# 2023-07-05 13:12:24.382342
++y
+
+# 2023-07-05 13:12:34.196104
++update the head of `new_file.html` to reflect the components stucture
+
+# 2023-07-05 13:15:03.201505
++the `colorTempCodes` isn't working. It's still showing 2700 for and Adjustable etc
+
+# 2023-07-05 13:17:09.317691
++If that's the logic then let's just change the values in the html and change the generateSKU to the values. 
+
+# 2023-07-05 13:19:03.827179
++no I'm saying let's change all the value for all options size, light direction controls accessories etc
+
+# 2023-07-05 13:24:55.779440
++I made changes to the html. 
+
+# 2023-07-05 13:25:19.930293
++now let's change the `generateSKU.js`
+
+# 2023-07-05 13:26:43.357757
++perfect lastly for the `generateSKU.js`
+
+# 2023-07-05 13:32:43.086463
++let's make sure the sku is formatted like this {Frame Color}: {Frame Thickness}{Style}-{Light Direction}-{Size}-{Light Output}-{Color Temperature}-{Dimming}-{Mounting Orientation}-{Frame Color}
+
+# 2023-07-05 13:33:25.684516
++/drop matrix.py new_file.js
+
+# 2023-07-05 13:33:31.985499
++let's make sure the sku is formatted like this {Frame Color}: {Frame Thickness}{Style}-{Light Direction}-{Size}-{Light Output}-{Color Temperature}-{Dimming}-{Mounting Orientation}-{Frame Color}
+
+# 2023-07-05 13:34:56.073960
++/add readme.md
+
+# 2023-07-05 13:35:11.853593
++/drop generateSKU.js
+
+# 2023-07-05 13:35:31.414524
++/drop updateProductImage.js 
+
+# 2023-07-05 13:35:41.853599
++ok that's good let's proceed
+
+# 2023-07-05 13:36:13.952988
++--map tokens
+
+# 2023-07-05 13:36:31.968939
++--map-tokens
+
+# 2023-07-05 13:36:59.343319
++/drop applyConditionalLogic.js new_file.html updateSelectedOptions.js
+
+# 2023-07-05 13:37:03.243482
++what's next?
+
+# 2023-07-05 13:37:18.244164
++I'd like to finish writing the main.js
+
+# 2023-07-05 13:38:29.164361
++/clear
+
+# 2023-07-05 13:38:50.732542
++I'd like to finish writing the application based on the original prompt found in the `readme.md`
+
+# 2023-07-05 13:39:33.073462
++Let's work on `updateSelectedOptions`
+
+# 2023-07-05 13:41:06.661656
++Let's update the `new_file.html` to reflect this under #product-details 
+
+# 2023-07-05 13:41:40.982101
++We need to add labels to each for this section
+
+# 2023-07-05 13:42:54.900991
++so now let's change the `updateSelectedOptions.js`
+
+# 2023-07-05 13:43:13.650951
++When making changes to the options it isn't updating the product details
+
+# 2023-07-05 13:48:23.669523
++let's work on `applyConditionalLogic.js`
+
+# 2023-07-05 13:49:40.649733
++I'd rather have the options force select or hide options based on the conditions found in the `readme.md` file. 
+
+# 2023-07-05 13:54:04.948785
++the vars style and `lightDirection` etc are pulling from the value and should be the html text of the selected. 
+
+# 2023-07-05 13:55:17.128239
++Uncaught SyntaxError: Unexpected end of input (at applyConditionalLogic.js:32:1)
+
+# 2023-07-05 13:56:49.047233
++the vars style and `lightDirection` etc are pulling from the value and should be the html text of the selected. 
+
+# 2023-07-05 14:12:40.876351
++/ex
+
+# 2023-07-05 14:21:17.327630
++/exit
+
+# 2023-07-05 14:24:22.797607
++we're going to build a swell.is backend application to update products in our swell https://developers.swell.is/backend-api/introduction
+
+# 2023-07-05 14:24:48.365843
++let's just call it app
+
+# 2023-07-05 14:25:48.215374
++what's the parent folder of this app.js
+
+# 2023-07-05 14:26:06.621246
++it should be inside the `swell` directory
+
+# 2023-07-05 14:26:17.015574
++move it to swell/
+
+# 2023-07-05 14:27:04.236603
++/ex
+
+# 2023-07-05 14:51:06.310474
++create an app using swell.is to make backend changes to prdoucts in swell. I want to console log the results. Get all of the products in the store. 
+
+# 2023-07-05 14:55:49.725618
++swell.init('matrix', '75Xly12eYCN0MEiv7M7NZl3hOkYTnUob');

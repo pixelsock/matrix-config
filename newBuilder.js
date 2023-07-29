@@ -1,5 +1,7 @@
 // This is a jquery plugin that will build the logic for a configuration page for a product customization tool for an LED mirror brand called Matrix Mirrors for an LED mirror brand called Matrix Mirrors.
 // The app will listen for specific events and then build the logic to display the selected options.
+
+
 // Once the user has selected all of the options the app will export the data in a downloadable pdf. 
 const { jsPDF } = window.jspdf;
 
@@ -89,7 +91,100 @@ function updateStandardSizes() {
         var desktopRevitHref = $('#desktop-revit').attr('href');
         $(this).attr('href', desktopRevitHref);
     });
+
+    // lighting controls are radio buttons found iside the #lighting-contols-grid div
+    var lightingControls = $('#lighting-controls-grid').find('input');
+
+    // touch controls are radio buttons found iside the #sensor-values div
+    var touchControls = $('#sensor-values').find('input');
+
+    // a variable to store the number of touch sensors needed.
+    var numberOfTouchSensors = 0;
+
+    var accessories = $('#accessories-grid').find('input');
     
+    
+    
+    
+    function getLightingControls() {
+        var selectedLightingControl = $('#lighting-controls-grid').find('input:checked').val();
+        console.log(selectedLightingControl);
+        // if selectedTouchControl has a value of "Wall Switch Only" then make the value of numberOfTouchSensors 0. Else, if selectedTouchControl has a value of "Add Touch Controls" && LightDirection has is checked but not "Direct" then make the value of numberOfTouchSensors 2. Else, if selectedTouchControl has a value of "Add Touch Controls" && LightDirection has is checked and "Direct" is checked then make the value of numberOfTouchSensors 1.
+    
+
+        var selectedAccessories = [];
+        accessories.each(function() {
+            if ($(this).prop('checked')) {
+                // $(this) already refers to the input element
+                selectedAccessories.push($(this).attr('id'));
+            }
+        });
+
+        
+
+        if (selectedLightingControl && selectedLightingControl != 'Wall Switch Only') {
+            if ($('#temp-grid').find('input:checked').val() != 'Adjustable') {
+                $('[data-sku="MT"]').hide();
+                $('[data-sku="MT"]').click();
+            }
+            if ($('#temp-grid').find('input:checked').val() == 'Adjustable') {
+                $('[data-sku="MT"]').show();
+                $('[data-sku="MT"]').click();
+                numberOfTouchSensors = numberOfTouchSensors + 3;
+             
+            
+         
+            } else if (selectedLightingControl == 'Touch Controls' && $('#direction-grid').find('input:checked').val() != 'Direct') {
+                numberOfTouchSensors = 2;
+                $('[data-sku="00"]').show();
+                $('#night-light-text').html('*Can NOT be Assigned to a Touch Sensor');
+                $('#anti-fog-text').html('Assigned to a Touch Sensor');
+                if (selectedAccessories.includes('Anti-Fog')) {
+                    numberOfTouchSensors = numberOfTouchSensors + 1;
+                }
+
+            } else if (selectedLightingControl == 'Touch Controls' && $('#direction-grid').find('input:checked').val() == 'Direct') {
+                numberOfTouchSensors = 1;
+                $('[data-sku="00"]').show();
+                $('#night-light-text').html('*Can NOT be Assigned to a Touch Sensor');
+                $('#anti-fog-text').html('Assigned to a Touch Sensor');
+                if (selectedAccessories.includes('Anti-Fog')) {
+                    numberOfTouchSensors = numberOfTouchSensors + 2;
+                }
+            }
+        } else {
+            numberOfTouchSensors = 0;
+        $('[data-sku="00"],[data-sku="MT"]').hide();
+        $('#night-light-text').html('Controlled by Your Wall Switch');
+        $('#anti-fog-text').html('Controlled by Your Wall Switch');
+        $('[data-sku="27"]').hide();
+        $('[data-sku="27"]').click();
+        $('[data-sku="27"]').show();
+        }
+
+
+        console.log('numberOfTouchSensors: ' + numberOfTouchSensors);
+    }
+
+    function updateTouchControls() {
+        // find the value of the attribute "ts-value" that is equal to the value of numberOfTouchSensors. If the value is greater than 3 then the value of numberOfTouchSensors is 3. If the value is less than 0 then the value of numberOfTouchSensors is 0.
+        touchControls.each(function() {
+            if (numberOfTouchSensors > 3) {
+                numberOfTouchSensors = 3;
+            }
+            
+            if ($(this).attr('ts-value') == numberOfTouchSensors) {
+                $(this).hide();
+                $(this).click();
+                $(this).show();
+            }
+        });
+        
+
+    }
+    
+
+
 
 
   
@@ -201,6 +296,9 @@ $(document).ready(function() {
            updatedStandardRoundSizes();
            getValuesForErrors();
            ifDeco();
+           getLightingControls();
+           updateTouchControls();
+            
         
           
        });
@@ -768,24 +866,25 @@ function checkRequired() {
             
         });
 
-        var touchSensorItems = $('[data-sku="TR"],[data-sku="HC"],[data-sku="TS"],[data-sku="NT"],[data-sku="NL"],[data-sku="AL"]');
+        var touchSensorItems = $('[data-sku="TR"],[data-sku="HC"],[data-sku="TS"],[data-sku="NT"],[data-sku="AL"]');
         var nonTouchSensorItems = $('[data-sku="NA"],[data-sku="NL"],[data-sku="AF"],[data-sku="AN"]');
         var nonAdjustableTemperatureItems = $('[data-sku="27"],[data-sku="30"],[data-sku="35"],[data-sku="40"],[data-sku="50"]');
        
         
         
     // for data-sku="00" accessories
+
     $('[data-sku="00"]').on('click', function() {
         // light output
         $('[data-sku="H"]').hide(); // to keep the page from scrolling when clicked
         $('[data-sku="H"]').click();
         $('[data-sku="H"]').show();
-        $('[data-sku="TS"]').hide(); // to keep the page from scrolling when clicked
-        $('[data-sku="TS"]').click();
-        $('[data-sku="TS"]').show();
         $('[data-sku="S"]').hide();
+        $('[data-sku="TR"]').click();
         nonTouchSensorItems.hide();
-        touchSensorItems.show();
+        
+        
+
     });
 
 
