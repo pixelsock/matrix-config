@@ -1,41 +1,41 @@
 const FilterHelper = {
+  disabledByRules: [],
+
   disableOptions(optionIds) {
     optionIds.forEach(id => {
-      const element = $(`.${id}`);
+      const element = $(`#${id}`);
       console.log(`Disabling element: ${id}`); // Debug line
       element.parent().addClass('is-disabled');
-      element.prop('disabled', true);
-      
-      const inputElement = element.find('input');
-      if (inputElement.length > 0) {
-        inputElement.prop('disabled', true);
-      }
+      this.disabledByRules.push(id);
     });
   },
   
-  enableOptions(optionIds) {
-    optionIds.forEach(id => {
-      const element = $(`.${id}`);
-      console.log(`Enabling element: ${id}`); // Debug line
-      element.parent().removeClass('is-disabled');
-      element.prop('disabled', false);
-      
-      const inputElement = element.find('input');
-      if (inputElement.length > 0) {
-        inputElement.prop('disabled', false);
-      }
-    });
-  },
-  enableOptions(optionIds) {
+  enableAndClickOptions(optionIds) {
     optionIds.forEach(id => {
       const element = $(`#${id}`);
-      console.log(`Enabling element: ${id}`); // Debug line
+      const index = this.disabledByRules.indexOf(id);
+      if (index > -1) {
+        this.disabledByRules.splice(index, 1);
+      }
+      if (this.disabledByRules.includes(id)) {
+        return;
+      }
+      console.log(`Enabling and clicking element: ${id}`); // Debug line
       element.parent().removeClass('is-disabled');
+      console.log(`Attempting to click element: ${id}`);
       element.prop('disabled', false);
-      
-      const inputElement = element.find('input');
-      if (inputElement) {
-        inputElement.prop('disabled', false);
+      element.click();
+    });
+  },
+
+  enableOptions(rules) {
+    const allOptionIds = [].concat(...Object.values(rules).map(rule => rule.hide));
+    allOptionIds.forEach(id => {
+      if (!this.disabledByRules.includes(id)) {
+        const element = $(`#${id}`);
+        console.log(`Enabling element: ${id}`); // Debug line
+        element.parent().removeClass('is-disabled');
+        element.prop('disabled', false);
       }
     });
   },
@@ -44,87 +44,73 @@ const FilterHelper = {
     return selectedOptions.some(set => Array.from(set).some(option => option.includes(optionName)));
   },
 
-    applyRules(filterInstance, selectedOptions, rules) {
-      // Check if filters are being reset
-      if (filterInstance.isResettingFilters) {
-        return;  // Skip this function if filters are being reset
+  applyRules(filterInstance, selectedOptions, rules, resetPerformed, isApplyRulesRunning) {
+    isApplyRulesRunning = true; // Set the variable to true before changing the selection
+
+    // First, enable all options that shouldn't be disabled
+    this.enableOptions(rules);
+
+    // Loop through all rules
+    Object.entries(rules).forEach(([ruleKey, ruleValue]) => {
+      // Check if the selected options contain the rule key
+      if (this.containsOption(selectedOptions, ruleKey)) {
+        // If the rule key is in the selected options, hide and show/click options as defined by the rule
+        this.disableOptions(ruleValue.hide);
+        this.enableAndClickOptions(ruleValue.showAndClick);
+
+        // If a resetKey is defined for the rule, and a reset hasn't been performed for that key yet...
+        if (ruleValue.resetKey && !resetPerformed[ruleKey]) {
+          ruleValue.resetKey.forEach(key => {
+            filterInstance.resetFilters([key]); // Reset the filter
+            resetPerformed[ruleKey] = true; // Set the resetPerformed variable to true for the rule key
+          });
+        }
+      } else {
+        // If the rule key is not in the selected options and a reset has been performed for the rule key, set the resetPerformed variable to false for the rule key
+        if (resetPerformed[ruleKey]) {
+          resetPerformed[ruleKey] = false;
+        }
       }
-  
-      // Check if selected options have changed
-      if (JSON.stringify(filterInstance.previousSelectedOptions) !== JSON.stringify(selectedOptions)) {
-        // Update previous selected options
-        filterInstance.previousSelectedOptions = selectedOptions;
-  
-        // Create a Set to track which rules have been applied in this render
-        const appliedRules = new Set();
-  
-        Object.entries(rules).forEach(([ruleKey, ruleValue]) => {
-          if (this.containsOption(selectedOptions, ruleKey) && !appliedRules.has(ruleKey)) {
-            // Mark this rule as applied
-            appliedRules.add(ruleKey);
-  
-            this.disableOptions(ruleValue.hide);
-            this.enableOptions(ruleValue.enable);
-            this.enableAndClickOptions(ruleValue.showAndClick);
-  
-            if (ruleValue.resetKey.length > 0) {
-              filterInstance.isResettingFilters = true;  // Set flag before resetting filters
-              filterInstance.resetFilters(ruleValue.resetKey)  // Reset filters using built-in function
-                .then(() => {
-                  filterInstance.isResettingFilters = false;  // Reset flag after resetting filters
-                })
-                .catch((error) => {
-                  console.error('Error resetting filters:', error);
-                  filterInstance.isResettingFilters = false;
-                });
-            }
-          }
-        });
-      }
-    }
-};  // End FilterHelper
-  
+    });
+
+    isApplyRulesRunning = false; // Set the variable to false after changing the selection
+  }
+};
+
 const rules = {
   'Wall Switch': {
     showAndClick: [],
     hide: ['Adjustable'],
-    enable: ['High', 'Non-Dimming', 'Night-Light', 'Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable'],
     resetKey: ['color temperature'],
   },
   'Matrix Touch System': {
     showAndClick: ['Adjustable', 'High', 'Non-Dimming'],
     hide: ['Night-Light', 'Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable'],
-    enable: [],
     resetKey: ['accessories'],
   },
   'Inset': {
     showAndClick: ['Direct', 'Both Direct & Indirect'],
     hide: [],
-    enable: [],
     resetKey: [],
   },
   'Edge': {
     showAndClick: ['Direct', 'Indirect'],
     hide: ['Night Light'],
-    enable: [],
     resetKey: [],
   },
   'No Frost': {
     showAndClick: ['Indirect'],
     hide: [],
-    enable: [],
     resetKey: [],
   },
   'Round': {
     showAndClick: ['Indirect', 'Vertical Mounting'],
     hide: ['Night Light'],
-    enable: [],
     resetKey: [],
   },
   'Adjustable': {
     showAndClick: ['High', 'Non-Dimming'],
     hide: [],
-    enable: [],
     resetKey: [],
   }
 };
@@ -136,47 +122,50 @@ window.fsAttributes.push([
     console.log('cmsfilter Successfully loaded!');
     console.log('Filter Instances:', filterInstances);
 
+    let isApplyRulesRunning = false; // Global variable to prevent infinite loop of event emissions
+    let resetPerformed = {}; // Global variable to track if the reset operation has been performed for a specific option
+
     filterInstances.forEach((filterInstance) => {
-      filterInstance.isResettingFilters = false; // Add a flag to check if filters are being reset
-
-      filterInstance.listInstance.on('renderitems', () => {
-        const selectedOptions = [];
+      filterInstance.listInstance.on('renderitems', (renderedItems) => {
+        if (!isApplyRulesRunning) { // Only call applyRules if it wasn't the function that caused the event to be emitted
+          const selectedOptions = [];
+          filterInstance.filtersData.forEach((filterData) => {
+            selectedOptions.push(filterData.values);
+          });
+          FilterHelper.applyRules(filterInstance, selectedOptions, rules, resetPerformed, isApplyRulesRunning);
+        }
+    
+  
         filterInstance.filtersData.forEach((filterData) => {
-          // Existing logic to manage selected options
           const selectedOption = document.querySelector(`.selected-option[filter-target="${filterData.filterKeys[0]}"]`);
-
+  
           if (selectedOption) {
             if (filterData.values.size > 0) { // Check if the filter is active
+  
               // Get the selected values
               let selectedValues = Array.from(filterData.values).join(',');
-
+  
               // Add a prefix to the selected values based on the filter key
               selectedValues = filterData.filterKeys[0] === 'width' ? `W: ${selectedValues}` : filterData.filterKeys[0] === 'height' ? `H: ${selectedValues}` : selectedValues;
-
+  
               // Add a suffix to the selected values based on the filter key
               selectedValues += filterData.filterKeys[0] === 'diameter' ? '" in diameter' : '';
-
+  
               // Update the text content of the selected-option element
               selectedOption.textContent = selectedValues;
-
+  
               // Change the display property of the selected-option element to block
               selectedOption.style.display = 'block';
             } else {
-              // If the filter is not active, set the textContent of the selected-option element to an empty string and hide it
+              // If the filter is not active (i.e., the value is deleted from a text input element), set the textContent of the selected-option element to an empty string and hide it
               selectedOption.textContent = '';
               selectedOption.style.display = 'none';
             }
           } else {
             console.log(`No selected-option element found for filter key: ${filterData.filterKeys[0]}`);
           }
-
-          // Then proceed with new rule application logic
-          selectedOptions.push(filterData.values);
         });
-
-        // Apply the rules
-        FilterHelper.applyRules(filterInstance, selectedOptions, rules);
       });
     });
-  },
-]);
+   },
+  ]);
