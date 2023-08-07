@@ -50,35 +50,37 @@ const FilterHelper = {
         return;  // Skip this function if filters are being reset
       }
   
-      // Create a Set to track which rules have been applied in this render
-      const appliedRules = new Set();
+      // Check if selected options have changed
+      if (JSON.stringify(filterInstance.previousSelectedOptions) !== JSON.stringify(selectedOptions)) {
+        // Update previous selected options
+        filterInstance.previousSelectedOptions = selectedOptions;
   
-      Object.entries(rules).forEach(([ruleKey, ruleValue]) => {
-        if (this.containsOption(selectedOptions, ruleKey) && !appliedRules.has(ruleKey)) {
-          // Mark this rule as applied
-          appliedRules.add(ruleKey);
+        // Create a Set to track which rules have been applied in this render
+        const appliedRules = new Set();
   
-          this.disableOptions(ruleValue.hide);
-          this.enableOptions(ruleValue.enable);
-          this.enableAndClickOptions(ruleValue.showAndClick);
+        Object.entries(rules).forEach(([ruleKey, ruleValue]) => {
+          if (this.containsOption(selectedOptions, ruleKey) && !appliedRules.has(ruleKey)) {
+            // Mark this rule as applied
+            appliedRules.add(ruleKey);
   
-          if (ruleValue.resetKey.length > 0) {
-            filterInstance.isResettingFilters = true;  // Set flag before resetting filters
-            filterInstance.resetFilters(ruleValue.resetKey)  // Reset filters using built-in function
-              .then(() => {
-                filterInstance.isResettingFilters = false;  // Reset flag after resetting filters
-                // Add a delay before applying rules again
-                setTimeout(() => {
-                  this.applyRules(filterInstance, selectedOptions, rules);
-                }, 1000);
-              })
-              .catch((error) => {
-                console.error('Error resetting filters:', error);
-                filterInstance.isResettingFilters = false;
-              });
+            this.disableOptions(ruleValue.hide);
+            this.enableOptions(ruleValue.enable);
+            this.enableAndClickOptions(ruleValue.showAndClick);
+  
+            if (ruleValue.resetKey.length > 0) {
+              filterInstance.isResettingFilters = true;  // Set flag before resetting filters
+              filterInstance.resetFilters(ruleValue.resetKey)  // Reset filters using built-in function
+                .then(() => {
+                  filterInstance.isResettingFilters = false;  // Reset flag after resetting filters
+                })
+                .catch((error) => {
+                  console.error('Error resetting filters:', error);
+                  filterInstance.isResettingFilters = false;
+                });
+            }
           }
-        }
-      });
+        });
+      }
     }
 };  // End FilterHelper
   
