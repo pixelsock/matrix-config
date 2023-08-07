@@ -1,7 +1,7 @@
 const FilterHelper = {
   disableOptions(optionIds) {
     optionIds.forEach(id => {
-      const element = $(`#${id}`);
+      const element = $(`.${id}`);
       console.log(`Disabling element: ${id}`); // Debug line
       element.parent().addClass('is-disabled');
       element.prop('disabled', true);
@@ -15,7 +15,7 @@ const FilterHelper = {
   
   enableOptions(optionIds) {
     optionIds.forEach(id => {
-      const element = $(`#${id}`);
+      const element = $(`.${id}`);
       console.log(`Enabling element: ${id}`); // Debug line
       element.parent().removeClass('is-disabled');
       element.prop('disabled', false);
