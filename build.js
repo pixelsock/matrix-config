@@ -7,27 +7,25 @@ const FilterHelper = {
       element.prop('disabled', true);
       
       const inputElement = element.find('input');
-      if (inputElement) {
+      if (inputElement.length > 0) {
         inputElement.prop('disabled', true);
       }
     });
   },
   
-  enableAndClickOptions(optionIds) {
+  enableOptions(optionIds) {
     optionIds.forEach(id => {
       const element = $(`#${id}`);
-      console.log(`Enabling and clicking element: ${id}`); // Debug line
+      console.log(`Enabling element: ${id}`); // Debug line
       element.parent().removeClass('is-disabled');
       element.prop('disabled', false);
-      element.click();
-
+      
       const inputElement = element.find('input');
-      if (inputElement) {
+      if (inputElement.length > 0) {
         inputElement.prop('disabled', false);
       }
     });
   },
-
   enableOptions(optionIds) {
     optionIds.forEach(id => {
       const element = $(`#${id}`);
