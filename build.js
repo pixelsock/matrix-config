@@ -27,8 +27,11 @@ const FilterHelper = {
       const element = $(`#${id}`);
       console.log(`Enabling element: ${id}`); // Debug line
       console.log(`Found element with ID ${id}:`, element); // Added debug line
-      console.log(`Parent of element:`, element.parent()); // Added debug line
-      element.parent().removeClass('is-disabled');
+      const parentElement = element.parent();
+      console.log(`Parent of element:`, parentElement); // Added debug line
+      console.log(`Parent element has 'is-disabled' class before:`, parentElement.hasClass('is-disabled')); // Added debug line
+      parentElement.removeClass('is-disabled');
+      console.log(`Parent element has 'is-disabled' class after:`, parentElement.hasClass('is-disabled')); // Added debug line
       element.prop('disabled', false);
     });
   },
