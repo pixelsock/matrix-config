@@ -33,7 +33,7 @@ const FilterHelper = {
 
   containsOption(selectedOptions, optionNames) {
     return optionNames.some(optionName =>
-      selectedOptions.includes(optionName)
+      selectedOptions.some(option => option.value === optionName)
     );
   },
   
