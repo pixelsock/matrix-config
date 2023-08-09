@@ -81,6 +81,7 @@ const FilterHelper = {
     // Loop through all rules
     Object.entries(rules).forEach(([ruleKey, ruleValue]) => {
       console.log(`Checking rule: ${ruleKey}`); // Debug line
+      console.log(`Rule value: ${JSON.stringify(ruleValue)}`); // Added debug line
       // Split the rule key by '&&', '||', or other separators if needed
       // and trim the resulting strings
       const ruleKeys = ruleKey.split(/\s*&&\s*|\s*\|\|\s*/).map(str => str.trim());
