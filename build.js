@@ -33,6 +33,7 @@ const FilterHelper = {
       parentElement.removeClass('is-disabled');
       console.log(`Parent element has 'is-disabled' class after:`, parentElement.hasClass('is-disabled')); // Added debug line
       element.prop('disabled', false);
+      console.log(`Element is disabled after:`, element.prop('disabled')); // Added debug line
     });
   },
 
