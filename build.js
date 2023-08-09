@@ -151,6 +151,8 @@ function gatherSelectedOptions() {
     console.log('Found selected option:', { value: optionValue, id: optionId }); // Debug line
   });
   
+  console.log('All selected options:', selectedOptions); // Added debug line
+  
   return selectedOptions;
 }
 
