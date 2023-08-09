@@ -49,13 +49,19 @@ const FilterHelper = {
       // and trim the resulting strings
       const ruleKeys = ruleKey.split(/\s*&&\s*|\s*\|\|\s*/).map(str => str.trim());
   
+      console.log(`Rule keys: ${ruleKeys}`); // Added debug line
+
       // Check if the selected options contain the rule key
       if (this.containsOption(selectedOptions, ruleKeys)) {
+        console.log(`Rule keys found in selected options: ${ruleKeys}`); // Added debug line
+
         // Then hide, enable, and show/click options as defined by the rule
         this.disableOptions(ruleValue.disable);
         this.enableOptions(ruleValue.enable);
         this.enableAndClickOptions(ruleValue.showAndClick);
       } else {
+        console.log(`Rule keys not found in selected options: ${ruleKeys}`); // Added debug line
+
         // If the rule key is not in the selected options, skip this rule
         return;
       }
