@@ -46,8 +46,24 @@ const FilterHelper = {
       }
 
       const parentElement = element.parent();
+      if (parentElement.length === 0) {
+        console.error(`enableOptions: No parent element found for element with ID ${id}`);
+        return;
+      }
+
+      if (!parentElement.hasClass('is-disabled')) {
+        console.warn(`enableOptions: Parent element of ${id} does not have 'is-disabled' class`);
+      }
+
       parentElement.removeClass('is-disabled');
+      if (parentElement.hasClass('is-disabled')) {
+        console.error(`enableOptions: Failed to remove 'is-disabled' class from parent element of ${id}`);
+      }
+
       element.prop('disabled', false);
+      if (element.prop('disabled')) {
+        console.error(`enableOptions: Failed to enable element with ID ${id}`);
+      }
     });
   },
 
