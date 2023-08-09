@@ -26,6 +26,8 @@ const FilterHelper = {
     optionIds.forEach(id => {
       const element = $(`#${id}`);
       console.log(`Enabling element: ${id}`); // Debug line
+      console.log(`Found element with ID ${id}:`, element); // Added debug line
+      console.log(`Parent of element:`, element.parent()); // Added debug line
       element.parent().removeClass('is-disabled');
       element.prop('disabled', false);
     });
