@@ -12,8 +12,18 @@ const FilterHelper = {
   
   
   enableAndClickOptions(optionIds) {
+    if (!Array.isArray(optionIds)) {
+      console.error('enableAndClickOptions: optionIds should be an array');
+      return;
+    }
+
     optionIds.forEach(id => {
       const element = $(`#${id}`);
+      if (element.length === 0) {
+        console.error(`enableAndClickOptions: No element found with ID ${id}`);
+        return;
+      }
+
       const filterGroup = element.parent();
       filterGroup.removeClass('is-disabled');
       filterGroup.addClass('is-active');
@@ -23,15 +33,20 @@ const FilterHelper = {
   },
 
   enableOptions(optionIds) {
+    if (!Array.isArray(optionIds)) {
+      console.error('enableOptions: optionIds should be an array');
+      return;
+    }
+
     optionIds.forEach(id => {
       const element = $(`#${id}`);
-      console.log(`Enabling element: ${id}`); // Debug line
-      console.log(`Found element with ID ${id}:`, element); // Added debug line
+      if (element.length === 0) {
+        console.error(`enableOptions: No element found with ID ${id}`);
+        return;
+      }
+
       const parentElement = element.parent();
-      console.log(`Parent of element:`, parentElement); // Added debug line
-      console.log(`Parent element has 'is-disabled' class before:`, parentElement.hasClass('is-disabled')); // Added debug line
       parentElement.removeClass('is-disabled');
-      console.log(`Parent element has 'is-disabled' class after:`, parentElement.hasClass('is-disabled')); // Added debug line
       element.prop('disabled', false);
     });
   },
