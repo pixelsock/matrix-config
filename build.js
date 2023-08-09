@@ -92,8 +92,11 @@ const FilterHelper = {
         console.log(`Rule keys found in selected options: ${ruleKeys}`); // Added debug line
 
         // Then hide, enable, and show/click options as defined by the rule
+        console.log(`Disabling options: ${ruleValue.disable}`); // Added debug line
         this.disableOptions(ruleValue.disable);
+        console.log(`Enabling options: ${ruleValue.enable}`); // Added debug line
         this.enableOptions(ruleValue.enable);
+        console.log(`Enabling and clicking options: ${ruleValue.showAndClick}`); // Added debug line
         this.enableAndClickOptions(ruleValue.showAndClick);
       } else {
         console.log(`Rule keys not found in selected options: ${ruleKeys}`); // Added debug line
