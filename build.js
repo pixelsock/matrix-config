@@ -14,7 +14,7 @@ const FilterHelper = {
   enableAndClickOptions(optionIds) {
     optionIds.forEach(id => {
       const element = $(`#${id}`);
-      const filterGroup = element.parent().parent();
+      const filterGroup = element.parent();
       filterGroup.removeClass('is-disabled');
       filterGroup.addClass('is-active');
       element.prop('disabled', false);
@@ -33,7 +33,6 @@ const FilterHelper = {
       parentElement.removeClass('is-disabled');
       console.log(`Parent element has 'is-disabled' class after:`, parentElement.hasClass('is-disabled')); // Added debug line
       element.prop('disabled', false);
-      console.log(`Element is disabled after:`, element.prop('disabled')); // Added debug line
     });
   },
 
