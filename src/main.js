@@ -6,11 +6,19 @@ import { matchesCombination } from './utils.js';
 function getSelectedOptions() {
   const form = $('#full-filter-form');
   const selectedOptions = [];
-  
-  // Handle radio and checkbox inputs
-  form.find('input[type="radio"]:checked, input[type="checkbox"]:checked').each(function() {
+
+  // Handle radio inputs
+  form.find('input[type="radio"]:checked').each(function() {
     const id = $(this).attr('id');
     const value = $(this).val();
+    const dataName = $(this).attr('data-name');
+    selectedOptions.push({ id, value, dataName });
+  });
+
+  // Handle checkbox inputs (special handling for Accessories)
+  form.find('input[type="checkbox"]:checked').each(function() {
+    const id = $(this).attr('id');
+    const value = $(this).attr('id'); // Use an empty string if the value is falsy
     const dataName = $(this).attr('data-name');
     selectedOptions.push({ id, value, dataName });
   });
@@ -37,13 +45,16 @@ function getSelectedOptions() {
 
 
 function updateSelectedOptionsDisplay(selectedOptions) {
+  // Clear all displayed selected options
+  $('.selected-option').text('').css('display', 'none');
+
   selectedOptions.forEach(option => {
     const inputElement = $(`#${option.id}`);
     const categoryDiv = inputElement.closest('.filters1_filter-group');
     const selectedOptionValue = option.value;
 
     // Determine the filter target based on the input element's name or data-name attribute
-    const filterTarget =  inputElement.attr('data-name');
+    const filterTarget = inputElement.attr('data-name');
 
     // Find the .selected-option element with the matching filter target, update its text, and make it visible
     const selectedOptionDiv = categoryDiv.find(`.selected-option[filter-target="${filterTarget}"]`);
@@ -51,6 +62,7 @@ function updateSelectedOptionsDisplay(selectedOptions) {
     selectedOptionDiv.css('display', 'block'); // Make it visible
   });
 }
+
 
 
 
