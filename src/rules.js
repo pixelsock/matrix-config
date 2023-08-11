@@ -63,7 +63,7 @@ const rules = {
     'Adjustable': {
       showAndClick: ['High', 'Non-Dimming'],
       disable: ['ELV-Dimmable', '0-10-Dimmable', 'Standard'],
-      enable: [],
+      enable: ['High', 'Non-Dimming'],
       resetKey: [],
     }
   };
