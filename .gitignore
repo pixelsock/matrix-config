@@ -1,0 +1,28 @@
+# Dependency directories
+node_modules/
+
+# Build directories
+dist/
+
+# Configuration files
+bs-config.js
+
+# Lock files
+package-lock.json
+
+# IDE - Editors
+*.idea/
+*.vscode/
+.DS_Store
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System Files
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp

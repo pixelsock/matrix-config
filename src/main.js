@@ -45,16 +45,13 @@ function getSelectedOptions() {
 
 
 function updateSelectedOptionsDisplay(selectedOptions) {
-  // Clear all displayed selected options
-  $('.selected-option').text('').css('display', 'none');
-
   selectedOptions.forEach(option => {
     const inputElement = $(`#${option.id}`);
     const categoryDiv = inputElement.closest('.filters1_filter-group');
     const selectedOptionValue = option.value;
 
     // Determine the filter target based on the input element's name or data-name attribute
-    const filterTarget = inputElement.attr('data-name');
+    const filterTarget =  inputElement.attr('data-name');
 
     // Find the .selected-option element with the matching filter target, update its text, and make it visible
     const selectedOptionDiv = categoryDiv.find(`.selected-option[filter-target="${filterTarget}"]`);
