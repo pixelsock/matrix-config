@@ -2,8 +2,10 @@ import FilterHelper from './filterHelper.js';
 import { generateSku } from './skuGeneration.js';
 import { rules } from './rules.js';
 import { matchesCombination } from './utils.js';
+import { initializeReset } from './reset.js';
+import { showHideSizesBasedOffStyle } from './utils.js';
 
-function getSelectedOptions() {
+export function getSelectedOptions() {
   const form = $('#full-filter-form');
   const selectedOptions = [];
 
@@ -44,22 +46,31 @@ function getSelectedOptions() {
 }
 
 
-function updateSelectedOptionsDisplay(selectedOptions) {
-  selectedOptions.forEach(option => {
-    const inputElement = $(`#${option.id}`);
-    const categoryDiv = inputElement.closest('.filters1_filter-group');
-    const selectedOptionValue = option.value;
+function updateSelectedOptionsDisplay(filterInstances) {
+  // Access the filtersData array
+  const filtersData = filterInstances[0].filtersData;
 
-    // Determine the filter target based on the input element's name or data-name attribute
-    const filterTarget =  inputElement.attr('data-name');
+  // Iterate through the filtersData array and access the selected tags (values)
+  filtersData.forEach((filter) => {
+    // Access the originalFilterKeys array, which contains the category names
+    const originalFilterKeys = filter.originalFilterKeys;
 
-    // Find the .selected-option element with the matching filter target, update its text, and make it visible
-    const selectedOptionDiv = categoryDiv.find(`.selected-option[filter-target="${filterTarget}"]`);
-    selectedOptionDiv.text(selectedOptionValue);
-    selectedOptionDiv.css('display', 'block'); // Make it visible
+    // Access the values (selected tags) for each filter
+    const values = Array.from(filter.values);
+
+    // Iterate through the originalFilterKeys and values
+    originalFilterKeys.forEach((key, index) => {
+      // Find the associated .selected-option element using the filter-target attribute
+      const selectedOptionElement = $(`.selected-option[filter-target="${key}"]`);
+
+      // Render the selected tag to the .selected-option element
+      if (selectedOptionElement) {
+        selectedOptionElement.text(values[index] || ''); // If the value is cleared, set an empty string
+        selectedOptionElement.css('display', values[index] ? 'block' : 'none'); // Hide if the value is cleared
+      }
+    });
   });
 }
-
 
 
 
@@ -67,8 +78,9 @@ function updateConfigurator() {
   const selectedOptions = getSelectedOptions();
   console.log('Selected Options in updateConfigurator:', selectedOptions); // Debugging line
   applyRules(selectedOptions, rules);
-  updateSelectedOptionsDisplay(selectedOptions); // Update the display of selected options
   generateSku(selectedOptions);
+
+  showHideSizesBasedOffStyle(selectedOptions);
 
   
 }
@@ -88,18 +100,34 @@ function applyRules(selectedOptions, rules) {
 
 
 
+
+
 $(document).ready(function() {
   const form = $('#full-filter-form');
-  updateSelectedOptionsDisplay(getSelectedOptions()); // Pass selectedOptions here
-
-form.on('change', 'input, select', updateConfigurator);
-
-// Call this function whenever the selections change
- 
+  
+  form.on('change', 'input, select', updateConfigurator);
 
   // Initial update
   updateConfigurator();
+
+
 });
+
+window.fsAttributes = window.fsAttributes || [];
+window.fsAttributes.push([
+  'cmsfilter',
+  (filterInstances) => {
+    console.log('cmsfilter Successfully loaded!');
+
+    // The `renderitems` event runs whenever the list renders items after filtering.
+    filterInstances[0].listInstance.on('renderitems', () => {
+      updateSelectedOptionsDisplay(filterInstances);
+    });
+  },
+]);
+
+initializeReset();
+
 
 
 

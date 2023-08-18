@@ -14,7 +14,6 @@ const FilterHelper = {
         const element = $(`#${id}`);
         console.log(`Enabling and clicking element: ${id}`); // Debug line
         element.parent().removeClass('is-disabled');
-        element.parent().addClass('is-active');
         element.prop('disabled', false);
         element.click();
       });

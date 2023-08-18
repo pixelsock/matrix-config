@@ -1,3 +1,4 @@
+
 // Define the mapping object
 const skuMapping = {
     'Mirror Style': {
@@ -14,6 +15,11 @@ const skuMapping = {
       'Single Short Side Inset': '11',
       'Round Full Frame Edge': '21',
       'Round No Frost': '51',
+    },
+    'Frame Color':{
+      'Black Metal': 'BM',
+      'Silver Metal': 'SM',
+      'Gold Metal': 'GM',
     },
     'Frame Thickness': {
       'Thin Frame': 'T',
@@ -62,19 +68,17 @@ const skuMapping = {
   };
   
   function getPrefix() {
-    const formHeaderText = $('.filters2_form-header .filters2_heading').text().trim();
-    if (formHeaderText.includes('Classic')) return 'L';
-    if (formHeaderText.includes('Future')) return 'F';
-    if (formHeaderText.includes('Deco')) return skuComponents['Frame Thickness']; // Return frame thickness SKU
+    const productLine = $('#product-line').text().trim();
+    if (productLine.includes('Classic')) return 'L';
+    if (productLine.includes('Future')) return 'F';
+    if (productLine.includes('Deco')) return 'D'; // Return 'D' for Deco
     return ''; // Default case
   }
   
   function generateSku(selectedOptions) {
     // Define the SKU components
     const skuComponents = {
-      'Product Line': '',
       'Mirror Style': '',
-      'Frame Thickness': '',
       'Light Direction': '',
       'Width': '',
       'Height': '',
@@ -82,7 +86,8 @@ const skuMapping = {
       'Color Temperature': '',
       'Dimming': '',
       'Orientation': '',
-      'Accessories': ''
+      'Accessories': '',
+      'Frame Color': '',
     };
   
     let mirrorControlsValue = null;
@@ -139,14 +144,29 @@ delete skuComponents['Mirror Controls'];
 
 skuComponents['Accessories'] = accessoriesSku;
 
-  // Get the prefix and apply it to the 'Mirror Style' SKU component
+ // Get the prefix
   const prefix = getPrefix();
-  skuComponents['Product Line'] = prefix + skuComponents['Mirror Style'];
+
+  // If the product line is Deco, prepend the frame thickness to the mirror style SKU
+  if (prefix === 'D') {
+    const frameThicknessOption = selectedOptions.find(option => option.dataName === 'Frame Thickness');
+    if (frameThicknessOption) {
+      const frameThickness = skuMapping['Frame Thickness'][frameThicknessOption.value];
+      skuComponents['Mirror Style'] = frameThickness + skuComponents['Mirror Style'];
+      delete skuComponents['Frame Thickness'];
+    }
+  }
 
   // Build the SKU string in the correct order
-  const sku = Object.values(skuComponents).join('-');
+  if (prefix != 'D') {
+    const sku = prefix + Object.values(skuComponents).join('-');
+    $('#productSku').text(sku);
+  } else {
+    const sku = Object.values(skuComponents).join('-');
+    $('#productSku').text(sku);
+  }; 
 
-  $('#productSku').text(sku);
+  
 }
 
 
