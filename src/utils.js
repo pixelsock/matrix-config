@@ -14,3 +14,16 @@ export function containsKeywords(option, keywords) {
     return selectedOptions.some(option => option.value.includes(combination.trim()));
   }
   
+  export function showHideSizesBasedOffStyle(selectedOptions) {
+    const roundSizeFields = document.querySelectorAll('.diameter');
+    const standardSizeFields = document.querySelectorAll('.standard');
+
+    if (selectedOptions.some(option => option.value.includes('Round'))) {
+      roundSizeFields.forEach(field => field.classList.remove('hide'));
+      standardSizeFields.forEach(field => field.classList.add('hide'));
+    } else {
+      roundSizeFields.forEach(field => field.classList.add('hide'));
+      standardSizeFields.forEach(field => field.classList.remove('hide'));
+    
+    };
+  }
