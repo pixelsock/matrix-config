@@ -20,5 +20,10 @@
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
+  },
+  "dependencies": {
+    "jspdf": "^2.5.1",
+    "pdfkit": "^0.13.0",
+    "webfontloader": "^1.6.28"
   }
 }
