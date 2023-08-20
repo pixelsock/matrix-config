@@ -4,6 +4,7 @@ import { rules } from './rules.js';
 import { matchesCombination } from './utils.js';
 import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle } from './utils.js';
+import { generatePdf } from './pdfGenerator.js';
 
 export function getSelectedOptions() {
   const form = $('#full-filter-form');
@@ -26,7 +27,7 @@ export function getSelectedOptions() {
   });
 
   // Handle text inputs
-  form.find('input[type="text"]').each(function() {
+  form.find('input[type="text"], input[type="number"]').each(function() {
     const id = $(this).attr('id');
     const value = $(this).val() || ''; // Use an empty string if the value is falsy
     const dataName = $(this).attr('data-name');
@@ -81,6 +82,8 @@ function updateConfigurator() {
   generateSku(selectedOptions);
 
   showHideSizesBasedOffStyle(selectedOptions);
+ // generatePdf(selectedOptions);
+
 
   
 }
@@ -107,6 +110,8 @@ $(document).ready(function() {
   
   form.on('change', 'input, select', updateConfigurator);
 
+  
+
   // Initial update
   updateConfigurator();
 
@@ -128,6 +133,17 @@ window.fsAttributes.push([
 
 initializeReset();
 
+$(document).ready(function() {
+  
+  $('#download-button').on('click', function() {
+    const selectedOptions = getSelectedOptions();
+  generatePdf(selectedOptions); // Call the PDF generation function
+  // break so it only runs once
+  return false;
 
 
+
+});
+}
+);
 
