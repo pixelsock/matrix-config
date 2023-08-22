@@ -27,3 +27,20 @@ export function containsKeywords(option, keywords) {
     
     };
   }
+
+  export function forSubmissionSkuAndQuantity() {
+    const productSku = document.querySelector('#productSku').textContent;
+    const quantity = document.querySelector('[name="Quantity"]').value;
+    const skuLabel = document.querySelector('#form-sku-label');
+    const quantityLabel = document.querySelector('#form-quantity-label');
+
+    skuLabel.textContent = productSku;
+
+    if (quantity) {
+      quantityLabel.textContent = quantity;
+      quantityLabel.style.color = '#0d0d0d';
+    } else {
+      quantityLabel.textContent = 'Quantity not specified';
+      quantityLabel.style.color = 'rgb(224, 113, 115)';
+    }
+  }

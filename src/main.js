@@ -3,8 +3,8 @@ import { generateSku } from './skuGeneration.js';
 import { rules } from './rules.js';
 import { matchesCombination } from './utils.js';
 import { initializeReset } from './reset.js';
-import { showHideSizesBasedOffStyle } from './utils.js';
-import { generatePdf } from './pdfGenerator.js';
+import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity } from './utils.js';
+import { generatePdf, sendPdf } from './pdfGenerator.js';
 
 export function getSelectedOptions() {
   const form = $('#full-filter-form');
@@ -82,7 +82,7 @@ function updateConfigurator() {
   generateSku(selectedOptions);
 
   showHideSizesBasedOffStyle(selectedOptions);
- // generatePdf(selectedOptions);
+  forSubmissionSkuAndQuantity();
 
 
   
@@ -140,6 +140,15 @@ $(document).ready(function() {
   generatePdf(selectedOptions); // Call the PDF generation function
   // break so it only runs once
   return false;
+
+
+
+});
+$('#send-button').on('click', function() {
+  const selectedOptions = getSelectedOptions();
+generatePdf(selectedOptions); // Call the PDF generation function
+// break so it only runs once
+return false;
 
 
 
