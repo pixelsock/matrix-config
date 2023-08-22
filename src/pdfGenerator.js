@@ -185,6 +185,10 @@ function renderSelectedImage(doc) {
   const photo = $('#selected-image').attr('src');
   const encodedPhotoURL = encodeURIComponent(photo);
   doc.addImage(encodedPhotoURL, 'JPEG', 46, 12, 65, 65);
+  // Selected Secondar Image
+  const photo2 = 'https://assets.website-files.com/6396581bc92e137b309d76c3/646ba2bb7ec539377aee8efe_F02I%2520APP%2520300ppi%2520Eddie.jpeg';
+  const encodedPhotoURL2 = encodeURIComponent(photo2);
+  doc.addImage(encodedPhotoURL2, 'JPEG', 114, 12, 93, 65);
 }
 
 function renderStyleDetails(doc, selectedOptions) {
