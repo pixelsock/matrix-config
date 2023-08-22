@@ -1191,7 +1191,8 @@ $('#width').on('focusout', function() {
 
             // get the current selected photo and add it to the pdf
             var photo = $('#selected-image').attr('src');
-            doc.addImage(photo, 'PNG', 100, 55, 100, 100);
+            const encodedPhotoURL = encodeURIComponent(photo);
+            doc.addImage(encodedPhotoURL, 'JPEG', 100, 55, 100, 100);
             
 
             // place a light grey rectangle behind the style name
