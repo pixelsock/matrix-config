@@ -62,10 +62,11 @@ const skuMapping = {
     'Dimming': {
       'Non-Dimming': 'N',
       'ELV Dimmable': 'E',
-      '0-10-Dimmable': 'V',
+      '0-10 Dimmable': 'V',
     },
   
   };
+
   
   function getPrefix() {
     const productLine = $('#product-line').text().trim();
@@ -205,6 +206,7 @@ skuComponents['Accessories'] = accessoriesSku;
       height: heightSku
     };
   }
+  
   
   
   export { generateSku, skuMapping };
