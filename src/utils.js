@@ -1,4 +1,5 @@
 // utils.js
+import { rules } from './rules.js';
 
 export function containsKeywords(option, keywords) {
     return keywords.some(keyword => option.value.includes(keyword));
@@ -28,19 +29,37 @@ export function containsKeywords(option, keywords) {
     };
   }
 
-  export function forSubmissionSkuAndQuantity() {
-    const productSku = document.querySelector('#productSku').textContent;
-    const quantity = document.querySelector('[name="Quantity"]').value;
-    const skuLabel = document.querySelector('#form-sku-label');
-    const quantityLabel = document.querySelector('#form-quantity-label');
+export function forSubmissionSkuAndQuantity() {
+  const productSku = document.querySelector('#productSku').textContent;
+  const quantity = document.querySelector('[name="Quantity"]').value;
+  const skuLabel = document.querySelector('#form-sku-label');
+  const quantityLabel = document.querySelector('#form-quantity-label');
 
-    skuLabel.textContent = productSku;
+  // Set the value of the SKU input field
+  const skuInput = document.querySelector('#form-sku');
+  skuInput.value = productSku;
 
-    if (quantity) {
-      quantityLabel.textContent = quantity;
-      quantityLabel.style.color = '#0d0d0d';
-    } else {
-      quantityLabel.textContent = 'Quantity not specified';
-      quantityLabel.style.color = 'rgb(224, 113, 115)';
-    }
+  // Set the value of the quantity input field
+  const quantityInput = document.querySelector('#form-quantity');
+  quantityInput.value = quantity;
+
+  // Set the text content of the SKU and quantity labels
+  skuLabel.textContent = productSku;
+
+  if (quantity) {
+    quantityLabel.textContent = quantity;
+    quantityLabel.style.color = '#0d0d0d';
+  } else {
+    quantityLabel.textContent = 'Quantity not specified';
+    quantityLabel.style.color = 'rgb(224, 113, 115)';
   }
+}
+  
+
+  
+// Function to check if an option is excluded for the current product line
+export const productLine = $('#product-line').text();
+  export const isExcluded = (optionKey) => {
+    const rule = rules[optionKey];
+    return rule && rule.excludeProductLines && rule.excludeProductLines.includes(productLine);
+  };

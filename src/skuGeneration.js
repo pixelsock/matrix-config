@@ -64,6 +64,11 @@ const skuMapping = {
       'ELV Dimmable': 'E',
       '0-10 Dimmable': 'V',
     },
+    'Product Line': {
+      'Classic': 'L',
+      'Future': 'F',
+      'Deco': 'D',
+    }
   
   };
 
@@ -88,8 +93,15 @@ const skuMapping = {
       'Dimming': '',
       'Orientation': '',
       'Accessories': '',
-      'Frame Color': '',
+      
     };
+
+    // if (productLine === 'Deco') { add frame thickness to skuComponents }
+    if (getPrefix() === 'D') {
+      skuComponents['Frame Thickness'] = '';
+    }
+
+
   
     let mirrorControlsValue = null;
   
@@ -141,7 +153,7 @@ switch (mirrorControlsValue) {
   // ... other cases if needed ...
 }
 
-delete skuComponents['Mirror Controls'];
+delete skuComponents['Mirror Controls']; 
 
 skuComponents['Accessories'] = accessoriesSku;
 
@@ -173,8 +185,8 @@ skuComponents['Accessories'] = accessoriesSku;
 
   
   function getSizeSku() {
-    let widthSku = '0000';
-    let heightSku = '0000';
+    let widthSku = '';
+    let heightSku = '';
   
     // Check if custom size switch is turned on
     if ($('#Custom-Size-Checkbox').is(':checked')) {
@@ -209,4 +221,4 @@ skuComponents['Accessories'] = accessoriesSku;
   
   
   
-  export { generateSku, skuMapping };
+  export { generateSku, skuMapping, getPrefix };

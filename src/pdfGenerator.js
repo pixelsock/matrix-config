@@ -2,26 +2,11 @@ import { jsPDF } from "jspdf";
 import './fonts/Inter-Bold-bold.js';
 import './fonts/Inter-Regular-normal.js';
 import { skuMapping } from './skuGeneration';
+import { isExcluded, productLine } from './utils';
 
 
-export function generatePdf(selectedOptions) {
-  const doc = new jsPDF();
 
-  setDocStyles(doc);
-  renderHeader(doc);
-  renderItemCode(doc);
-  renderSkuAndDate(doc, selectedOptions);
-  renderSelectedImage(doc);
-  renderStyleDetails(doc, selectedOptions);
-  renderFooter(doc);
-
-  // Attach to submit button
-  doc.output('pdfobjectnewwindow');
-
-  
-}
-
-export function sendPdf(selectedOptions) {
+export function generatePdf(selectedOptions, buttonId) {
   const doc = new jsPDF();
 
   setDocStyles(doc);
@@ -33,11 +18,17 @@ export function sendPdf(selectedOptions) {
   renderFooter(doc);
   const skuString = $('#productSku').text();
   const filename = skuString + '.pdf';
+
   // Attach to submit button
-  doc.save(filename, { returnPromise: true });
+  if (buttonId === 'newWindow') {
+  doc.output('pdfobjectnewwindow');
+  } else if (buttonId === 'save') {
+    doc.save(filename);
+  }
 
   
 }
+
 
 
 function setDocStyles(doc) {
@@ -58,111 +49,9 @@ function renderHeader(doc) {
     // Header End
   }
   
-  function drawHeaderLines(doc) {
-    // Draw vertical lines
-    doc.line(43, 0, 43, 300); // 43 from the left
-    doc.line(207, 0, 207, 300); // 207 from the left
-    
-    // Draw horizontal lines
-    doc.line(43, 12, 210, 12); // Line to separate header
-    doc.line(46, 0, 46, 77); // Left line of the selected image
-    doc.line(111, 0, 111, 77); // Right line of the selected image 
-    doc.line(114, 0, 114, 77); // Right line of the selected image
-    doc.line(43, 77, 210, 77); // Line to separate header from selected image  
-    doc.line(43, 78, 210, 78); // Second Line to separate header from selected image  
-    doc.line(46, 135, 200, 135); // Line to take notes
-    doc.line(46, 145, 200, 145); // Second Line to take notes
-    doc.line(43, 153, 207, 153); // Line to separate header from notes
-    doc.line(43, 154, 207, 154); // Line to separate header from notes
-  }
-
-  function renderItemCode(doc) {
-    // Item Code Start
-    doc.setCharSpace(0.5);
-    doc.setFontSize(12);
-    doc.text("ITEM CODE", 46, 90);
-    doc.setFontSize(10);
-    doc.text("Quantity Requested:", 190, 74, 'right');
-    doc.text("Additional Specification Notes", 47, 122, 'left');
-  doc.text("Type", 57, 164.5, 'left');
-  doc.text("Style", 107, 164.5, 'left');
-  doc.text("Lighitng Style", 155, 164.5, 'left');
-  doc.text("Size", 57, 194.5, 'left');
-  doc.text("Output", 107, 194.5, 'left');
-  doc.text("Color Temperature", 155, 194.5, 'left');
-  doc.text("Driver", 57, 224.5, 'left');
-  doc.text("Mounting", 107, 224.5, 'left');
-  doc.text("Frame Color", 155, 224.5, 'left');
-  doc.text("Accessories", 57, 254.5, 'left');
-  doc.text("Mirror Controls", 105, 254.5, 'left');
-  doc.setFontSize(10);
-  doc.setTextColor(224, 113, 115); // set to red
-  doc.setCharSpace(.25);
-  doc.setFont("Inter", "normal");
-  doc.text("(Mirrors with touch contols have to use a non dimming driver)", 46, 127, 'left');
-  doc.setTextColor(20, 20, 20); // set to black
-  // Item Code End
   
 
-  // Draw cirlcles with numbers
-  drawCirclesWithNumbers(doc);
-
-
-  }
-
-  const circlePositions = [
-    { first: { x: 50, y: 110, gap: 5}, second: { x: 52, y: 163 } },
-    { first: { x: 65, y: 110, gap: 15}, second: { x: 102, y: 163 } },
-    { first: { x: 80, y: 110, gap: 5}, second: { x: 150, y: 163 } },
-    { first: { x: 100, y:110, gap: 25 }, second: { x: 52, y: 193 } },
-    { first: { x: 120, y:110, gap: 5 }, second: { x: 102, y: 193 } },
-    { first: { x: 135, y:110, gap: 15 }, second: { x: 150, y: 193 } },
-    { first: { x: 150, y:110, gap: 5 }, second: { x: 52, y: 223 } },
-    { first: { x: 160, y:110, gap: 5 }, second: { x: 102, y: 223 } },
-    { first: { x: 175, y:110, gap: 15 }, second: { x: 150, y: 223 } },
-    { first: { x: 195, y:110, gap: 15, }, second: { x: 52, y: 253, } },
-    { first: { x: 46, y:120.5, gap: 5, custom: ' ', circle:false}, second: { x: 103, y: 253, custom: '*', circle: false} } 
-  ];
-
-  function drawCirclesWithNumbers(doc) {
-   
-  
-      doc.setFont("Inter", "bold");
-      circlePositions.forEach((positions, index) => {
-        // Calculate the line length based on the gap value
-        const lineLength = positions.first.gap ? positions.first.gap / 2 : 2.5;
-        // Allow for custom text to be rendered in the circle
-        const firstText = positions.first.custom || (index + 1).toString();
-        const secondText = positions.second.custom || (index + 1).toString();
-        // set defaul for circle1 & 2
-        const circle1 = positions.first.circle === false ? false : true;
-        const circle2 = positions.second.circle === false ? false : true;
-
-
-
-
-
-    
-        // Draw a line for the first position only if it's not the last one
-        if (index < circlePositions.length - 1) {
-          doc.line(positions.first.x - lineLength, positions.first.y - 5, positions.first.x + lineLength, positions.first.y - 5);
-        }
-    
-        // Draw the circle for the first position
-        if (circle1) {
-        doc.circle(positions.first.x, positions.first.y, 2.5);
-        }
-        doc.text(firstText, positions.first.x, positions.first.y + 1.5, 'center');
-        
-    
-        // Draw the circle for the second position
-        if (circle2) {
-        doc.circle(positions.second.x, positions.second.y, 2.5);
-        }
-        doc.text(secondText, positions.second.x, positions.second.y + 1.5, 'center');
-        
-      });
-    }
+ 
   
 
 
@@ -194,13 +83,15 @@ function renderStyleDetails(doc, selectedOptions) {
     const skuStringFirstFour = skuStringNoDash.substring(0, 4);
     const styleDetails = productLine + ' ' + skuStringFirstFour;
     const mirrorStyleOption = selectedOptions.find(option => option.dataName === 'Mirror Style');
-    const frameColorOption = selectedOptions.find(option => option.dataName === 'Frame Color');
+    const frameThicknessOption = !isExcluded('Frame Thickness') ? selectedOptions.find(option => option.dataName === 'Frame Thickness') : null;
     const lightDirectionOption = selectedOptions.find(option => option.dataName === 'Light Direction');
-    const frameThicknessOption = selectedOptions.find(option => option.dataName === 'Frame Thickness');
+    const frameColorOption = !isExcluded('Frame Color') ? selectedOptions.find(option => option.dataName === 'Frame Color') : null;
   
     // Accessing the value property of frameColorOption, mirrorStyleOption, and lightDirectionOption
-    const headerText = 'Your Custom Configuration For' + ' ' + productLine + ' ' +  frameThicknessOption.value + ' ' + frameColorOption.value + ' ' + mirrorStyleOption.value + ' ' + lightDirectionOption.value;
-  
+    const headerText = 'Your Custom Configuration For ' + productLine +
+    (frameThicknessOption ? ' ' + frameThicknessOption.value : '') +
+    (frameColorOption ? ' ' + frameColorOption.value : '') +
+    ' ' + mirrorStyleOption.value + ' ' + lightDirectionOption.value;
     renderHeaderOpener(doc, headerText);
     renderStyleText(doc, styleDetails);
     renderSizeDetails(doc, selectedOptions);
@@ -271,26 +162,169 @@ function renderStyleDetails(doc, selectedOptions) {
 
     
   }
+
+  const circlePositions = [
+    { first: { x: 50, y: 110, gap: 5}, second: { x: 52, y: 163 } },
+    { first: { x: 65, y: 110, gap: 15}, second: { x: 102, y: 163 } },
+    { first: { x: 80, y: 110, gap: 5}, second: { x: 150, y: 163 } },
+    { first: { x: 100, y:110, gap: 25 }, second: { x: 52, y: 193 } },
+    { first: { x: 120, y:110, gap: 5 }, second: { x: 102, y: 193 } },
+    { first: { x: 135, y:110, gap: 15 }, second: { x: 150, y: 193 } },
+    { first: { x: 150, y:110, gap: 5 }, second: { x: 52, y: 223 } },
+    { first: { x: 160, y:110, gap: 5 }, second: { x: 102, y: 223 } },
+    { first: { x: 175, y:110, gap: 15 }, second: { x: 150, y: 223 } },
+  ];
+
+  // push circles based on logic
+  if (!isExcluded('Frame Color')) {
+    circlePositions.push(
+      { first: { x: 195, y:110, gap: 15, }, second: { x: 52, y: 253, } },
+      { first: { x: 46, y:120.5, gap: 5, custom: ' ', circle:false}, second: { x: 103, y: 253, custom: '*', circle: false} },
+     )} else {
+      circlePositions.push(
+        { first: { x: 195, y:110, gap: 5, custom: ' ', circle: false }, second: { x: 48, y: 253, custom: '*', circle: false} },
+     )
+    }
+  function drawCirclesWithNumbers(doc) {
+   
   
+      doc.setFont("Inter", "bold");
+      circlePositions.forEach((positions, index) => {
+       
+        // Calculate the line length based on the gap value
+        const lineLength = positions.first.gap ? positions.first.gap / 2 : 2.5;
+        // Allow for custom text to be rendered in the circle
+        const firstText = positions.first.custom || (index + 1).toString();
+        const secondText = positions.second.custom || (index + 1).toString();
+        // set defaul for circle1 & 2
+        const circle1 = positions.first.circle === false ? false : true;
+        const circle2 = positions.second.circle === false ? false : true;
+
+        
+
+
+
+
+
+
+    
+        // Draw a line for the first position only if it's not the last one
+        if (index < circlePositions.length - 1) {
+          doc.line(positions.first.x - lineLength, positions.first.y - 5, positions.first.x + lineLength, positions.first.y - 5);
+        }
+    
+        // Draw the circle for the first position
+        if (circle1) {
+        doc.circle(positions.first.x, positions.first.y, 2.5);
+        }
+        doc.text(firstText, positions.first.x, positions.first.y + 1.5, 'center');
+        
+    
+        // Draw the circle for the second position
+        if (circle2) {
+        doc.circle(positions.second.x, positions.second.y, 2.5);
+        }
+        doc.text(secondText, positions.second.x, positions.second.y + 1.5, 'center');
+        
+      });
+    }
+
+    
+  
+    function drawHeaderLines(doc) {
+      // Draw vertical lines
+      doc.line(43, 0, 43, 300); // 43 from the left
+      doc.line(207, 0, 207, 300); // 207 from the left
+      
+      // Draw horizontal lines
+      doc.line(43, 12, 210, 12); // Line to separate header
+      doc.line(46, 0, 46, 77); // Left line of the selected image
+      doc.line(111, 0, 111, 77); // Right line of the selected image 
+      doc.line(114, 0, 114, 77); // Right line of the selected image
+      doc.line(43, 77, 210, 77); // Line to separate header from selected image  
+      doc.line(43, 78, 210, 78); // Second Line to separate header from selected image  
+      doc.line(46, 135, 200, 135); // Line to take notes
+      doc.line(46, 145, 200, 145); // Second Line to take notes
+      doc.line(43, 153, 207, 153); // Line to separate header from notes
+      doc.line(43, 154, 207, 154); // Line to separate header from notes
+    }
+  
+    function renderItemCode(doc) {
+      // Item Code Start
+      doc.setCharSpace(0.5);
+      doc.setFontSize(12);
+      doc.text("ITEM CODE", 46, 90);
+      doc.setFontSize(10);
+      doc.text("Quantity Requested:", 190, 74, 'right');
+      doc.text("Additional Specification Notes", 47, 122, 'left');
+    doc.text("Type", 57, 164.5, 'left');
+    doc.text("Style", 107, 164.5, 'left');
+    doc.text("Lighitng Style", 155, 164.5, 'left');
+    doc.text("Size", 57, 194.5, 'left');
+    doc.text("Output", 107, 194.5, 'left');
+    doc.text("Color Temperature", 155, 194.5, 'left');
+    doc.text("Driver", 57, 224.5, 'left');
+    doc.text("Mounting", 107, 224.5, 'left');
+    if (!isExcluded('Frame Color')) {
+    doc.text("Frame Color", 155, 224.5, 'left');
+    doc.text("Accessories", 57, 254.5, 'left');
+    doc.text("Mirror Controls", 105, 254.5, 'left');
+    } else {
+      doc.text("Accessories", 155, 224.5, 'left');
+      doc.text("Mirror Controls", 50, 254.5, 'left');
+    }
+    doc.setFontSize(10);
+    doc.setTextColor(224, 113, 115); // set to red
+    doc.setCharSpace(.25);
+    doc.setFont("Inter", "normal");
+    doc.text("(Mirrors with touch contols have to use a non dimming driver)", 46, 127, 'left');
+    doc.setTextColor(20, 20, 20); // set to black
+    // Item Code End
+    
+  
+    // Draw cirlcles with numbers
+    drawCirclesWithNumbers(doc);
+  
+  
+    }
   
   function renderOtherDetails(doc, selectedOptions) {
+    // Determine the product line or other criteria to customize the details
     const defaultMaxWidth = 40; 
 
     const details = [
         { label: 'Quantity', sku: false, value: selectedOptions.find(option => option.dataName === 'Quantity')?.value || 'N/A', x: 198, y: 74 },
-        { circle: 1, value: selectedOptions.find(option => option.dataName === 'Frame Thickness')?.value || 'N/A', x: 50, y: 171, },
         { circle: 2,value: selectedOptions.find(option => option.dataName === 'Mirror Style')?.value || 'N/A', x: 100, y: 171 },
         { circle: 3, value: selectedOptions.find(option => option.dataName === 'Light Direction')?.value || 'N/A', x: 148, y: 171 },
         // size is next but brought in from the previous function
         { circle: 5, value: selectedOptions.find(option => option.dataName === 'Light Output')?.value || 'N/A', x: 100, y: 201 },
         { circle: 6, value: selectedOptions.find(option => option.dataName === 'Color Temperature')?.value || 'N/A', x: 148, y: 201 },        
         { circle: 7, value: selectedOptions.find(option => option.dataName === 'Dimming')?.value || 'N/A', x: 50, y: 231 },
-        { circle: 9, value: selectedOptions.find(option => option.dataName === 'Frame Color')?.value || 'N/A', x: 148, y: 231 },
         { circle: 8, value: selectedOptions.find(option => option.dataName === 'Orientation')?.value || 'N/A', x: 100, y: 231 },
-        { maxWidth: 60, label: 'Accessories', circle: 10, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 50, y: 261 },
-        {  maxWidth: 95, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 105, y: 261 },
-        //{ label: 'Mirror Controls Specs', sku:false, maxWidth: 140, gap: 10, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 47, y: 134 },
+        
       ];
+
+ 
+
+ // Conditionally add product line-specific options
+  if (!isExcluded('Frame Color')) {
+    details.push({ circle: 9, value: selectedOptions.find(option => option.dataName === 'Frame Color')?.value || 'N/A', x: 148, y: 231 },
+    { maxWidth: 60, label: 'Accessories', circle: 10, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 50, y: 261 },
+        {  maxWidth: 95, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 105, y: 261 },);
+  } else {
+    details.push({ label: 'Accessories', circle: 9, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 148, y: 231 },
+    {  maxWidth: 115, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 50, y: 261 },);
+  }
+  if (!isExcluded('Frame Thickness')) {
+    details.push({ circle: 1, value: selectedOptions.find(option => option.dataName === 'Frame Thickness')?.value || 'N/A', x: 50, y: 171 });
+  } else {
+    details.push({ label: 'Product Line', circle: 1, value: productLine , x: 50, y: 171 });
+  }
+  
+
+
+
+
   
       if (details.some(detail => detail.value === 'Matrix Touch System')) {
         //details.find(detail => detail.label === 'Mirror Controls Specs').value = 'Matrix Touch System is a triple touch system with built in ON/OFF/Dimming, Color Temperature, & Anti-Fog controls';
@@ -308,7 +342,7 @@ function renderStyleDetails(doc, selectedOptions) {
         const maxWidth = detail.maxWidth !== undefined ? detail.maxWidth : defaultMaxWidth;
     
         let text = detail.value;
-        const dataName = selectedOptions.find(option => option.value === detail.value)?.dataName;
+        const dataName = detail.label || selectedOptions.find(option => option.value === detail.value)?.dataName;
 
        
       // Determine the SKU text for the current detail
@@ -316,18 +350,20 @@ function renderStyleDetails(doc, selectedOptions) {
       if (sku && skuMapping[dataName]) {
         // If the dataName is "Accessories", handle the custom logic
         if (dataName === 'Accessories') {
-          // Build the SKU for accessories using custom logic
           selectedOptions.forEach(option => {
             if (option.dataName === 'Accessories' && skuMapping['Accessories'][option.value]) {
               skuText += skuMapping['Accessories'][option.value];
             }
           });
-          // Handle special cases for accessories as needed
-          // TODO: Add special logic for "Matrix Touch System" and "Anti-Fog & Night Light" if needed
-          if (skuText === 'NLAF') {
+          // Special handling for "Matrix Touch System"
+          if (details.some(detail => detail.value === 'Matrix Touch System')) {
+            skuText = 'TR'; // Use the appropriate SKU code
+          } else if (skuText === 'NLAF') {
             skuText = 'AN'; // Both Night-Light and Anti-Fog selected
             text = 'Anti-Fog & Night Light';
           }
+        
+        
          
           
         } else {
