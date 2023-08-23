@@ -66,13 +66,23 @@ function updateSelectedOptionsDisplay(filterInstances) {
 
       // Render the selected tag to the .selected-option element
       if (selectedOptionElement) {
-        selectedOptionElement.text(values[index] || ''); // If the value is cleared, set an empty string
+        if (key === 'Accessories') {
+          // If more than one Accessories option is selected, set the text to "Anti-Fog & Night Light (AN)"
+          const selectedAccessories = values.filter((value) => value === 'Anti-Fog (AF)' || value === 'Night Light (NL)');
+          if (selectedAccessories.length > 1) {
+            selectedOptionElement.text('Anti-Fog & Night Light (AN)');
+          } else {
+            // If only one Accessories option is selected, set the text to the selected option
+            selectedOptionElement.text(values[index] || ''); // If the value is cleared, set an empty string
+          }
+        } else {
+          selectedOptionElement.text(values[index] || ''); // If the value is cleared, set an empty string
+        }
         selectedOptionElement.css('display', values[index] ? 'block' : 'none'); // Hide if the value is cleared
       }
     });
   });
 }
-
 
 
 function updateConfigurator() {
