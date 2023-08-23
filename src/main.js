@@ -4,7 +4,7 @@ import { rules } from './rules.js';
 import { matchesCombination } from './utils.js';
 import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity } from './utils.js';
-import { generatePdf, sendPdf } from './pdfGenerator.js';
+import { generatePdf } from './pdfGenerator.js';
 
 export function getSelectedOptions() {
   const form = $('#full-filter-form');
@@ -88,13 +88,12 @@ function updateSelectedOptionsDisplay(filterInstances) {
 function updateConfigurator() {
   const selectedOptions = getSelectedOptions();
   console.log('Selected Options in updateConfigurator:', selectedOptions); // Debugging line
+  generateSku(selectedOptions); // Generate the SKU this has to be called before apply rules. 
+
   applyRules(selectedOptions, rules);
-  generateSku(selectedOptions);
 
   showHideSizesBasedOffStyle(selectedOptions);
   forSubmissionSkuAndQuantity();
-
-
   
 }
 
@@ -144,25 +143,31 @@ window.fsAttributes.push([
 initializeReset();
 
 $(document).ready(function() {
+ 
+
+
+  // Add a submit event listener to the Request-A-Quote form
+  $('#wf-form-Request-A-Quote').on('submit', function(event) {
+    event.preventDefault(); // Prevent the form from submitting normally
+
+    // Call the PDF generation function with the selected options
+    const selectedOptions = getSelectedOptions();
+    generatePdf(selectedOptions, 'save');
+  });
   
   $('#download-button').on('click', function() {
     const selectedOptions = getSelectedOptions();
-  generatePdf(selectedOptions); // Call the PDF generation function
+  generatePdf(selectedOptions, 'newWindow'); // Call the PDF generation function
   // break so it only runs once
   return false;
 
 
 
 });
-$('#send-button').on('click', function() {
-  const selectedOptions = getSelectedOptions();
-generatePdf(selectedOptions); // Call the PDF generation function
-// break so it only runs once
-return false;
 
-
-
-});
 }
 );
+
+
+
 
