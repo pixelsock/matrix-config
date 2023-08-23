@@ -90,62 +90,6 @@ function updateStandardSizes() {
         $(this).attr('href', desktopRevitHref);
     });
     
-    // assigning variables to mirror controls
-    var wallSwitchOnlyControls = $('#Wall-Swith-Only');
-    var lightTouchControls = $('#Touch-Controls');
-    var matrixTouchSystemControls = $('#Matrix-Touch-System');
-
-    // assigning variable to touch sensor selector
-    var noTouchSensor = $('[ts-filter="0"]');
-    var singleTouchSensor = $('[ts-filter="1"]');
-    var dualTouchSensor = $('[ts-filter="2"]');
-    var tripleTouchSensor = $('[ts-filter="3"]');
-
-    // assigning variables to the accessories
-    var nightLight = $('#night-light');
-    var antiFog = $('#anti-fog');
-
-    // assigning variables to the color temperature options
-    var warmWhite27 = $('#2700k');
-    var warmWhite30 = $('#3000k');
-    var coolWhite40 = $('#4000k');
-    var coolWhite50 = $('#5000k');
-    var adjustableTemperature = $('#adjustable');
-    var nonAdjustableTemperatureItems = [warmWhite27, warmWhite30, coolWhite40, coolWhite50];
-
-    // assign a value to a var for the touch sensor selector
-    var touchSensorValue = 0;
-
-
-    function mirrorControlsLogic() {
-        // if the wall switch only radio option is selected
-        if (wallSwitchOnlyControls.is(':checked')) {
-            // click the NONE option for touch sensor selector
-            nightLight.show() // show the night light option
-            antiFog.show() // show the anti-fog option
-            noTouchSensor.click();
-            adjustableTemperature.hide() // hide the adjustable temperature option
-            $('#night-light-text').text('Controlled By Your Wall Switch'); // change the text of the night light option
-            $('#anti-fog-text').text('Controlled By Your Wall Switch'); // change the text of the anti-fog option
-        } else if (lightTouchControls.is(':input:checked')){
-            // if the light touch option is selected
-            adjustableTemperature.show() // show the adjustable temperature option
-            nightLight.show() // show the night light option
-            antiFog.hide() // hide the anti-fog option
-            $('#night-light-text').text('Can NOT Be Assigned To A Touch Sensor'); // change the text of the night light option
-            singleTouchSensor.click(); // click the single touch sensor option
-        } else if (matrixTouchSystemControls.is(':input:checked')) {
-            // if the matrix touch system option is selected
-            adjustableTemperature.click() // click the adjustable temperature option
-            adjustableTemperature.show() // show the adjustable temperature option
-            nonAdjustableTemperatureItems.hide() // hide the non adjustable temperature options
-            $('#night-light-text').text('Can NOT Be Assigned To A Touch Sensor'); // change the text of the night light option
-            $('#anti-fog-text').text('Controlled By Your Wall Switch'); // change the text of the anti-fog option
-            tripleTouchSensor.click(); // click the dual touch sensor option
-        }
-    }
-
-    
 
 
   
@@ -257,7 +201,6 @@ $(document).ready(function() {
            updatedStandardRoundSizes();
            getValuesForErrors();
            ifDeco();
-          
         
           
        });
@@ -851,6 +794,7 @@ function checkRequired() {
 
 
 
+
     // non adjustable temperature items
     nonAdjustableTemperatureItems.on('click', function() {
         touchSensorItems.show();
@@ -1247,7 +1191,8 @@ $('#width').on('focusout', function() {
 
             // get the current selected photo and add it to the pdf
             var photo = $('#selected-image').attr('src');
-            doc.addImage(photo, 'PNG', 100, 55, 100, 100);
+            const encodedPhotoURL = encodeURIComponent(photo);
+            doc.addImage(encodedPhotoURL, 'JPEG', 100, 55, 100, 100);
             
 
             // place a light grey rectangle behind the style name
