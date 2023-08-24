@@ -1,3 +1,5 @@
+import { productLine } from "./utils";
+
 const rules = {
     'Wall Switch': {
       showAndClick: [],
@@ -110,5 +112,14 @@ const rules = {
       excludeProductLines: ['Future', 'Classic'],
     }
   };
+
+  if (productLine === 'Future') {
+    rules['Edge'] = {
+      showAndClick: ['Indirect'],
+      disable: ['Both-Direct-And-Indirect', 'Direct'],
+      enable: [],
+      excludeProductLines: ['Future', 'Classic'],
+    };
+  }
 
   export { rules };
