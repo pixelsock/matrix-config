@@ -40,8 +40,8 @@ const rules = {
     },
     'Edge': {
       showAndClick: [],
-      disable: ['Night Light', 'Both-Direct-And-Indirect'],
-      enable: ['Direct', 'Indirect'],
+      disable: ['Night-Light', 'Both-Direct-And-Indirect'],
+      enable: [ 'Direct', 'Indirect'],
       excludeProductLines: [],
       
     },
@@ -60,13 +60,36 @@ const rules = {
       excludeProductLines: [],
       
     },
+    '! Round':{
+      showAndClick: [],
+      disable: [],
+      enable: ['Horizontal-Mounting'],
+      excludeProductLines: [],
+    },
+    
     'Round': {
-      showAndClick: ['Indirect', 'Vertical Mounting'],
-      disable: ['Night-Light', 'Direct', 'Both-Direct-And-Indirect'],
+      showAndClick: ['Vertical Mounting'],
+      disable: ['Night-Light', 'Direct', 'Both-Direct-And-Indirect', 'Horizontal-Mounting'],
       enable: [],
       excludeProductLines: ['Deco', 'Future'],
       
     },
+   
+    '! Round Full Frame Edge': {
+      showAndClick: [],
+      disable: [],
+      enable: ['Matrix-Touch-System'],
+      excludeProductLines: [],
+    },
+
+    'Round Full Frame Edge': {
+      showAndClick: [],
+      disable: ['Matrix-Touch-System'],
+      enable: [],
+      excludeProductLines: ['Deco', 'Future'],
+    },
+    
+ 
     'Touch && Adjustable': {
       showAndClick: ['High', 'Non-Dimming'],
       disable: ['ELV-Dimmable', '0-10-Dimmable', 'Standard'],

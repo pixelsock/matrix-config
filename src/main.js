@@ -48,41 +48,44 @@ export function getSelectedOptions() {
 
 
 function updateSelectedOptionsDisplay(filterInstances) {
-  // Access the filtersData array
   const filtersData = filterInstances[0].filtersData;
 
-  // Iterate through the filtersData array and access the selected tags (values)
-  filtersData.forEach((filter) => {
-    // Access the originalFilterKeys array, which contains the category names
-    const originalFilterKeys = filter.originalFilterKeys;
+  let isMatrixTouchSystemSelected = false;
 
-    // Access the values (selected tags) for each filter
+  filtersData.forEach((filter) => {
+    const originalFilterKeys = filter.originalFilterKeys;
     const values = Array.from(filter.values);
 
-    // Iterate through the originalFilterKeys and values
+    const mirrorControlsIndex = originalFilterKeys.indexOf('Mirror Controls');
+    if (mirrorControlsIndex !== -1 && values[mirrorControlsIndex] === 'Matrix Touch System') {
+      isMatrixTouchSystemSelected = true;
+    }
+
     originalFilterKeys.forEach((key, index) => {
-      // Find the associated .selected-option element using the filter-target attribute
       const selectedOptionElement = $(`.selected-option[filter-target="${key}"]`);
 
-      // Render the selected tag to the .selected-option element
-      if (selectedOptionElement) {
-        if (key === 'Accessories') {
-          // If more than one Accessories option is selected, set the text to "Anti-Fog & Night Light (AN)"
+      if (key === 'Accessories' && isMatrixTouchSystemSelected) {
+        if (selectedOptionElement) {
+          selectedOptionElement.text('Matrix Touch System (TR)');
+          selectedOptionElement.css('display', 'block');
+        }
+      } else {
+        if (selectedOptionElement) {
           const selectedAccessories = values.filter((value) => value === 'Anti-Fog (AF)' || value === 'Night Light (NL)');
           if (selectedAccessories.length > 1) {
             selectedOptionElement.text('Anti-Fog & Night Light (AN)');
           } else {
-            // If only one Accessories option is selected, set the text to the selected option
-            selectedOptionElement.text(values[index] || ''); // If the value is cleared, set an empty string
+            selectedOptionElement.text(values[index] || '');
           }
-        } else {
-          selectedOptionElement.text(values[index] || ''); // If the value is cleared, set an empty string
+          selectedOptionElement.css('display', values[index] ? 'block' : 'none');
         }
-        selectedOptionElement.css('display', values[index] ? 'block' : 'none'); // Hide if the value is cleared
       }
     });
   });
 }
+
+
+
 
 
 function updateConfigurator() {
