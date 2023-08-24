@@ -28,6 +28,11 @@ const resetRules = {
     ifSelected: ['Night-Light'],
     resetKey: ['accessories'],
   },
+  'Round Full Frame Edge': {
+    ifSelected: ['Matrix Touch System'],
+    resetKey: ['mirror controls'],
+    fallback: ['Touch Sensor - Light Controls Only']
+  },
   
   'size' : {
     resetKey: ['size', 'width', 'diameter', 'height'],
