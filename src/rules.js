@@ -20,38 +20,44 @@ const rules = {
       enable: [],
       excludeProductLines: [],
     },
+    'Inward Lighting': {
+      showAndClick: [],
+      disable: ['Indirect'],
+      enable: [],
+      excludeProductLines: ['Future', 'Classic', 'Deco'],
+    },
     'Thin Frame': {
       showAndClick: [],
       disable: [],
       enable: [],
-      excludeProductLines: ['Future', 'Classic'],
+      excludeProductLines: ['Future', 'Classic', 'Bright Line'],
     },
     'Wide Frame': {
       showAndClick: [],
       disable: [],
       enable: [],
-      excludeProductLines: ['Future', 'Classic'],
+      excludeProductLines: ['Future', 'Classic', 'Bright Line'],
       
     },
     'Inset': {
       showAndClick: [],
       disable: ['Indirect'],
       enable: ['Direct', 'Both-Direct-And-Indirect'],
-      excludeProductLines: [],
+      excludeProductLines: ['Bright Line'],
      
     },
     'Edge': {
       showAndClick: [],
       disable: ['Night-Light', 'Both-Direct-And-Indirect'],
       enable: [ 'Direct', 'Indirect'],
-      excludeProductLines: [],
+      excludeProductLines: ['Bright Line'],
       
     },
     'Thin Frame && Edge': {
       showAndClick: ['Indirect'],
       disable: ['Both-Direct-And-Indirect', 'Direct'],
       enable: [],
-      excludeProductLines: ['Future', 'Classic'],
+      excludeProductLines: ['Future', 'Classic', 'Bright Line'],
       
     },
     
@@ -59,7 +65,7 @@ const rules = {
       showAndClick: ['Indirect'],
       disable: ['Direct', 'Both-Direct-And-Indirect', 'Night-Light', 'Anti-Fog'],
       enable: [],
-      excludeProductLines: [],
+      excludeProductLines: ['Bright Line'],
       
     },
     '! Round':{
@@ -73,7 +79,7 @@ const rules = {
       showAndClick: ['Vertical Mounting'],
       disable: ['Night-Light', 'Direct', 'Both-Direct-And-Indirect', 'Horizontal-Mounting'],
       enable: [],
-      excludeProductLines: ['Deco', 'Future'],
+      excludeProductLines: ['Deco', 'Future', 'Bright Line'],
       
     },
    
@@ -88,7 +94,7 @@ const rules = {
       showAndClick: [],
       disable: ['Matrix-Touch-System'],
       enable: [],
-      excludeProductLines: ['Deco', 'Future'],
+      excludeProductLines: ['Deco', 'Future', 'Bright Line'],
     },
     
  
@@ -109,7 +115,7 @@ const rules = {
       showAndClick: [],
       disable: [],
       enable: [],
-      excludeProductLines: ['Future', 'Classic'],
+      excludeProductLines: ['Future', 'Classic', 'Bright Line'],
     }
   };
 
