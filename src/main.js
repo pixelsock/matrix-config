@@ -6,6 +6,7 @@ import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
 
+
 export function getSelectedOptions() {
   const form = $('#full-filter-form');
   const selectedOptions = [];
@@ -94,6 +95,7 @@ function updateConfigurator() {
   generateSku(selectedOptions); // Generate the SKU this has to be called before apply rules. 
 
   applyRules(selectedOptions, rules);
+
 
   showHideSizesBasedOffStyle(selectedOptions);
   forSubmissionSkuAndQuantity();

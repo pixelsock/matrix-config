@@ -89,8 +89,16 @@ export function forSubmissionSkuAndQuantity() {
 
   
 // Function to check if an option is excluded for the current product line
-export const productLine = $('#product-line').text();
-  export const isExcluded = (optionKey) => {
-    const rule = rules[optionKey];
-    return rule && rule.excludeProductLines && rule.excludeProductLines.includes(productLine);
-  };
+export const productLine = $('#product-line').text().trim();
+export const isExcluded = (optionKey) => {
+  const rule = rules[optionKey];
+  if (!rule) {
+    console.warn(`No rule found for option key: ${optionKey}`);
+    return false;
+  }
+  if (!Array.isArray(rule.excludeProductLines)) {
+    console.warn(`excludeProductLines is not an array for option key: ${optionKey}`);
+    return false;
+  }
+  return rule.excludeProductLines.includes(productLine);
+};

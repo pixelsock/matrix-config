@@ -4,6 +4,7 @@ const skuMapping = {
     'Mirror Style': {
       'Full Frame Inset': '01',
       'Full Frame Edge': '02',
+      'Full Frame Inward Lighting': '05',
       'Double Long Side Inset': '03',
       'Double Long Side Edge': '04',
       'No Frost': '05',
@@ -17,9 +18,10 @@ const skuMapping = {
       'Round No Frost': '51',
     },
     'Frame Color':{
-      'Black Metal': 'BM',
-      'Silver Metal': 'SM',
-      'Gold Metal': 'GM',
+      'Black Frame': 'BF',
+      'Silver Frame': 'SF',
+      'Gold Frame': 'GF',
+      
     },
     'Frame Thickness': {
       'Thin Frame': 'T',
@@ -65,6 +67,7 @@ const skuMapping = {
       '0-10 Dimmable': 'V',
     },
     'Product Line': {
+      'Bright Line': 'B', // Return 'B' for Bright Line
       'Classic': 'L',
       'Future': 'F',
       'Deco': 'D',
@@ -74,10 +77,11 @@ const skuMapping = {
 
   
   function getPrefix() {
-    const productLine = $('#product-line').text().trim();
+    const productLine = $('#product-line').text();
     if (productLine.includes('Classic')) return 'L';
     if (productLine.includes('Future')) return 'F';
     if (productLine.includes('Deco')) return 'D'; // Return 'D' for Deco
+    if (productLine.includes('Bright')) return 'B'; // Return 'B' for Bright Line
     return ''; // Default case
   }
   

@@ -49,11 +49,6 @@ function renderHeader(doc) {
     // Header End
   }
   
-  
-
- 
-  
-
 
 function renderSkuAndDate(doc) {
    
@@ -288,9 +283,9 @@ function renderStyleDetails(doc, selectedOptions) {
   
     }
   
-  function renderOtherDetails(doc, selectedOptions) {
-    // Determine the product line or other criteria to customize the details
-    const defaultMaxWidth = 40; 
+    function renderOtherDetails(doc, selectedOptions) {
+      try {
+        const defaultMaxWidth = 40;
 
     const details = [
         { label: 'Quantity', sku: false, value: selectedOptions.find(option => option.dataName === 'Quantity')?.value || 'N/A', x: 198, y: 74 },
@@ -308,15 +303,17 @@ function renderStyleDetails(doc, selectedOptions) {
 
  // Conditionally add product line-specific options
   if (!isExcluded('Frame Color')) {
-    details.push({ circle: 9, value: selectedOptions.find(option => option.dataName === 'Frame Color')?.value || 'N/A', x: 148, y: 231 },
+details.push({ circle: 9, value: selectedOptions.find(option => option.dataName === 'Frame Color')?.value || 'N/A', x: 148, y: 231 },
     { maxWidth: 60, label: 'Accessories', circle: 10, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 50, y: 261 },
-        {  maxWidth: 95, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 105, y: 261 },);
+        {  maxWidth: 95, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 105, y: 261 },
+        );
   } else {
     details.push({ label: 'Accessories', circle: 9, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 148, y: 231 },
     {  maxWidth: 115, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 50, y: 261 },);
   }
   if (!isExcluded('Frame Thickness')) {
-    details.push({ circle: 1, value: selectedOptions.find(option => option.dataName === 'Frame Thickness')?.value || 'N/A', x: 50, y: 171 });
+    details.push({ circle: 1, value: selectedOptions.find(option => option.dataName === 'Frame Thickness')?.value || 'N/A', x: 50, y: 171 }
+     );
   } else {
     details.push({ label: 'Product Line', circle: 1, value: productLine , x: 50, y: 171 });
   }
@@ -334,8 +331,8 @@ function renderStyleDetails(doc, selectedOptions) {
         }
     }
       
-      details.forEach(detail => {
-      
+    details.forEach(detail => {
+      let skuText = ''; // Declare skuText here to make it accessible throughout this block
           
         // Provide default values if sku and label are not defined
         const sku = detail.hasOwnProperty('sku') ? detail.sku : true;
@@ -346,7 +343,6 @@ function renderStyleDetails(doc, selectedOptions) {
 
        
       // Determine the SKU text for the current detail
-      let skuText = '';
       if (sku && skuMapping[dataName]) {
         // If the dataName is "Accessories", handle the custom logic
         if (dataName === 'Accessories') {
@@ -395,6 +391,10 @@ function renderStyleDetails(doc, selectedOptions) {
         for (let i = 0; i < lines.length; i++) {
           doc.text(lines[i], detail.x, detail.y + (i * (detail.gap || 5)));
         }
+
+        if (typeof skuText === 'undefined') {
+          console.error('skuText is undefined for the detail:', detail);
+        }
     
         // If a circle index is provided, render the SKU above the corresponding circle
         if (detail.circle !== undefined) {
@@ -408,7 +408,13 @@ function renderStyleDetails(doc, selectedOptions) {
           doc.setFont("Inter", "normal");
         }
       });
+    } catch (e) {
+      console.error('Error in renderOtherDetails:', e);
     }
+  }
+  
+  
+  
   
   // Helper function to add text with different styles for label and value
   function addDetail(doc, value, x, y, label = '') {

@@ -232,16 +232,16 @@ function ifDeco() {
             // create a switch statement to get the value of the data-color attribute value
             var frameColorGrid = $('#frame-color-grid').find('input:checked').val();
             switch (frameColorGrid) {
-                case 'Black Metal':
+                case 'Black Frame':
                     $('#accessories-sku').html('BF');
-                        
                     break;
-                case 'Gold Metal':
+                case 'Gold Frame':
                     $('#accessories-sku').html('GF');
                     break;
-                case 'Silver Metal':
+                case 'Silver Frame':
                     $('#accessories-sku').html('SF');
                     break;
+                    
             
 
             }
