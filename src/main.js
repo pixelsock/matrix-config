@@ -52,42 +52,56 @@ function updateSelectedOptionsDisplay(filterInstances) {
   const filtersData = filterInstances[0].filtersData;
 
   let isMatrixTouchSystemSelected = false;
+  let isTouchSensorSelected = false;
+  let isAntiFogSelected = false;
 
   filtersData.forEach((filter) => {
     const originalFilterKeys = filter.originalFilterKeys;
     const values = Array.from(filter.values);
-
     const mirrorControlsIndex = originalFilterKeys.indexOf('Mirror Controls');
+    console.log('Mirror Controls Index:', values[mirrorControlsIndex]); // Debugging line
+  
+    const accessoriesIndex = originalFilterKeys.indexOf('Accessories');
+    console.log('Accessories Index:', values[accessoriesIndex]); // Debugging line
     if (mirrorControlsIndex !== -1 && values[mirrorControlsIndex] === 'Matrix Touch System') {
       isMatrixTouchSystemSelected = true;
-    }
+    } else if (mirrorControlsIndex !== -1 && values[mirrorControlsIndex] === 'Touch Sensor - Light Controls Only' ) {
+      isTouchSensorSelected = true;
+    } 
 
+    if (accessoriesIndex !== -1 && values[accessoriesIndex] === 'Anti-Fog (AF)') {
+      isAntiFogSelected = true;
+      console.log('Anti-Fog Selected:', isAntiFogSelected); // Debugging line
+    }
+   
     originalFilterKeys.forEach((key, index) => {
       const selectedOptionElement = $(`.selected-option[filter-target="${key}"]`);
-
       if (key === 'Accessories' && isMatrixTouchSystemSelected) {
-        if (selectedOptionElement) {
-          selectedOptionElement.text('Matrix Touch System (TR)');
-          selectedOptionElement.css('display', 'block');
-        }
+        updateSelectedOption(selectedOptionElement, 'Matrix Touch System (TR)');
+      } else if (key === 'Accessories' && isTouchSensorSelected && isAntiFogSelected) {
+    
+        updateSelectedOption(selectedOptionElement, 'Anti-Fog & Touch Sensor (AT)');
+        
+      } else if (key === 'Accessories' && isTouchSensorSelected && !isAntiFogSelected) {
+        updateSelectedOption(selectedOptionElement, 'Touch Sensor (TS)');
       } else {
-        if (selectedOptionElement) {
-          const selectedAccessories = values.filter((value) => value === 'Anti-Fog (AF)' || value === 'Night Light (NL)');
-          if (selectedAccessories.length > 1) {
-            selectedOptionElement.text('Anti-Fog & Night Light (AN)');
-          } else {
-            selectedOptionElement.text(values[index] || '');
-          }
-          selectedOptionElement.css('display', values[index] ? 'block' : 'none');
+        const selectedAccessories = values.filter((value) => value === 'Anti-Fog (AF)' || value === 'Night Light (NL)');
+        if (selectedAccessories.length > 1) {
+          updateSelectedOption(selectedOptionElement, 'Anti-Fog & Night Light (AN)');
+        } else {
+          updateSelectedOption(selectedOptionElement, values[index] || '');
         }
       }
     });
   });
 }
 
-
-
-
+function updateSelectedOption(selectedOptionElement, text) {
+  if (selectedOptionElement) {
+    selectedOptionElement.text(text);
+    selectedOptionElement.css('display', text ? 'block' : 'none');
+  }
+}
 
 function updateConfigurator() {
   const selectedOptions = getSelectedOptions();

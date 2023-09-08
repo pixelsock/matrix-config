@@ -50,6 +50,7 @@ function renderHeader(doc) {
   }
   
 
+
 function renderSkuAndDate(doc) {
    
   
@@ -330,84 +331,87 @@ details.push({ circle: 9, value: selectedOptions.find(option => option.dataName 
           accessoriesDetail.value = 'Matrix Touch System';
         }
     }
+
+
+    
       
     details.forEach(detail => {
-      let skuText = ''; // Declare skuText here to make it accessible throughout this block
-          
-        // Provide default values if sku and label are not defined
-        const sku = detail.hasOwnProperty('sku') ? detail.sku : true;
-        const maxWidth = detail.maxWidth !== undefined ? detail.maxWidth : defaultMaxWidth;
-    
-        let text = detail.value;
-        const dataName = detail.label || selectedOptions.find(option => option.value === detail.value)?.dataName;
+  let skuText = ''; // Declare skuText here to make it accessible throughout this block
 
-       
-      // Determine the SKU text for the current detail
-      if (sku && skuMapping[dataName]) {
-        // If the dataName is "Accessories", handle the custom logic
-        if (dataName === 'Accessories') {
-          selectedOptions.forEach(option => {
-            if (option.dataName === 'Accessories' && skuMapping['Accessories'][option.value]) {
-              skuText += skuMapping['Accessories'][option.value];
-            }
-          });
-          // Special handling for "Matrix Touch System"
-          if (details.some(detail => detail.value === 'Matrix Touch System')) {
-            skuText = 'TR'; // Use the appropriate SKU code
-          } else if (skuText === 'NLAF') {
-            skuText = 'AN'; // Both Night-Light and Anti-Fog selected
-            text = 'Anti-Fog & Night Light';
-          }
-        
-        
-         
-          
-        } else {
-          skuText = skuMapping[dataName][text]; // Use simple mapping for other categories
-        }
-        text = skuText + ' - ' + text;
-      }
+  // Provide default values if sku and label are not defined
+  const sku = detail.hasOwnProperty('sku') ? detail.sku : true;
+  const maxWidth = detail.maxWidth !== undefined ? detail.maxWidth : defaultMaxWidth;
 
-  
+  let text = detail.value;
+  const dataName = detail.label || selectedOptions.find(option => option.value === detail.value)?.dataName;
 
-          if (text === 'Matrix Touch System') {
-            text = 'Matrix Touch System is a triple touch system with built in ON/OFF/Dimming, Color Temperature, & Anti-Fog controls'; 
-          }
-    
-        if (detail.value === 'N/A') {
-          skuText = 'N/A';
-          if (detail.label != 'Quantity') {
-          text = 'N/A - Not Selected'
-          }
-          doc.setTextColor(224, 113, 115);
-        } else {
-          doc.setTextColor(0, 0, 0);
-        }
-    
-        let lines = [text];
-        if (maxWidth !== false) {
-          lines = doc.splitTextToSize(text, maxWidth);
-        }
-        for (let i = 0; i < lines.length; i++) {
-          doc.text(lines[i], detail.x, detail.y + (i * (detail.gap || 5)));
-        }
-
-        if (typeof skuText === 'undefined') {
-          console.error('skuText is undefined for the detail:', detail);
-        }
-    
-        // If a circle index is provided, render the SKU above the corresponding circle
-        if (detail.circle !== undefined) {
-            doc.setFontSize(18);
-            doc.setFont("Inter", "bold");
-          const circlePosition = circlePositions[detail.circle - 1]; // Get the position of the corresponding circle
-          if (circlePosition) {
-            doc.text(skuText, circlePosition.first.x, circlePosition.first.y - 7, 'center'); // Render SKU above the circle
-          }
-          doc.setFontSize(10);
-          doc.setFont("Inter", "normal");
+  // Determine the SKU text for the current detail
+  if (sku && skuMapping[dataName]) {
+    // If the dataName is "Accessories", handle the custom logic
+    if (dataName === 'Accessories') {
+      selectedOptions.forEach(option => {
+        if (option.dataName === 'Accessories' && skuMapping['Accessories'][option.value]) {
+          skuText += skuMapping['Accessories'][option.value];
         }
       });
+      // Special handling for "Matrix Touch System"
+      if (details.some(detail => detail.value === 'Matrix Touch System')) {
+        skuText = 'TR'; // Use the appropriate SKU code
+      } else if (skuText === 'NLAF') {
+        skuText = 'AN'; // Both Night-Light and Anti-Fog selected
+        text = 'Anti-Fog & Night Light';
+      } else if (details.some(detail => detail.value === 'Touch Sensor - Light Controls Only')) {
+        if (skuText === 'AF') {
+        skuText = 'AT';
+        text = 'Anti-Fog & Touch Sensor';
+        } else {
+          skuText = 'TS';
+        } // Use the appropriate SKU code
+      }
+    } else {
+      skuText = skuMapping[dataName][text]; // Use simple mapping for other categories
+    }
+    text = skuText + ' - ' + text;
+  }
+
+  if (text === 'Matrix Touch System') {
+    text = 'Matrix Touch System is a triple touch system with built in ON/OFF/Dimming, Color Temperature, & Anti-Fog controls'; 
+  }
+
+  if (detail.value === 'N/A') {
+    skuText = 'N/A';
+    if (detail.label != 'Quantity') {
+      text = 'N/A - Not Selected'
+    }
+    doc.setTextColor(224, 113, 115);
+  } else {
+    doc.setTextColor(0, 0, 0);
+  }
+
+  let lines = [text];
+  if (maxWidth !== false) {
+    lines = doc.splitTextToSize(text, maxWidth);
+  }
+  for (let i = 0; i < lines.length; i++) {
+    doc.text(lines[i], detail.x, detail.y + (i * (detail.gap || 5)));
+  }
+
+  if (typeof skuText === 'undefined') {
+    console.error('skuText is undefined for the detail:', detail);
+  }
+
+  // If a circle index is provided, render the SKU above the corresponding circle
+  if (detail.circle !== undefined) {
+    doc.setFontSize(18);
+    doc.setFont("Inter", "bold");
+    const circlePosition = circlePositions[detail.circle - 1]; // Get the position of the corresponding circle
+    if (circlePosition) {
+      doc.text(skuText, circlePosition.first.x, circlePosition.first.y - 7, 'center'); // Render SKU above the circle
+    }
+    doc.setFontSize(10);
+    doc.setFont("Inter", "normal");
+  }
+});
     } catch (e) {
       console.error('Error in renderOtherDetails:', e);
     }
