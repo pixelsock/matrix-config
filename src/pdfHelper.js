@@ -180,8 +180,8 @@ const PDFHelper = {
         } else {
           const widthOption = selectedOptions.find(option => option.dataName === 'Width');
           const heightOption = selectedOptions.find(option => option.dataName === 'Height');
-          const width = widthOption ? widthOption.value : 'N/A';
-          const height = heightOption ? heightOption.value : 'N/A';
+          const width = widthOption ? widthOption.value + '"' : 'N/A';
+          const height = heightOption ? heightOption.value + '"' : 'N/A';
           sizeDetailsLabel = 'W: ';
           sizeDetailsValue = width + ' H: ' + height;
           sizeDetailsSku = width + height;

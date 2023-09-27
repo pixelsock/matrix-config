@@ -2,13 +2,13 @@ import { jsPDF } from "jspdf";
 import './fonts/Inter-Bold-bold.js';
 import './fonts/Inter-Regular-normal.js';
 import { skuMapping } from './skuGeneration';
-import { isExcluded, productLine } from './utils';
+import { isExcluded, productLine, isCustomSize } from './utils';
+
 
 
 
 export function generatePdf(selectedOptions, buttonId) {
-  const doc = new jsPDF();
-
+  const doc = new jsPDF();  
   setDocStyles(doc);
   renderHeader(doc);
   renderItemCode(doc);
@@ -16,12 +16,12 @@ export function generatePdf(selectedOptions, buttonId) {
   renderSelectedImage(doc);
   renderStyleDetails(doc, selectedOptions);
   renderFooter(doc);
-  const skuString = $('#productSku').text();
+  let skuString = $('#productSku').text();
   const filename = skuString + '.pdf';
-
+ 
   // Attach to submit button
   if (buttonId === 'newWindow') {
-  doc.output('pdfobjectnewwindow');
+  doc.save(filename);
   } else if (buttonId === 'save') {
     doc.save(filename);
   }
@@ -64,6 +64,7 @@ function renderSkuAndDate(doc) {
       doc.text("Created @matrixmirrors.com on: " + month + "/" + day + "/" + year, 199, 69, 'right');
 
 }
+
 
 function renderSelectedImage(doc) {
   // Selected Image
@@ -117,39 +118,41 @@ function renderStyleDetails(doc, selectedOptions) {
     doc.setFontSize(10); // Reset Font Size
     doc.setFont("Inter", "normal");
   }
-  
+
   function renderSizeDetails(doc, selectedOptions) {
     let sizeDetailsLabel = '';
     let sizeDetailsValue = '';
     let sizeDetailsSku = '';
   
+    
     const mirrorStyleOption = selectedOptions.find(option => option.dataName === 'Mirror Style');
   
-    if (mirrorStyleOption && mirrorStyleOption.value.toLowerCase().includes('round')) {
+    const standardSizeOption = selectedOptions.find(option => option.dataName === 'Standard Size');
+    const standardDiameterOption = selectedOptions.find(option => option.dataName === 'Standard Diameter');
+   
+    
+    if (mirrorStyleOption && mirrorStyleOption.value.toLowerCase().includes('round') && isCustomSize ) {
       const diameterOption = selectedOptions.find(option => option.dataName === 'Diameter');
-      sizeDetailsLabel = 'Size: ';
-      sizeDetailsValue = diameterOption ? diameterOption.value : 'N/A';
-      sizeDetailsSku = diameterOption ? diameterOption.value : 'N/A';
-    } else if (selectedOptions.find(option => option.dataName === 'Standard Size' && option.value != '')) {
-      const standardSizeOption = selectedOptions.find(option => option.dataName === 'Standard Size');
-      if (standardSizeOption && standardSizeOption.value) {
-        const [width, height] = standardSizeOption.value.split('x');
-        sizeDetailsLabel = 'W: ';
-        sizeDetailsValue = width + ' H: ' + height;
-        sizeDetailsSku = width + height;
-      } else {
-        sizeDetailsLabel = 'W: ';
-        sizeDetailsValue = 'N/A H: N/A';
-        sizeDetailsSku = 'N/A';
-      }
-    } else {
-      const widthOption = selectedOptions.find(option => option.dataName === 'Width');
-      const heightOption = selectedOptions.find(option => option.dataName === 'Height');
-      const width = widthOption ? widthOption.value : 'N/A';
-      const height = heightOption ? heightOption.value : 'N/A';
+      sizeDetailsLabel = 'Diameter: ';
+      sizeDetailsValue = diameterOption ? diameterOption.value + '"' : 'N/A';
+      sizeDetailsSku = diameterOption ? '00' + diameterOption.value : 'N/A';
+    } else if (standardSizeOption && standardSizeOption.value) {
+      const [width, height] = standardSizeOption.value.split('x');
       sizeDetailsLabel = 'W: ';
       sizeDetailsValue = width + ' H: ' + height;
       sizeDetailsSku = width + height;
+    } else if (standardDiameterOption && mirrorStyleOption.value.toLowerCase().includes('round') &&standardDiameterOption.value) {
+      sizeDetailsLabel = 'Diameter: ';
+      sizeDetailsValue = standardDiameterOption ? standardDiameterOption.value.substring(0, standardDiameterOption.value.indexOf('"')+1) : 'N/A';
+      sizeDetailsSku = standardDiameterOption ? '00' + standardDiameterOption.value.substring(0, standardDiameterOption.value.indexOf('"')) : 'N/A';
+    } else {
+      const widthOption = selectedOptions.find(option => option.dataName === 'Width');
+      const heightOption = selectedOptions.find(option => option.dataName === 'Height');
+      const width = widthOption ? widthOption.value + '"' : 'N/A';
+      const height = heightOption ? heightOption.value + '"': 'N/A';
+      sizeDetailsLabel = 'W: ';
+      sizeDetailsValue = width + ' H: ' + height;
+      sizeDetailsSku = width + '-' + height;
     }
   
     const sizeSku = sizeDetailsSku.replace(/\"/g, '')
@@ -256,7 +259,11 @@ function renderStyleDetails(doc, selectedOptions) {
     doc.text("Type", 57, 164.5, 'left');
     doc.text("Style", 107, 164.5, 'left');
     doc.text("Lighitng Style", 155, 164.5, 'left');
-    doc.text("Size", 57, 194.5, 'left');
+    if (isCustomSize) {
+    doc.text("Custom Size", 57, 194.5, 'left');
+    } else {
+      doc.text("Size", 57, 194.5, 'left');
+    }
     doc.text("Output", 107, 194.5, 'left');
     doc.text("Color Temperature", 155, 194.5, 'left');
     doc.text("Driver", 57, 224.5, 'left');

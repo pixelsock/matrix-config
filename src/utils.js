@@ -102,3 +102,14 @@ export const isExcluded = (optionKey) => {
   }
   return rule.excludeProductLines.includes(productLine);
 };
+
+// Function to check if the custom size checkbox is checked
+export const isCustomSize = () => {
+  const customSizeCheckbox = selectedOptions.find(option => option.dataName === 'Custom Size Checkbox');
+  if (!customSizeCheckbox) {
+    console.warn('Custom Size Checkbox not found');
+    return false;
+  } else {
+  return true;
+  }
+};

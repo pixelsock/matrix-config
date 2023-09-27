@@ -21,7 +21,7 @@ const resetRules = {
   },
   'Edge': {
     ifSelected: ['Both Direct And Indirect'],
-    resetKey: ['light direction'],
+    resetKey: ['light direction'], 
     fallback: ['Indirect']
   },
   'Touch Sensor': {
@@ -29,14 +29,20 @@ const resetRules = {
     resetKey: ['accessories'],
   },
   'Round Full Frame Edge': {
-    ifSelected: ['Matrix Touch System'],
-    resetKey: ['mirror controls'],
-    fallback: ['Touch Sensor - Light Controls Only']
+    ifSelected: ['Matrix Touch System', 'Direct'],
+    resetKey: ['mirror controls', 'light direction'],
+    fallback: ['Touch Sensor - Light Controls Only', 'Indirect']
   },
-  
+  'Round': {
+    ifSelected: ['*'], // Applies when any "Round" style is selected
+    resetKey: ['size', 'width', 'height'], // Reset these keys
+  },
+  'Inset || Edge': {
+    ifSelected: ['32" Diameter', '36" Diameter'], 
+    resetKey: ['size', 'diameter'], // Reset these keys
+  },
   'size' : {
     resetKey: ['size', 'width', 'diameter', 'height'],
-    ifSelected: ['*']
   },
 };
 
@@ -46,20 +52,17 @@ function resetFilters(resetKeys) {
     'cmsfilter',
     (filterInstances) => {
       const [filterInstance] = filterInstances;
-      console.log('filterInstance', filterInstance); // Log filterInstance
-      console.log('resetKeys', resetKeys); // Log resetKeys
+      //console.log('filterInstance', filterInstance); // Log filterInstance
+     // console.log('resetKeys', resetKeys); // Log resetKeys
       resetKeys.forEach((key) => {
-        console.log(`Resetting ${key} filter...`);
         filterInstance.resetFilters([key]).then(() => {
-          console.log(`${key} filter reset successfully`);
         }).catch(error => {
-          console.error(`Error resetting ${key} filter:`, error);
+          console.error(`Error resetting ${key} filter:`, error); 
         });
       });
     },
   ]);
 }
-
 
 function matchesRule(clickedValue, ruleKey) {
   // Split the ruleKey by "||" to handle OR conditions
@@ -77,14 +80,13 @@ function matchesRule(clickedValue, ruleKey) {
 
 function handleClick(event) {
   const clickedElementValue = event.target.value;
-  console.log(`Clicked value: ${clickedElementValue}`); // Debug line
 
   // Iterate over the keys in resetRules and find the matching rule
   for (const ruleKey in resetRules) {
     if (matchesRule(clickedElementValue, ruleKey)) {
       const rule = resetRules[ruleKey];
       if (rule && (areOptionsSelected(rule.ifSelected) || rule.ifSelected.includes('*'))) {
-        console.log('attempting to click fallback')
+       // console.log('attempting to click fallback')
         // If there's a fallback option, click it
         if (rule.fallback) {
           rule.fallback.forEach(fallbackOption => {
@@ -96,7 +98,6 @@ function handleClick(event) {
               const fallbackElement = $(this);
               setTimeout(() => {
                 fallbackElement.click();
-                console.log(`Clicking fallback option: ${fallbackOption}`); // Debug line
               }, 100);
             });
           });
@@ -129,5 +130,10 @@ function initializeReset() {
     resetFilters(resetRules['size'].resetKey);
   });
 }
+
+// on document ready reset the size filter
+$(document).ready(function() {
+resetFilters(resetRules['size'].resetKey);
+});
 
 export { initializeReset };

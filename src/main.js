@@ -43,7 +43,6 @@ export function getSelectedOptions() {
     selectedOptions.push({ id, value, dataName });
   });
 
-  console.log('Selected Options:', selectedOptions); // Debugging line
   return selectedOptions;
 }
 
@@ -59,10 +58,8 @@ function updateSelectedOptionsDisplay(filterInstances) {
     const originalFilterKeys = filter.originalFilterKeys;
     const values = Array.from(filter.values);
     const mirrorControlsIndex = originalFilterKeys.indexOf('Mirror Controls');
-    console.log('Mirror Controls Index:', values[mirrorControlsIndex]); // Debugging line
   
     const accessoriesIndex = originalFilterKeys.indexOf('Accessories');
-    console.log('Accessories Index:', values[accessoriesIndex]); // Debugging line
     if (mirrorControlsIndex !== -1 && values[mirrorControlsIndex] === 'Matrix Touch System') {
       isMatrixTouchSystemSelected = true;
     } else if (mirrorControlsIndex !== -1 && values[mirrorControlsIndex] === 'Touch Sensor - Light Controls Only' ) {
@@ -71,7 +68,6 @@ function updateSelectedOptionsDisplay(filterInstances) {
 
     if (accessoriesIndex !== -1 && values[accessoriesIndex] === 'Anti-Fog (AF)') {
       isAntiFogSelected = true;
-      console.log('Anti-Fog Selected:', isAntiFogSelected); // Debugging line
     }
    
     originalFilterKeys.forEach((key, index) => {
@@ -87,7 +83,7 @@ function updateSelectedOptionsDisplay(filterInstances) {
       } else {
         const selectedAccessories = values.filter((value) => value === 'Anti-Fog (AF)' || value === 'Night Light (NL)');
         if (selectedAccessories.length > 1) {
-          updateSelectedOption(selectedOptionElement, 'Anti-Fog & Night Light (AN)');
+          updateSelectedOption(selectedOptionElement, 'Anti-Fogs & Night Light (AN)');
         } else {
           updateSelectedOption(selectedOptionElement, values[index] || '');
         }
@@ -98,14 +94,19 @@ function updateSelectedOptionsDisplay(filterInstances) {
 
 function updateSelectedOption(selectedOptionElement, text) {
   if (selectedOptionElement) {
-    selectedOptionElement.text(text);
-    selectedOptionElement.css('display', text ? 'block' : 'none');
+    // if selectedOptionElement is just numbers, add a double quote to the end
+    if (!isNaN(text) && text !== '' && text !== null) {
+      selectedOptionElement.text(text ? text + '"' : '');
+      selectedOptionElement.css('display', text ? 'block' : 'none');
+    } else {
+      selectedOptionElement.text(text ? text : '');
+      selectedOptionElement.css('display', text ? 'block' : 'none');
+    }
   }
 }
 
 function updateConfigurator() {
   const selectedOptions = getSelectedOptions();
-  console.log('Selected Options in updateConfigurator:', selectedOptions); // Debugging line
   generateSku(selectedOptions); // Generate the SKU this has to be called before apply rules. 
 
   applyRules(selectedOptions, rules);
@@ -150,7 +151,6 @@ window.fsAttributes = window.fsAttributes || [];
 window.fsAttributes.push([
   'cmsfilter',
   (filterInstances) => {
-    console.log('cmsfilter Successfully loaded!');
 
     // The `renderitems` event runs whenever the list renders items after filtering.
     filterInstances[0].listInstance.on('renderitems', () => {

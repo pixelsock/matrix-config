@@ -33,5 +33,5 @@ function generateUrl(productCode) {
   
   const productCode = "L01-B-24-36-H-00-N-2-TR-BM-T";
   const url = generateUrl(productCode);
-  console.log(url);
+ // console.log(url);
   
