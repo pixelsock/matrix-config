@@ -75,7 +75,6 @@ const skuMapping = {
   
   };
 
-  
   function getPrefix() {
     const productLine = $('#product-line').text();
     if (productLine.includes('Classic')) return 'L';
@@ -96,8 +95,7 @@ const skuMapping = {
       'Color Temperature': '',
       'Dimming': '',
       'Orientation': '',
-      'Accessories': '',
-      
+      'Accessories': ''      
     };
 
     // if (productLine === 'Deco') { add frame thickness to skuComponents }
@@ -117,9 +115,16 @@ const skuMapping = {
     // Define a variable to hold the accessories SKU
 let accessoriesSku = '';
 
+let isCustomSize = false;
+  if (selectedOptions.find(option => option.dataName === 'Custom Size Checkbox')) {
+   
+    isCustomSize = true;
+  }
+
 selectedOptions.forEach(option => {
   const category = option.dataName;
   const value = option.value;
+  
 
   // Check if the category and value are defined in the mapping
   if (skuMapping[category] && skuMapping[category][value]) {
@@ -131,12 +136,39 @@ selectedOptions.forEach(option => {
       skuComponents[category] = skuComponent;
     }
 
+    if (category === 'Custom Size Checkbox' && value === 'Custom-Size-Checkbox') {
+      isCustomSize = true;
+     // console.log('Custom Size Checkbox is checked');
+    }
+
     // Store the value of Mirror Controls for later use
     if (category === 'Mirror Controls') {
       mirrorControlsValue = value;
     }
-  } else {
-    console.warn('Undefined SKU component for category:', category, 'value:', value);
+  } 
+
+  if (category === 'Mirror Style' && value.includes('Round') && isCustomSize) {
+    let diameter = $('#Diameter').val();
+    if (diameter) {
+    skuComponents['Height'] = diameter;
+    skuComponents['Width'] = '00';
+    } else {
+      skuComponents['Height'] = '';
+      skuComponents['Width'] = '';
+    }
+    
+    
+  } else if (category === 'Mirror Style' && value.includes('Round') && !isCustomSize) {
+    let standardDiameter = $('#Standard-Diameter').val();
+    if (standardDiameter) {
+    skuComponents['Height'] = String(standardDiameter).slice(0, 2);
+    skuComponents['Width'] = '00';
+    } else {
+      skuComponents['Height'] = '';
+      skuComponents['Width'] = '';
+    }
+    
+    
   }
 });
 
@@ -189,6 +221,7 @@ skuComponents['Accessories'] = accessoriesSku;
 
   
   function getSizeSku() {
+    // Check if the mirror style is round
     let widthSku = '';
     let heightSku = '';
   
@@ -201,9 +234,10 @@ skuComponents['Accessories'] = accessoriesSku;
   
       // If diameter is defined, use it for both width and height
       if (diameter) {
-        widthSku = heightSku = String(diameter).padStart(4, '0');
+        heightSku = String(diameter).slice(0, 2);
+        widthSku = '00'
       }
-  
+   
       // If width and height are defined, use them
       if (width && height) {
         widthSku = width;
@@ -216,12 +250,14 @@ skuComponents['Accessories'] = accessoriesSku;
         [widthSku, heightSku] = standardSize.replace(/\"/g, '').split('x');
       }
     }
+    
   
     return {
       width: widthSku,
-      height: heightSku
+      height: heightSku,
     };
   }
+  
   
   
   

@@ -2,11 +2,12 @@ const path = require('path');
 
 module.exports = {
   entry: path.resolve(__dirname, 'src', 'main.js'), // Entry point of your application
-  watch: true, // Enable watching
   output: {
     filename: 'build.js', // Output bundle file
     path: path.resolve(__dirname, 'dist'), // Output directory
+    publicPath: '/'
   },
+  
   module: {
     rules: [
       {
@@ -22,12 +23,9 @@ module.exports = {
     ],
   },
   devServer: {
-    static: {
-      directory: path.join(__dirname, 'dist'), // Serve files from the dist directory
-    },
-    compress: true,
-    port: 9000, // Port for the development server
-    open: true, // Open the page in browser
+    liveReload: true, // Enable live reloading
+    compress: true, // Enable gzip compression
+    port: 9000, // Use port 9000
+    open: true, // Open the default browser when the server starts
   },
-  
 };
