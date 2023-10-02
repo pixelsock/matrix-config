@@ -9,9 +9,9 @@ const rules = {
      
     },
     'Touch Sensor': {
-      showAndClick: [],
-      disable: ['Night-Light'],
-      enable: ['High', 'Non-Dimming', 'Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable', 'Adjustable'],
+      showAndClick: ['Non-Dimming'],
+      disable: ['Night-Light', 'ELV-Dimmable', '0-10-Dimmable'],
+      enable: ['High', 'Non-Dimming', 'Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'Adjustable'],
       excludeProductLines: [],
     },
     'Matrix Touch System': {

@@ -426,7 +426,6 @@ details.push({ circle: 9, value: selectedOptions.find(option => option.dataName 
   
   
   
-  
   // Helper function to add text with different styles for label and value
   function addDetail(doc, value, x, y, label = '') {
     if (label) {
