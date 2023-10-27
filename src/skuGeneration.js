@@ -21,6 +21,7 @@ const skuMapping = {
       'Black Frame': 'BF',
       'Silver Frame': 'SF',
       'Gold Frame': 'GF',
+      'White Frame': 'WF',
       
     },
     'Frame Thickness': {
@@ -71,9 +72,13 @@ const skuMapping = {
       'Classic': 'L',
       'Future': 'F',
       'Deco': 'D',
+      'Anti-Ligature': 'L',
     }
   
   };
+  if ($('#product-line').text() === 'Anti-Ligature') {
+    skuMapping['Mirror Style']['Double Long Side Inset'] = '33';
+}
 
   function getPrefix() {
     const productLine = $('#product-line').text();
@@ -81,6 +86,7 @@ const skuMapping = {
     if (productLine.includes('Future')) return 'F';
     if (productLine.includes('Deco')) return 'D'; // Return 'D' for Deco
     if (productLine.includes('Bright')) return 'B'; // Return 'B' for Bright Line
+    if (productLine.includes('Anti-Ligature')) return 'L';
     return ''; // Default case
   }
   
@@ -101,7 +107,7 @@ const skuMapping = {
     // if (productLine === 'Deco') { add frame thickness to skuComponents }
     if (getPrefix() === 'D') {
       skuComponents['Frame Thickness'] = '';
-    }
+    }    
 
 
   
