@@ -112,7 +112,7 @@ function renderStyleDetails(doc, selectedOptions) {
   
   function renderStyleText(doc, styleDetails) {
     doc.setFont("Inter", "bold");
-    doc.setFontSize(75);
+    doc.setFontSize(65);
     doc.setCharSpace(0.25);
     doc.text(12, 10, styleDetails.toUpperCase(), null, -90);
     doc.setFontSize(10); // Reset Font Size
@@ -311,11 +311,17 @@ function renderStyleDetails(doc, selectedOptions) {
 
  // Conditionally add product line-specific options
   if (!isExcluded('Frame Color')) {
+    if (productLine === 'Anti-Ligature') {
+      details.push({ circle: 9, value: selectedOptions.find(option => option.dataName === 'Frame Color')?.value || 'N/A', x: 148, y: 231 },
+      { maxWidth: 60, label: 'Accessories', circle: 10, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 50, y: 261 },
+          {  maxWidth: 95, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'Wall Switch Only', x: 105, y: 261 },
+          );
+    } else {
 details.push({ circle: 9, value: selectedOptions.find(option => option.dataName === 'Frame Color')?.value || 'N/A', x: 148, y: 231 },
     { maxWidth: 60, label: 'Accessories', circle: 10, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 50, y: 261 },
         {  maxWidth: 95, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 105, y: 261 },
         );
-  } else {
+  } } else {
     details.push({ label: 'Accessories', circle: 9, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 148, y: 231 },
     {  maxWidth: 115, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 50, y: 261 },);
   }

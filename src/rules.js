@@ -5,38 +5,38 @@ const rules = {
       showAndClick: [],
       disable: ['Adjustable'],
       enable: ['High', 'Non-Dimming','Night-Light', 'Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable'],
-      excludeProductLines: [],
+      excludeProductLines: ['Anti-Ligature'],
      
     },
     'Touch Sensor': {
       showAndClick: ['Non-Dimming'],
       disable: ['Night-Light', 'ELV-Dimmable', '0-10-Dimmable'],
       enable: ['High', 'Non-Dimming', 'Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'Adjustable'],
-      excludeProductLines: [],
+      excludeProductLines: ['Anti-Ligature'],
     },
     'Matrix Touch System': {
       showAndClick: ['Adjustable', 'High', 'Non-Dimming'],
       disable: ['Night-Light', 'Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable'],
       enable: [],
-      excludeProductLines: [],
+      excludeProductLines: ['Anti-Ligature'],
     },
     'Inward Lighting': {
       showAndClick: [],
       disable: ['Indirect'],
       enable: [],
-      excludeProductLines: ['Future', 'Classic', 'Deco'],
+      excludeProductLines: ['Future', 'Classic', 'Deco', 'Anti-Ligature'],
     },
     'Thin Frame': {
       showAndClick: [],
       disable: [],
       enable: [],
-      excludeProductLines: ['Future', 'Classic', 'Bright Line'],
+      excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
     },
     'Wide Frame': {
       showAndClick: [],
       disable: [],
       enable: [],
-      excludeProductLines: ['Future', 'Classic', 'Bright Line'],
+      excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
       
     },
     'Inset': {
@@ -50,14 +50,14 @@ const rules = {
       showAndClick: [],
       disable: ['Night-Light', 'Both-Direct-And-Indirect'],
       enable: [ 'Direct', 'Indirect'],
-      excludeProductLines: ['Bright Line'],
+      excludeProductLines: ['Bright Line', 'Anti-Ligature'],
       
     },
     'Thin Frame && Edge': {
       showAndClick: ['Indirect'],
       disable: ['Both-Direct-And-Indirect', 'Direct'],
       enable: [],
-      excludeProductLines: ['Future', 'Classic', 'Bright Line'],
+      excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
       
     },
     
@@ -65,7 +65,7 @@ const rules = {
       showAndClick: ['Indirect'],
       disable: ['Direct', 'Both-Direct-And-Indirect', 'Night-Light', 'Anti-Fog'],
       enable: [],
-      excludeProductLines: ['Bright Line'],
+      excludeProductLines: ['Bright Line', 'Anti-Ligature'],
       
     },
     '! Round':{
@@ -79,7 +79,7 @@ const rules = {
       showAndClick: ['Vertical Mounting'],
       disable: ['Night-Light', 'Direct', 'Both-Direct-And-Indirect', 'Horizontal-Mounting'],
       enable: [],
-      excludeProductLines: ['Deco', 'Future', 'Bright Line'],
+      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
       
     },
    
@@ -94,7 +94,7 @@ const rules = {
       showAndClick: [],
       disable: ['Matrix-Touch-System'],
       enable: [],
-      excludeProductLines: ['Deco', 'Future', 'Bright Line'],
+      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
     },
     
  
@@ -102,7 +102,7 @@ const rules = {
       showAndClick: ['High', 'Non-Dimming'],
       disable: ['ELV-Dimmable', '0-10-Dimmable', 'Standard'],
       enable: [],
-      excludeProductLines: [],
+      excludeProductLines: ['Anti-Ligature'],
      
     },
     'Frame Color': {
@@ -115,7 +115,7 @@ const rules = {
       showAndClick: [],
       disable: [],
       enable: [],
-      excludeProductLines: ['Future', 'Classic', 'Bright Line'],
+      excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
     }
   };
 
@@ -124,7 +124,7 @@ const rules = {
       showAndClick: ['Indirect'],
       disable: ['Both-Direct-And-Indirect', 'Direct'],
       enable: [],
-      excludeProductLines: ['Future', 'Classic'],
+      excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
     };
   }
 
