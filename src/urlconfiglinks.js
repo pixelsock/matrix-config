@@ -1,4 +1,4 @@
-
+alert("urlconfiglinks.js loaded");
 $(document).ready(function() {
   // Function to update the text based on the selected radio button
   const updateProductLineText = () => {
@@ -68,61 +68,57 @@ $('#wf-form-Products-Filter').on('change', debounce(function() {
   // Function for building the configuration url
   $('.button-configure-round').each(function() {
     const baseUrl = "/configure/";
+    const productSku = $(this).attr('product-sku') || '';
     const productLine = $(this).attr('product-line') || '';
-    const mirrorStyle = $(this).attr('mirror-style') || '';
-    const lightDirection = $(this).attr('lighting-direction') || '';
-    const lightDirectionFirstLetter = lightDirection.charAt(0);
+    const mirrorStyleName = $(this).attr('mirror-style') || '';
+    const lightDirectionName = $(this).attr('lighting-direction') || '';
+  
+    let mirrorStyleCode;
+    if (productSku[0] === 'T' || productSku[0] === 'W') {
+      mirrorStyleCode = productSku.substring(1, 3); // Get the middle two characters of productSku
+    } else {
+      mirrorStyleCode = productSku.substring(0, 3); // Get the first three characters of productSku
+    }
+  
+    const lightDirectionCode = productSku.substring(3); // Get the rest of productSku
+  
+    const mirrorStyle = `${mirrorStyleName} (${mirrorStyleCode})`;
+    const lightDirection = `${lightDirectionName} (${lightDirectionCode})`;
+  
     const mountingOrientation = $(this).attr('mounting-orientation') || '';
     const frameColor = $(this).attr('frame-color') || '';
     const frameThickness = $(this).attr('frame-thickness') || '';
-
+  
     const frameColorCodes = {
       "White Frame": "WF",
       "Gold Frame": "GF",
       "Black Frame": "BF",
       "Silver Frame": "SF"
     };
-
+  
     const frameThicknessCodes = {
       "Wide Frame": "W",
       "Thin Frame": "T"
     };
-
-    const mirrorStyleCodes = {
-      "Full Frame Inset": "01",
-      "Full Frame Edge": "02",
-      "Double Long Side Inset": "03",
-      "Double Long Side Edge": "04",
-      "No Frost": "05",
-      "Double Short Side Edge": "06",
-      "Double Short Side Inset": "07",
-      "Single Long Side Inset": "09",
-      "Single Long Side Edge": "08",
-      "Single Short Side Edge": "10",
-      "Single Short Side Inset": "11",
-      "Round Full Frame Edge": "21",
-      "Round No Frost": "51",
-      "Double Long Side Inward Lighting": "05",
-    }
-
+  
     const params = {
       "frame+color": formatParam(frameColor, frameColorCodes),
       "frame+thickness": formatParam(frameThickness, frameThicknessCodes),
-      "mirror+style": formatParam(mirrorStyle, mirrorStyleCodes),
+      "mirror+style": formatParam(mirrorStyle, {}),
       "mirror+controls": "Wall+Switch+Only",
-      "light+direction": lightDirection ? encodeURIComponent(lightDirection + ` (${lightDirectionFirstLetter})`).replace(/%20/g, '+') : '',
+      "light+direction": lightDirection ? encodeURIComponent(lightDirection).replace(/%20/g, '+') : '',
       "orientation": mountingOrientation ? encodeURIComponent(mountingOrientation + " (1)").replace(/%20/g, '+') : ''
     };
-
+  
     // Filter out keys with empty values
     const filteredParams = Object.fromEntries(Object.entries(params).filter(([key, value]) => value));
-
+  
     const queryString = Object.keys(filteredParams)
       .map(key => `${key}=${filteredParams[key]}`)
       .join("&");
-
+  
     const fullUrl = `${baseUrl}${productLine}?${queryString}`;
-
+  
     $(this).attr('href', fullUrl);
   });
 });
