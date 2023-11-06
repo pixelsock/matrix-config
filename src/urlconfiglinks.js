@@ -1,4 +1,3 @@
-alert("urlconfiglinks.js loaded");
 $(document).ready(function() {
   // Function to update the text based on the selected radio button
   const updateProductLineText = () => {
