@@ -198,14 +198,6 @@ function renderStyleDetails(doc, selectedOptions) {
         // set defaul for circle1 & 2
         const circle1 = positions.first.circle === false ? false : true;
         const circle2 = positions.second.circle === false ? false : true;
-
-        
-
-
-
-
-
-
     
         // Draw a line for the first position only if it's not the last one
         if (index < circlePositions.length - 1) {
@@ -332,7 +324,13 @@ details.push({ circle: 9, value: selectedOptions.find(option => option.dataName 
     details.push({ label: 'Product Line', circle: 1, value: productLine , x: 50, y: 171 });
   }
   
-
+  if (details.some(detail => detail.value === 'Touch Sensor - Light Controls Only')) {
+    //details.find(detail => detail.label === 'Mirror Controls Specs').value = 'Matrix Touch System is a triple touch system with built in ON/OFF/Dimming, Color Temperature, & Anti-Fog controls';
+    const accessoriesDetail = details.find(detail => detail.label === 'Accessories');
+    if (accessoriesDetail) {
+      accessoriesDetail.value = 'Touch Sensor';
+    }
+}
 
 
 
@@ -379,6 +377,7 @@ details.push({ circle: 9, value: selectedOptions.find(option => option.dataName 
         text = 'Anti-Fog & Touch Sensor';
         } else {
           skuText = 'TS';
+          text = 'Touch Sensor';
         } // Use the appropriate SKU code
       }
     } else {
