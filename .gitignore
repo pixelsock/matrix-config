@@ -1,9 +1,6 @@
 # Dependency directories
 node_modules/
 
-# Build directories
-dist/
-
 # Configuration files
 bs-config.js
 
@@ -26,4 +23,5 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.swp
+node_modules
 node_modules
