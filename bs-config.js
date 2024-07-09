@@ -1,7 +1,13 @@
 module.exports = {
-    proxy: "https://matrix-mirrors.webflow.io/configure/classic", // The site where your script is loaded
-    files: ['./dist'], // The files to watch for changes
-    reloadDelay: 10, // Delay for reloading the page
-    open: true, // Don't open a new browser window
-  };
-  
+  proxy: {
+      target: "https://matrixmirrors.com",
+      ws: true
+  },
+  files: ['./dist'],
+  https: true,
+  reloadDelay: 10,
+  open: true,
+  socket: {
+      domain: 'localhost:3000'
+  }
+};

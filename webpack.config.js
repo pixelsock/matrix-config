@@ -23,9 +23,27 @@ module.exports = {
     ],
   },
   devServer: {
-    liveReload: true, // Enable live reloading
-    compress: true, // Enable gzip compression
-    port: 9000, // Use port 9000
-    open: true, // Open the default browser when the server starts
+    host: '0.0.0.0', // This allows external access
+    port: 9000,
+    https: false,
+    hot: true,
+    allowedHosts: [
+      'localhost',
+      '.matrixmirrors.com', // This allows any subdomain of matrixmirrors.com
+    ],
+    proxy: {
+      '/': {
+        target: 'https://matrixmirrors.com',
+        changeOrigin: true,
+        secure: false,
+      },
+      '/sockjs-node': {
+        target: 'https://matrixmirrors.com',
+        ws: true,
+      },
+    },
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+    },
   },
 };

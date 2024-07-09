@@ -10,13 +10,13 @@ const rules = {
     },
     'Touch Sensor': {
       showAndClick: ['Non-Dimming'],
-      disable: ['Night-Light', 'ELV-Dimmable', '0-10-Dimmable'],
+      disable: ['ELV-Dimmable', '0-10-Dimmable'],
       enable: ['High', 'Non-Dimming', 'Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'Adjustable'],
       excludeProductLines: ['Anti-Ligature'],
     },
     'Matrix Touch System': {
       showAndClick: ['Adjustable', 'High', 'Non-Dimming'],
-      disable: ['Night-Light', 'Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable'],
+      disable: ['Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable'],
       enable: [],
       excludeProductLines: ['Anti-Ligature'],
     },
@@ -48,7 +48,7 @@ const rules = {
     },
     'Edge': {
       showAndClick: [],
-      disable: ['Night-Light', 'Both-Direct-And-Indirect'],
+      disable: ['Both-Direct-And-Indirect'],
       enable: [ 'Direct', 'Indirect'],
       excludeProductLines: ['Bright Line', 'Anti-Ligature'],
       
@@ -63,7 +63,7 @@ const rules = {
     
     'No Frost': {
       showAndClick: ['Indirect'],
-      disable: ['Direct', 'Both-Direct-And-Indirect', 'Night-Light', 'Anti-Fog'],
+      disable: ['Direct', 'Both-Direct-And-Indirect', 'Anti-Fog'],
       enable: [],
       excludeProductLines: ['Bright Line', 'Anti-Ligature'],
       
@@ -77,7 +77,7 @@ const rules = {
     
     'Round': {
       showAndClick: ['Vertical Mounting'],
-      disable: ['Night-Light', 'Direct', 'Both-Direct-And-Indirect', 'Horizontal-Mounting'],
+      disable: ['Direct', 'Both-Direct-And-Indirect', 'Horizontal-Mounting'],
       enable: [],
       excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
       

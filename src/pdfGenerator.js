@@ -26,6 +26,9 @@ export function generatePdf(selectedOptions, buttonId) {
     doc.save(filename);
   }
 
+  // Log the SKU for PDF
+  console.log('SKU for PDF:', $('#productSku').text());
+
   
 }
 
@@ -336,7 +339,7 @@ details.push({ circle: 9, value: selectedOptions.find(option => option.dataName 
 
   
       if (details.some(detail => detail.value === 'Matrix Touch System')) {
-        //details.find(detail => detail.label === 'Mirror Controls Specs').value = 'Matrix Touch System is a triple touch system with built in ON/OFF/Dimming, Color Temperature, & Anti-Fog controls';
+        
         const accessoriesDetail = details.find(detail => detail.label === 'Accessories');
         if (accessoriesDetail) {
           accessoriesDetail.value = 'Matrix Touch System';
@@ -366,7 +369,10 @@ details.push({ circle: 9, value: selectedOptions.find(option => option.dataName 
         }
       });
       // Special handling for "Matrix Touch System"
-      if (details.some(detail => detail.value === 'Matrix Touch System')) {
+      if (details.some(detail => detail.value === 'Matrix Touch System' && skuText === 'NL')) {
+        skuText = 'TL';
+        text = 'Matrix Touch System & Night Light';
+      } else if (details.some(detail => detail.value === 'Matrix Touch System' && skuText === '')) {
         skuText = 'TR'; // Use the appropriate SKU code
       } else if (skuText === 'NLAF') {
         skuText = 'AN'; // Both Night-Light and Anti-Fog selected
@@ -375,6 +381,9 @@ details.push({ circle: 9, value: selectedOptions.find(option => option.dataName 
         if (skuText === 'AF') {
         skuText = 'AT';
         text = 'Anti-Fog & Touch Sensor';
+        } else if (skuText === 'NL') {
+          skuText = 'NT';
+          text = 'Night Light & Touch Sensor';
         } else {
           skuText = 'TS';
           text = 'Touch Sensor';

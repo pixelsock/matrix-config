@@ -24,10 +24,6 @@ const resetRules = {
     resetKey: ['light direction'], 
     fallback: ['Indirect']
   },
-  'Touch Sensor': {
-    ifSelected: ['Night-Light'],
-    resetKey: ['accessories'],
-  },
   'Round Full Frame Edge': {
     ifSelected: ['Matrix Touch System', 'Direct'],
     resetKey: ['mirror controls', 'light direction'],

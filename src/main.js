@@ -42,51 +42,93 @@ export function getSelectedOptions() {
     const dataName = $(this).attr('data-name');
     selectedOptions.push({ id, value, dataName });
   });
-
+console.log(selectedOptions);
   return selectedOptions;
 }
 
 
+function updateAccessoriesDisplay(selectedOptionElement, options) {
+  const {
+    isMatrixTouchSystemSelected,
+    isTouchSensorSelected,
+    isNightLightSelected,
+    isAntiFogSelected,
+    values
+  } = options;
+
+  if (isMatrixTouchSystemSelected) {
+    return updateMatrixTouchSystem(selectedOptionElement, isNightLightSelected);
+  }
+
+  if (isTouchSensorSelected) {
+    return updateTouchSensor(selectedOptionElement, isAntiFogSelected, isNightLightSelected);
+  }
+
+  return updateStandardAccessories(selectedOptionElement, values);
+}
+
+function updateMatrixTouchSystem(element, isNightLightSelected) {
+  const text = isNightLightSelected
+    ? 'Matrix Touch System & Night Light (TL)'
+    : 'Matrix Touch System (TR)';
+  updateSelectedOption(element, text);
+}
+
+function updateTouchSensor(element, isAntiFogSelected, isNightLightSelected) {
+  let text;
+  if (isAntiFogSelected && isNightLightSelected) {
+    text = 'All Accessories (AL)';
+  } else if (isNightLightSelected) {
+    text = 'Night Light & Touch Sensor (NT)';
+  } else if (isAntiFogSelected) {
+    text = 'Anti-Fog & Touch Sensor (AT)';
+  } else {
+    text = 'Touch Sensor (TS)';
+  }
+  updateSelectedOption(element, text);
+}
+
+function updateStandardAccessories(element, values) {
+  const selectedAccessories = values.filter(value => 
+    value === 'Anti-Fog (AF)' || value === 'Night Light (NL)'
+  );
+  const text = selectedAccessories.length > 1
+    ? 'Anti-Fogs & Night Light (AN)'
+    : values[values.length - 1] || '';
+  updateSelectedOption(element, text);
+}
+
+// Main function
 function updateSelectedOptionsDisplay(filterInstances) {
   const filtersData = filterInstances[0].filtersData;
-
-  let isMatrixTouchSystemSelected = false;
-  let isTouchSensorSelected = false;
-  let isAntiFogSelected = false;
+  let options = {
+    isMatrixTouchSystemSelected: false,
+    isTouchSensorSelected: false,
+    isAntiFogSelected: false,
+    isNightLightSelected: false,
+    values: []
+  };
 
   filtersData.forEach((filter) => {
     const originalFilterKeys = filter.originalFilterKeys;
     const values = Array.from(filter.values);
-    const mirrorControlsIndex = originalFilterKeys.indexOf('Mirror Controls');
-  
-    const accessoriesIndex = originalFilterKeys.indexOf('Accessories');
-    if (mirrorControlsIndex !== -1 && values[mirrorControlsIndex] === 'Matrix Touch System') {
-      isMatrixTouchSystemSelected = true;
-    } else if (mirrorControlsIndex !== -1 && values[mirrorControlsIndex] === 'Touch Sensor - Light Controls Only' ) {
-      isTouchSensorSelected = true;
-    } 
 
-    if (accessoriesIndex !== -1 && values[accessoriesIndex] === 'Anti-Fog (AF)') {
-      isAntiFogSelected = true;
-    }
-   
-    originalFilterKeys.forEach((key, index) => {
+    // Update options based on all filters
+    options.isMatrixTouchSystemSelected = options.isMatrixTouchSystemSelected || values.includes('Matrix Touch System');
+    options.isTouchSensorSelected = options.isTouchSensorSelected || values.includes('Touch Sensor - Light Controls Only');
+    options.isAntiFogSelected = options.isAntiFogSelected || values.includes('Anti-Fog (AF)');
+    options.isNightLightSelected = options.isNightLightSelected || values.includes('Night Light (NL)');
+    options.values = [...options.values, ...values];
+
+    originalFilterKeys.forEach((key) => {
+      if (key === 'Driver') {
+        key = "Dimming"
+      }
       const selectedOptionElement = $(`.selected-option[filter-target="${key}"]`);
-      if (key === 'Accessories' && isMatrixTouchSystemSelected) {
-        updateSelectedOption(selectedOptionElement, 'Matrix Touch System (TR)');
-      } else if (key === 'Accessories' && isTouchSensorSelected && isAntiFogSelected) {
-    
-        updateSelectedOption(selectedOptionElement, 'Anti-Fog & Touch Sensor (AT)');
-        
-      } else if (key === 'Accessories' && isTouchSensorSelected && !isAntiFogSelected) {
-        updateSelectedOption(selectedOptionElement, 'Touch Sensor (TS)');
+      if (key === 'Accessories' || key === 'Mirror Controls') {
+        updateAccessoriesDisplay(selectedOptionElement, options);
       } else {
-        const selectedAccessories = values.filter((value) => value === 'Anti-Fog (AF)' || value === 'Night Light (NL)');
-        if (selectedAccessories.length > 1) {
-          updateSelectedOption(selectedOptionElement, 'Anti-Fogs & Night Light (AN)');
-        } else {
-          updateSelectedOption(selectedOptionElement, values[index] || '');
-        }
+        updateSelectedOption(selectedOptionElement, values[values.length - 1] || '');
       }
     });
   });
@@ -95,8 +137,14 @@ function updateSelectedOptionsDisplay(filterInstances) {
 function updateSelectedOption(selectedOptionElement, text) {
   if (selectedOptionElement) {
     // if selectedOptionElement is just numbers, add a double quote to the end
-    if (!isNaN(text) && text !== '' && text !== null) {
+    if (selectedOptionElement.attr('filter-target') === 'Width' && !isNaN(text) && text !== '' && text !== null) {
+      selectedOptionElement.text(text ? text + '" x' : '');
+      selectedOptionElement.css('display', text ? 'block' : 'none');
+    } else if (selectedOptionElement.attr('filter-target') === 'Height' && !isNaN(text) && text !== '' && text !== null) {
       selectedOptionElement.text(text ? text + '"' : '');
+      selectedOptionElement.css('display', text ? 'block' : 'none');
+    } else if (selectedOptionElement.attr('filter-target') === 'Diameter' && !isNaN(text) && text !== '' && text !== null) {
+      selectedOptionElement.text(text ? text + '" Diameter' : '');
       selectedOptionElement.css('display', text ? 'block' : 'none');
     } else {
       selectedOptionElement.text(text ? text : '');
@@ -151,7 +199,6 @@ window.fsAttributes = window.fsAttributes || [];
 window.fsAttributes.push([
   'cmsfilter',
   (filterInstances) => {
-
     // The `renderitems` event runs whenever the list renders items after filtering.
     filterInstances[0].listInstance.on('renderitems', () => {
       updateSelectedOptionsDisplay(filterInstances);

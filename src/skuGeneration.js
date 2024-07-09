@@ -1,4 +1,3 @@
-
 // Define the mapping object
 const skuMapping = {
     'Mirror Style': {
@@ -57,6 +56,8 @@ const skuMapping = {
       'Anti-Fog': 'AF',
       'Anti-Fog && Night-Light': 'AN',
       'Anti-Fog && Touch Sensors': 'AT',
+      'Matrix Touch System && Night-Light': 'TL',
+      'Touch Sensors && Anti-Fog && Night-Light': 'AL',
     },
     'Light Output': {
       'Standard': 'S',
@@ -181,16 +182,21 @@ selectedOptions.forEach(option => {
 // Handle special logic for Mirror Controls and Accessories
 switch (mirrorControlsValue) {
   case 'Wall Switch Only':
+    console.log('accessoriesSku Wall Switch Only', accessoriesSku);
     if (accessoriesSku === 'NLAF') accessoriesSku = 'AN'; // Both Night-Light and Anti-Fog selected
     else if (accessoriesSku === '') accessoriesSku = 'NA'; // No accessories selected
     break;
   case 'Matrix Touch System':
-    accessoriesSku = 'TR';
+    console.log('accessoriesSku Matrix Touch System', accessoriesSku);
+    if (accessoriesSku === 'NL') accessoriesSku = 'TL';
+    else if (accessoriesSku === '') accessoriesSku = 'TR';
     break;
   case 'Touch Sensor - Light Controls Only':
+    console.log('accessoriesSku Touch Sensor - Light Controls Only', accessoriesSku);
     if (accessoriesSku === 'AF') accessoriesSku = 'AT'; // Touch Sensor and Anti-Fog selected
     else if (accessoriesSku === 'NL') accessoriesSku = 'NT'; // Touch Sensor and Night-Light selected
     else if (accessoriesSku === '') accessoriesSku = 'TS'; // No accessories selected
+    else if (accessoriesSku === 'NLAF') accessoriesSku = 'AL'; // All accessories selected
     break;
   // ... other cases if needed ...
 }
@@ -216,9 +222,11 @@ skuComponents['Accessories'] = accessoriesSku;
   if (prefix != 'D') {
     const sku = prefix + Object.values(skuComponents).join('-');
     $('#productSku').text(sku);
+    console.log('Generated SKU:', sku);
   } else {
     const sku = Object.values(skuComponents).join('-');
     $('#productSku').text(sku);
+    console.log('Generated SKU:', sku);
   }; 
 
   
