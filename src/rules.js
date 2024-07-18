@@ -96,6 +96,20 @@ const rules = {
       enable: [],
       excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
     },
+
+    'Stadium Full Frame Inset': {
+      showAndClick: ['Both-Direct-And-Indirect'],
+      disable: ['Direct','Indirect'],
+      enable: ['Both-Direct-And-Indirect'],
+      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
+    },
+
+    'Stadium Full Frame Edge': {
+      showAndClick: ['Indirect'],
+      disable: ['Direct','Both-Direct-And-Indirect'],
+      enable: ['Indirect'],
+      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
+    },
     
  
     'Touch && Adjustable': {
