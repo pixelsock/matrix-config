@@ -6,7 +6,6 @@ import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
 
-alert("test")
 
 
 export function getSelectedOptions() {
