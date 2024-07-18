@@ -108,7 +108,7 @@ const rules = {
       showAndClick: ['Indirect'],
       disable: ['Direct','Both-Direct-And-Indirect'],
       enable: ['Indirect'],
-      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
+      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'], 
     },
     
  
