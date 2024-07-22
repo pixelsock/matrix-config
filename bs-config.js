@@ -4,7 +4,7 @@ module.exports = {
       ws: true
   },
   files: ['./dist'],
-  https: true,
+  https: false,
   reloadDelay: 10,
   open: true,
   socket: {

@@ -7,7 +7,6 @@ import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity } from './utils
 import { generatePdf } from './pdfGenerator.js';
 
 
-
 export function getSelectedOptions() {
   const form = $('#full-filter-form');
   const selectedOptions = [];
