@@ -15,6 +15,11 @@ const skuMapping = {
       'Single Short Side Inset': '11',
       'Round Full Frame Edge': '21',
       'Round No Frost': '51',
+      'Oval No Frost': '52',
+      'Oval Full Frame Edge': '22',
+      'Stadium Full Frame Inset': '23',
+      'Stadium Full Frame Edge': '22',
+      'Stadium No Frost': '53',
     },
     'Frame Color':{
       'Black Frame': 'BF',
