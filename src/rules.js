@@ -17,7 +17,7 @@ const rules = {
     'Matrix Touch System': {
       showAndClick: ['Adjustable', 'High', 'Non-Dimming'],
       disable: ['Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable'],
-      enable: [],
+      enable: ['Adjustable', 'High', 'Non-Dimming'],
       excludeProductLines: ['Anti-Ligature'],
     },
     'Inward Lighting': {
@@ -56,7 +56,7 @@ const rules = {
     'Thin Frame && Edge': {
       showAndClick: ['Indirect'],
       disable: ['Both-Direct-And-Indirect', 'Direct'],
-      enable: [],
+      enable: ['Indirect'],
       excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
       
     },
@@ -64,21 +64,23 @@ const rules = {
     'No Frost': {
       showAndClick: ['Indirect'],
       disable: ['Direct', 'Both-Direct-And-Indirect', 'Anti-Fog'],
-      enable: [],
+      enable: ['Indirect'],
       excludeProductLines: ['Bright Line', 'Anti-Ligature'],
       
     },
-    '! Round':{
+
+    '!Round':{
       showAndClick: [],
       disable: [],
       enable: ['Horizontal-Mounting'],
       excludeProductLines: [],
     },
     
+    
     'Round': {
-      showAndClick: ['Vertical Mounting'],
+      showAndClick: ['Vertical-Mounting', 'Indirect'],
       disable: ['Direct', 'Both-Direct-And-Indirect', 'Horizontal-Mounting'],
-      enable: [],
+      enable: ['Vertical-Mounting'],
       excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
       
     },
@@ -91,9 +93,23 @@ const rules = {
     },
 
     'Round Full Frame Edge': {
-      showAndClick: [],
-      disable: ['Matrix-Touch-System'],
+      showAndClick: ['Indirect'],
+      disable: ['Matrix-Touch-System', 'Horizontal-Mounting'],
       enable: [],
+      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
+    },
+
+    'Oval': {
+      showAndClick: ['Vertical-Mounting', 'Indirect'],
+      disable: ['Direct', 'Both-Direct-And-Indirect', 'Horizontal-Mounting'],
+      enable: ['Vertical-Mounting'],
+      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
+    },
+
+    'Stadium': {
+      showAndClick: ['Vertical-Mounting'],
+      disable: ['Horizontal-Mounting'],
+      enable: ['Vertical-Mounting'],
       excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
     },
 
@@ -107,7 +123,7 @@ const rules = {
     'Stadium Full Frame Edge': {
       showAndClick: ['Indirect'],
       disable: ['Direct','Both-Direct-And-Indirect'],
-      enable: ['Indirect'],
+      enable: [],
       excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'], 
     },
     
@@ -137,7 +153,7 @@ const rules = {
     rules['Edge'] = {
       showAndClick: ['Indirect'],
       disable: ['Both-Direct-And-Indirect', 'Direct'],
-      enable: [],
+      enable: ['Indirect'],
       excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
     };
   }

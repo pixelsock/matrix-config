@@ -5,6 +5,7 @@ const skuMapping = {
       'Full Frame Edge': '02',
       'Full Frame Inward Lighting': '05',
       'Double Long Side Inset': '03',
+      'Double Long Side Inset*': '33',
       'Double Long Side Edge': '04',
       'No Frost': '05',
       'Double Short Side Edge': '06',
@@ -38,7 +39,7 @@ const skuMapping = {
     },
     'Light Direction': {
       'Direct': 'D',
-      'Indirect': 'I',
+      'Indirect': 'i',
       'Both Direct And Indirect': 'B',
     },
     'Color Temperature': {
@@ -82,9 +83,6 @@ const skuMapping = {
     }
   
   };
-  if ($('#product-line').text() === 'Anti-Ligature') {
-    skuMapping['Mirror Style']['Double Long Side Inset'] = '33';
-}
 
   function getPrefix() {
     const productLine = $('#product-line').text();
