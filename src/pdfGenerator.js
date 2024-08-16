@@ -126,28 +126,25 @@ function renderStyleDetails(doc, selectedOptions) {
     let sizeDetailsLabel = '';
     let sizeDetailsValue = '';
     let sizeDetailsSku = '';
-  
-    
+
     const mirrorStyleOption = selectedOptions.find(option => option.dataName === 'Mirror Style');
-  
     const standardSizeOption = selectedOptions.find(option => option.dataName === 'Standard Size');
     const standardDiameterOption = selectedOptions.find(option => option.dataName === 'Standard Diameter');
-   
-    
-    if (mirrorStyleOption && mirrorStyleOption.value.toLowerCase().includes('round') && isCustomSize ) {
+    const quantityOption = selectedOptions.find(option => option.dataName === 'Quantity');
+
+    if (mirrorStyleOption && mirrorStyleOption.value.toLowerCase().includes('round') && isCustomSize) {
       const diameterOption = selectedOptions.find(option => option.dataName === 'Diameter');
       sizeDetailsLabel = 'Diameter: ';
       sizeDetailsValue = diameterOption ? diameterOption.value + '"' : 'N/A';
       sizeDetailsSku = diameterOption ? '00' + diameterOption.value : 'N/A';
     } else if (standardSizeOption && standardSizeOption.value) {
-      const [width, height] = standardSizeOption.value.split('x');
-      sizeDetailsLabel = 'W: ';
-      sizeDetailsValue = width + ' H: ' + height;
-      sizeDetailsSku = width + height;
-    } else if (standardDiameterOption && mirrorStyleOption.value.toLowerCase().includes('round') &&standardDiameterOption.value) {
-      sizeDetailsLabel = 'Diameter: ';
-      sizeDetailsValue = standardDiameterOption ? standardDiameterOption.value.substring(0, standardDiameterOption.value.indexOf('"')+1) : 'N/A';
-      sizeDetailsSku = standardDiameterOption ? '00' + standardDiameterOption.value.substring(0, standardDiameterOption.value.indexOf('"')) : 'N/A';
+      sizeDetailsLabel = 'Standard Size: ';
+      sizeDetailsValue = standardSizeOption.value;
+      sizeDetailsSku = standardSizeOption.value.replace(/[^0-9]/g, '');
+    } else if (standardDiameterOption && mirrorStyleOption.value.toLowerCase().includes('round') && standardDiameterOption.value) {
+      sizeDetailsLabel = 'Standard Diameter: ';
+      sizeDetailsValue = standardDiameterOption.value;
+      sizeDetailsSku = standardDiameterOption.value.replace(/[^0-9]/g, '').padStart(4, '0');
     } else {
       const widthOption = selectedOptions.find(option => option.dataName === 'Width');
       const heightOption = selectedOptions.find(option => option.dataName === 'Height');
@@ -155,14 +152,17 @@ function renderStyleDetails(doc, selectedOptions) {
       const height = heightOption ? heightOption.value + '"': 'N/A';
       sizeDetailsLabel = 'W: ';
       sizeDetailsValue = width + ' H: ' + height;
-      sizeDetailsSku = width + '-' + height;
+      sizeDetailsSku = (widthOption ? widthOption.value : '') + (heightOption ? heightOption.value : '');
     }
-  
+
     const sizeSku = sizeDetailsSku.replace(/\"/g, '')
-    addDetail(doc, sizeDetailsValue, 50, 201, sizeDetailsLabel); // Start at 75
+    addDetail(doc, sizeDetailsValue, 50, 201, sizeDetailsLabel);
     addSku(doc, sizeSku, 4);
 
-    
+    // Add quantity
+    if (quantityOption && quantityOption.value) {
+      addDetail(doc, quantityOption.value, 50, 211, 'Quantity: ');
+    }
   }
 
   const circlePositions = [

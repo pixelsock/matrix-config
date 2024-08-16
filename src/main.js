@@ -42,12 +42,13 @@ export function getSelectedOptions() {
     const dataName = $(this).attr('data-name');
     selectedOptions.push({ id, value, dataName });
   });
-console.log(selectedOptions);
+
+  console.log(selectedOptions);
   return selectedOptions;
 }
 
 
-function updateAccessoriesDisplay(selectedOptionElement, options) {
+function updateAccessoriesDisplay(selectedOptionElement, options, selectedOptions) {
   const {
     isMatrixTouchSystemSelected,
     isTouchSensorSelected,
@@ -57,24 +58,24 @@ function updateAccessoriesDisplay(selectedOptionElement, options) {
   } = options;
 
   if (isMatrixTouchSystemSelected) {
-    return updateMatrixTouchSystem(selectedOptionElement, isNightLightSelected);
+    return updateMatrixTouchSystem(selectedOptionElement, isNightLightSelected, selectedOptions);
   }
 
   if (isTouchSensorSelected) {
-    return updateTouchSensor(selectedOptionElement, isAntiFogSelected, isNightLightSelected);
+    return updateTouchSensor(selectedOptionElement, isAntiFogSelected, isNightLightSelected, selectedOptions);
   }
 
-  return updateStandardAccessories(selectedOptionElement, values);
+  return updateStandardAccessories(selectedOptionElement, values, selectedOptions);
 }
 
-function updateMatrixTouchSystem(element, isNightLightSelected) {
+function updateMatrixTouchSystem(element, isNightLightSelected, selectedOptions) {
   const text = isNightLightSelected
     ? 'Matrix Touch System & Night Light (TL)'
     : 'Matrix Touch System (TR)';
-  updateSelectedOption(element, text);
+  updateSelectedOption(element, text, selectedOptions);
 }
 
-function updateTouchSensor(element, isAntiFogSelected, isNightLightSelected) {
+function updateTouchSensor(element, isAntiFogSelected, isNightLightSelected, selectedOptions) {
   let text;
   if (isAntiFogSelected && isNightLightSelected) {
     text = 'All Accessories (AL)';
@@ -85,17 +86,17 @@ function updateTouchSensor(element, isAntiFogSelected, isNightLightSelected) {
   } else {
     text = 'Touch Sensor (TS)';
   }
-  updateSelectedOption(element, text);
+  updateSelectedOption(element, text, selectedOptions);
 }
 
-function updateStandardAccessories(element, values) {
+function updateStandardAccessories(element, values, selectedOptions) {
   const selectedAccessories = values.filter(value => 
     value === 'Anti-Fog (AF)' || value === 'Night Light (NL)'
   );
   const text = selectedAccessories.length > 1
     ? 'Anti-Fogs & Night Light (AN)'
     : values[values.length - 1] || '';
-  updateSelectedOption(element, text);
+  updateSelectedOption(element, text, selectedOptions);
 }
 
 // Main function
@@ -108,6 +109,8 @@ function updateSelectedOptionsDisplay(filterInstances) {
     isNightLightSelected: false,
     values: []
   };
+
+  const selectedOptions = getSelectedOptions();
 
   filtersData.forEach((filter) => {
     const originalFilterKeys = filter.originalFilterKeys;
@@ -126,24 +129,36 @@ function updateSelectedOptionsDisplay(filterInstances) {
       }
       const selectedOptionElement = $(`.selected-option[filter-target="${key}"]`);
       if (key === 'Accessories' || key === 'Mirror Controls') {
-        updateAccessoriesDisplay(selectedOptionElement, options);
+        updateAccessoriesDisplay(selectedOptionElement, options, selectedOptions);
       } else {
-        updateSelectedOption(selectedOptionElement, values[values.length - 1] || '');
+        updateSelectedOption(selectedOptionElement, values[values.length - 1] || '', selectedOptions);
       }
     });
   });
 }
 
-function updateSelectedOption(selectedOptionElement, text) {
+function updateSelectedOption(selectedOptionElement, text, selectedOptions) {
   if (selectedOptionElement) {
+    const filterTarget = selectedOptionElement.attr('filter-target');
+    
+    // Check if the filter target is 'Accessories'
+    if (filterTarget === 'Accessories') {
+      // If 'Accessories' is not in the selected options, clear the text
+      if (!selectedOptions.some(option => option.dataName === 'Accessories')) {
+        selectedOptionElement.text('');
+        selectedOptionElement.css('display', 'none');
+        return;
+      }
+    }
+
     // if selectedOptionElement is just numbers, add a double quote to the end
-    if (selectedOptionElement.attr('filter-target') === 'Width' && !isNaN(text) && text !== '' && text !== null) {
+    if (filterTarget === 'Width' && !isNaN(text) && text !== '' && text !== null) {
       selectedOptionElement.text(text ? text + '" x' : '');
       selectedOptionElement.css('display', text ? 'block' : 'none');
-    } else if (selectedOptionElement.attr('filter-target') === 'Height' && !isNaN(text) && text !== '' && text !== null) {
+    } else if (filterTarget === 'Height' && !isNaN(text) && text !== '' && text !== null) {
       selectedOptionElement.text(text ? text + '"' : '');
       selectedOptionElement.css('display', text ? 'block' : 'none');
-    } else if (selectedOptionElement.attr('filter-target') === 'Diameter' && !isNaN(text) && text !== '' && text !== null) {
+    } else if (filterTarget === 'Diameter' && !isNaN(text) && text !== '' && text !== null) {
       selectedOptionElement.text(text ? text + '" Diameter' : '');
       selectedOptionElement.css('display', text ? 'block' : 'none');
     } else {
@@ -175,11 +190,6 @@ function applyRules(selectedOptions, rules) {
     }
   });
 }
-
-
-
-
-
 
 
 $(document).ready(function() {
@@ -233,7 +243,3 @@ $(document).ready(function() {
 
 }
 );
-
-
-
-

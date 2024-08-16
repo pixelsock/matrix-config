@@ -25,9 +25,9 @@ const resetRules = {
     fallback: ['Indirect']
   },
   'Round Full Frame Edge': {
-    ifSelected: ['Matrix Touch System', 'Direct'],
+    ifSelected: ['Matrix Touch System'],
     resetKey: ['mirror controls', 'light direction'],
-    fallback: ['Touch Sensor - Light Controls Only', 'Indirect']
+    fallback: ['Touch Sensor - Light Controls Only']
   },
   'Round': {
     ifSelected: ['*'], // Applies when any "Round" style is selected

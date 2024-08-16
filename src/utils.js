@@ -84,6 +84,12 @@ export function forSubmissionSkuAndQuantity() {
     quantityLabel.textContent = 'Quantity not specified';
     quantityLabel.style.color = 'rgb(224, 113, 115)';
   }
+
+  // Update the quantity .selected-option text
+  const quantitySelectedOption = document.querySelector('.selected-option[data-name="Quantity"]');
+  if (quantitySelectedOption) {
+    updateSelectedOption($(quantitySelectedOption), quantity);
+  }
 }
   
 
