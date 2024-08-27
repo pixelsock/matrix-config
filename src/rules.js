@@ -63,7 +63,7 @@ const rules = {
     
     'No Frost': {
       showAndClick: ['Indirect'],
-      disable: ['Direct', 'Both-Direct-And-Indirect', 'Anti-Fog'],
+      disable: ['Direct', 'Both-Direct-And-Indirect'],
       enable: ['Indirect'],
       excludeProductLines: ['Bright Line', 'Anti-Ligature'],
       
