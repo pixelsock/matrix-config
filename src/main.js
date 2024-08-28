@@ -230,7 +230,7 @@ function showLoaderAndFadeInContent(timeout) {
     $('#tag-wrapper').fadeIn(400); // Add fade in animation
   }, timeout);
 }
-
+ 
 
 $(document).ready(function() {
  
