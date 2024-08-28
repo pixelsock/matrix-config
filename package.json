@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@babel/types": "^7.23.0",
+    "@finsweet/attributes-cmscore": "^1.13.0",
     "jspdf": "^2.5.1",
     "pdfkit": "^0.13.0",
     "webfontloader": "^1.6.28",

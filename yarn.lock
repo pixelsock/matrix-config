@@ -939,6 +939,13 @@
   resolved "https://registry.npmjs.org/@discoveryjs/json-ext/-/json-ext-0.5.7.tgz"
   integrity sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==
 
+"@finsweet/attributes-cmscore@^1.13.0":
+  version "1.13.0"
+  resolved "https://registry.npmjs.org/@finsweet/attributes-cmscore/-/attributes-cmscore-1.13.0.tgz"
+  integrity sha512-CUOrZ3MV+znqfT8X8vNDKN02uAEIzhVuLPoPWcTMtqBxiOKooKKrJjPgsov/1agBQCKlpM/L/411y2hL9JXXtw==
+  dependencies:
+    emittery "^1.0.1"
+
 "@jridgewell/gen-mapping@^0.3.0", "@jridgewell/gen-mapping@^0.3.2":
   version "0.3.3"
   resolved "https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.3.tgz"
@@ -2308,6 +2315,11 @@ electron-to-chromium@^1.4.530:
   version "1.4.530"
   resolved "https://registry.npmjs.org/electron-to-chromium/-/electron-to-chromium-1.4.530.tgz"
   integrity sha512-rsJ9O8SCI4etS8TBsXuRfHa2eZReJhnGf5MHZd3Vo05PukWHKXhk3VQGbHHnDLa8nZz9woPCpLCMQpLGgkGNRA==
+
+emittery@^1.0.1:
+  version "1.0.3"
+  resolved "https://registry.npmjs.org/emittery/-/emittery-1.0.3.tgz"
+  integrity sha512-tJdCJitoy2lrC2ldJcqN4vkqJ00lT+tOWNT1hBJjO/3FDMJa5TTIiYGCKGkn/WfCyOzUMObeohbVTj00fhiLiA==
 
 emoji-regex@^8.0.0:
   version "8.0.0"

@@ -1,9 +1,12 @@
 const path = require('path');
 
 module.exports = {
-  entry: path.resolve(__dirname, 'src', 'main.js'), // Entry point of your application
+  entry: {
+    main: path.resolve(__dirname, 'src', 'main.js'), // Entry point of your application
+    productsPage: path.resolve(__dirname, 'src', 'products-page.js') // Entry point for products-page.js
+  },
   output: {
-    filename: 'build.js', // Output bundle file
+    filename: '[name].build.js', // Output bundle file with dynamic name
     path: path.resolve(__dirname, 'dist'), // Output directory
     publicPath: '/'
   },
@@ -29,19 +32,7 @@ module.exports = {
     hot: true,
     allowedHosts: [
       'localhost',
-      '.matrixmirrors.com', // This allows any subdomain of matrixmirrors.com
     ],
-    proxy: {
-      '/': {
-        target: 'https://matrixmirrors.com',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/sockjs-node': {
-        target: 'https://matrixmirrors.com',
-        ws: true,
-      },
-    },
     headers: {
       'Access-Control-Allow-Origin': '*',
     },

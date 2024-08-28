@@ -5,7 +5,7 @@ import { matchesCombination } from './utils.js';
 import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
- 
+
 export function getSelectedOptions() {
   const form = $('#full-filter-form');
   const selectedOptions = [];
@@ -173,7 +173,6 @@ function updateConfigurator() {
 
   applyRules(selectedOptions, rules);
 
-
   showHideSizesBasedOffStyle(selectedOptions);
   forSubmissionSkuAndQuantity();
   
@@ -196,8 +195,6 @@ $(document).ready(function() {
   
   form.on('change', 'input, select', updateConfigurator);
 
-  
-
   // Initial update
   updateConfigurator();
 
@@ -211,15 +208,33 @@ window.fsAttributes.push([
     // The `renderitems` event runs whenever the list renders items after filtering.
     filterInstances[0].listInstance.on('renderitems', () => {
       updateSelectedOptionsDisplay(filterInstances);
+      showLoaderAndFadeInContent(1000);
     });
   },
 ]);
 
 initializeReset();
 
+document.addEventListener('DOMContentLoaded', function() {
+  
+});
+
+function showLoaderAndFadeInContent(timeout) {
+  // hide product collection and show loader for 3 seconds
+  $('#loader').show();
+  $('#product-collection').hide();
+  $('#tag-wrapper').hide();
+  setTimeout(function() {
+    $('#loader').hide();
+    $('#product-collection').fadeIn(600); // Add fade in animation
+    $('#tag-wrapper').fadeIn(400); // Add fade in animation
+  }, timeout);
+}
+
+
 $(document).ready(function() {
  
-
+showLoaderAndFadeInContent(5000);
 
   // Add a submit event listener to the Request-A-Quote form
   $('#wf-form-Request-A-Quote').on('submit', function(event) {
