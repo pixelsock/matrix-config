@@ -20,6 +20,12 @@ const rules = {
       enable: ['Adjustable', 'High', 'Non-Dimming'],
       excludeProductLines: ['Anti-Ligature'],
     },
+    'CCTSync': {
+      showAndClick: ['Adjustable', 'High', 'Non-Dimming'],
+      disable: ['5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable'],
+      enable: ['Adjustable', 'High', 'Non-Dimming', 'Anti-Fog', 'Night-Light'],
+      excludeProductLines: ['Anti-Ligature'],
+    },
     'Inward Lighting': {
       showAndClick: [],
       disable: ['Indirect'],

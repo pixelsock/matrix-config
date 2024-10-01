@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack-dev-server --open",
-    "watch": "webpack --watch --mode development",
+    "watch": "npm run start & webpack --watch --mode development",
     "sync": "browser-sync start --config bs-config.js"
   },
   "keywords": [],

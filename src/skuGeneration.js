@@ -54,6 +54,7 @@ const skuMapping = {
       'Touch Sensor - Light Controls Only': 'TS',
       'Matrix Touch System': 'TR',
       'Wall Switch Only': 'NA',
+      'CCTSync': 'CT',
     },
     'Accessories': {
       'Matrix Touch System': 'TR',
@@ -64,6 +65,10 @@ const skuMapping = {
       'Anti-Fog && Touch Sensors': 'AT',
       'Matrix Touch System && Night-Light': 'TL',
       'Touch Sensors && Anti-Fog && Night-Light': 'AL',
+      'CCTSync': 'CT',
+      'CCTSync && Anti-Fog': 'CF',
+      'CCTSync && Night-Light': 'CN',
+      'CCTSync && Anti-Fog && Night-Light': 'CL',
     },
     'Light Output': {
       'Standard': 'S',
@@ -200,6 +205,13 @@ switch (mirrorControlsValue) {
     else if (accessoriesSku === 'NL') accessoriesSku = 'NT'; // Touch Sensor and Night-Light selected
     else if (accessoriesSku === '') accessoriesSku = 'TS'; // No accessories selected
     else if (accessoriesSku === 'NLAF') accessoriesSku = 'AL'; // All accessories selected
+    break;
+  case 'CCTSync':
+    console.log('accessoriesSku CCTSync', accessoriesSku);
+    if (accessoriesSku === 'AF') accessoriesSku = 'CF'; // CCTSync and Anti-Fog selected
+    else if (accessoriesSku === 'NL') accessoriesSku = 'CN'; // CCTSync and Night-Light selected
+    else if (accessoriesSku === '') accessoriesSku = 'CT'; // No accessories selected
+    else if (accessoriesSku === 'NLAF') accessoriesSku = 'CL'; // All accessories selected
     break;
   // ... other cases if needed ...
 }
