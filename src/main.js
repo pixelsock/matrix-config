@@ -6,6 +6,7 @@ import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity, updateOrientation } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
 
+
 export function getSelectedOptions() {
   const form = $('#full-filter-form');
   const selectedOptions = [];
@@ -53,6 +54,7 @@ function updateAccessoriesDisplay(selectedOptionElement, options, selectedOption
     isTouchSensorSelected,
     isNightLightSelected,
     isAntiFogSelected,
+    isCCTSyncSelected,
     values
   } = options;
 
@@ -62,6 +64,10 @@ function updateAccessoriesDisplay(selectedOptionElement, options, selectedOption
 
   if (isTouchSensorSelected) {
     return updateTouchSensor(selectedOptionElement, isAntiFogSelected, isNightLightSelected, selectedOptions);
+  }
+
+  if (isCCTSyncSelected) {
+    return updateCCTSync(selectedOptionElement, isAntiFogSelected, isNightLightSelected, selectedOptions);
   }
 
   return updateStandardAccessories(selectedOptionElement, values, selectedOptions);
@@ -74,6 +80,8 @@ function updateMatrixTouchSystem(element, isNightLightSelected, selectedOptions)
   updateSelectedOption(element, text, selectedOptions);
 }
 
+
+
 function updateTouchSensor(element, isAntiFogSelected, isNightLightSelected, selectedOptions) {
   let text;
   if (isAntiFogSelected && isNightLightSelected) {
@@ -84,6 +92,20 @@ function updateTouchSensor(element, isAntiFogSelected, isNightLightSelected, sel
     text = 'Anti-Fog & Touch Sensor (AT)';
   } else {
     text = 'Touch Sensor (TS)';
+  }
+  updateSelectedOption(element, text, selectedOptions);
+}
+
+function updateCCTSync(element, isAntiFogSelected, isNightLightSelected, selectedOptions) {
+  let text;
+  if (isAntiFogSelected && isNightLightSelected) {
+    text = 'CCTSync Anti-Fog & Night Light (CL)';
+  } else if (isNightLightSelected) {
+    text = 'CCTSync & Night Light (CN)';
+  } else if (isAntiFogSelected) {
+    text = 'CCTSync & Anti-Fog (CF)';
+  } else {
+    text = 'CCTSync (CT)';
   }
   updateSelectedOption(element, text, selectedOptions);
 }
@@ -106,6 +128,7 @@ function updateSelectedOptionsDisplay(filterInstances) {
     isTouchSensorSelected: false,
     isAntiFogSelected: false,
     isNightLightSelected: false,
+    isCCTSyncSelected: false,
     values: []
   };
 
@@ -120,6 +143,7 @@ function updateSelectedOptionsDisplay(filterInstances) {
     options.isTouchSensorSelected = options.isTouchSensorSelected || values.includes('Touch Sensor - Light Controls Only');
     options.isAntiFogSelected = options.isAntiFogSelected || values.includes('Anti-Fog (AF)');
     options.isNightLightSelected = options.isNightLightSelected || values.includes('Night Light (NL)');
+    options.isCCTSyncSelected = options.isCCTSyncSelected || values.includes('CCTSync');
     options.values = [...options.values, ...values];
 
     originalFilterKeys.forEach((key) => {
