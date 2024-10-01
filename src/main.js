@@ -108,7 +108,7 @@ function updateCCTSync(element, isAntiFogSelected, isNightLightSelected, selecte
     text = 'CCTSync (CT)';
   }
   updateSelectedOption(element, text, selectedOptions);
-}
+} 
 
 function updateStandardAccessories(element, values, selectedOptions) {
   const selectedAccessories = values.filter(value => 
