@@ -46,19 +46,48 @@ export function matchesCombination(selectedOptions, combination) {
     }
   }
 }
-  export function showHideSizesBasedOffStyle(selectedOptions) {
-    const roundSizeFields = document.querySelectorAll('.diameter');
-    const standardSizeFields = document.querySelectorAll('.standard');
+export function showHideSizesBasedOffStyle(selectedOptions) {
+  const roundSizeFields = document.querySelectorAll('.diameter');
+  const standardSizeFields = document.querySelectorAll('.standard');
+  const customSizeCheckbox = selectedOptions.find(option => option.dataName === 'Custom Size Checkbox');
+  const isCustomSize = customSizeCheckbox && customSizeCheckbox.value === 'Custom-Size-Checkbox';
 
-    if (selectedOptions.some(option => option.value.includes('Round'))) {
-      roundSizeFields.forEach(field => field.classList.remove('hide'));
-      standardSizeFields.forEach(field => field.classList.add('hide'));
-    } else {
-      roundSizeFields.forEach(field => field.classList.add('hide'));
-      standardSizeFields.forEach(field => field.classList.remove('hide'));
-    
-    };
+  if (selectedOptions.some(option => option.value.includes('Round'))) {
+    roundSizeFields.forEach(field => field.classList.remove('hide'));
+    standardSizeFields.forEach(field => field.classList.add('hide'));
+  } else {
+    roundSizeFields.forEach(field => field.classList.add('hide'));
+    standardSizeFields.forEach(field => field.classList.remove('hide'));
   }
+
+  if (isCustomSize) {
+    const widthOption = selectedOptions.find(option => option.dataName === 'Width');
+    const heightOption = selectedOptions.find(option => option.dataName === 'Height');
+    
+    if (widthOption && heightOption) {
+      const width = parseInt(widthOption.value);
+      const height = parseInt(heightOption.value);
+      
+      if (!isNaN(width) && !isNaN(height)) {
+        const orientationInputs = document.querySelectorAll('input[name="Orientation"]');
+        
+        if (width > height) {
+          orientationInputs.forEach(input => {
+            if (input.value === 'Horizontal Mounting') {
+              input.click(); // Use click() instead of checked = true
+            }
+          });
+        } else {
+          orientationInputs.forEach(input => {
+            if (input.value === 'Vertical Mounting') {
+              input.click(); // Use click() instead of checked = true
+            }
+          });
+        }
+      }
+    }
+  }
+}
 
 export function forSubmissionSkuAndQuantity() {
   const productSku = document.querySelector('#productSku').textContent;
@@ -119,3 +148,37 @@ export const isCustomSize = () => {
   return true;
   }
 };
+
+// Add this new function to handle orientation changes
+export function updateOrientation(selectedOptions) {
+  const customSizeCheckbox = selectedOptions.find(option => option.dataName === 'Custom Size Checkbox');
+  const isCustomSize = customSizeCheckbox && customSizeCheckbox.value === 'Custom-Size-Checkbox';
+
+  if (isCustomSize) {
+    const widthOption = selectedOptions.find(option => option.dataName === 'Width');
+    const heightOption = selectedOptions.find(option => option.dataName === 'Height');
+    
+    if (widthOption && heightOption) {
+      const width = parseInt(widthOption.value);
+      const height = parseInt(heightOption.value);
+      
+      if (!isNaN(width) && !isNaN(height)) {
+        const orientationInputs = document.querySelectorAll('input[name="Orientation"]');
+        
+        if (width > height) {
+          orientationInputs.forEach(input => {
+            if (input.value === 'Horizontal Mounting') {
+              input.click();
+            }
+          });
+        } else {
+          orientationInputs.forEach(input => {
+            if (input.value === 'Vertical Mounting') {
+              input.click();
+            }
+          });
+        }
+      }
+    }
+  }
+}

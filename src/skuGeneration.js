@@ -148,7 +148,7 @@ selectedOptions.forEach(option => {
 
     if (category === 'Custom Size Checkbox' && value === 'Custom-Size-Checkbox') {
       isCustomSize = true;
-     // console.log('Custom Size Checkbox is checked');
+     
     }
 
     // Store the value of Mirror Controls for later use

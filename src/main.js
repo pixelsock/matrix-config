@@ -3,7 +3,7 @@ import { generateSku } from './skuGeneration.js';
 import { rules } from './rules.js';
 import { matchesCombination } from './utils.js';
 import { initializeReset } from './reset.js';
-import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity } from './utils.js';
+import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity, updateOrientation } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
 
 export function getSelectedOptions() {
@@ -174,6 +174,7 @@ function updateConfigurator() {
   applyRules(selectedOptions, rules);
 
   showHideSizesBasedOffStyle(selectedOptions);
+  updateOrientation(selectedOptions); // Add this line
   forSubmissionSkuAndQuantity();
   
 }
@@ -198,7 +199,15 @@ $(document).ready(function() {
   // Initial update
   updateConfigurator();
 
-
+  // Add these lines after your existing event listeners
+  $('#Width, #Height').on('input', function() {
+    updateConfigurator();
+    updateOrientation(getSelectedOptions()); // Add this line
+  });
+  $('#Custom-Size-Checkbox').on('change', function() {
+    updateConfigurator();
+    updateOrientation(getSelectedOptions()); // Add this line
+  });
 });
 
 window.fsAttributes = window.fsAttributes || [];
@@ -230,7 +239,7 @@ function showLoaderAndFadeInContent(timeout) {
     $('#tag-wrapper').fadeIn(400); // Add fade in animation
   }, timeout);
 }
-  
+
 
 $(document).ready(function() {
  
