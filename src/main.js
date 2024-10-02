@@ -6,7 +6,6 @@ import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity, updateOrientation } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
 
-
 export function getSelectedOptions() {
   const form = $('#full-filter-form');
   const selectedOptions = [];
@@ -80,8 +79,6 @@ function updateMatrixTouchSystem(element, isNightLightSelected, selectedOptions)
   updateSelectedOption(element, text, selectedOptions);
 }
 
-
-
 function updateTouchSensor(element, isAntiFogSelected, isNightLightSelected, selectedOptions) {
   let text;
   if (isAntiFogSelected && isNightLightSelected) {
@@ -116,7 +113,7 @@ function updateStandardAccessories(element, values, selectedOptions) {
   );
   const text = selectedAccessories.length > 1
     ? 'Anti-Fogs & Night Light (AN)'
-    : values[values.length - 1] || '';
+    : values[values.length - 1] || 'Wall Switch Only (NA)';
   updateSelectedOption(element, text, selectedOptions);
 }
 
@@ -167,7 +164,7 @@ function updateSelectedOption(selectedOptionElement, text, selectedOptions) {
     // Check if the filter target is 'Accessories'
     if (filterTarget === 'Accessories') {
       // If 'Accessories' is not in the selected options, clear the text
-      if (!selectedOptions.some(option => option.dataName === 'Accessories')) {
+      if (!selectedOptions.some(option => option.dataName === 'Accessories' || option.dataName === 'Mirror Controls')) {
         selectedOptionElement.text('');
         selectedOptionElement.css('display', 'none');
         return;
@@ -203,7 +200,6 @@ function updateConfigurator() {
   
 }
 
-
 function applyRules(selectedOptions, rules) {
   Object.entries(rules).forEach(([ruleKey, ruleValue]) => {
     if (matchesCombination(selectedOptions, ruleKey)) {
@@ -213,7 +209,6 @@ function applyRules(selectedOptions, rules) {
     }
   });
 }
-
 
 $(document).ready(function() {
   const form = $('#full-filter-form');
@@ -264,7 +259,6 @@ function showLoaderAndFadeInContent(timeout) {
   }, timeout);
 }
 
-
 $(document).ready(function() {
  
 showLoaderAndFadeInContent(5000);
@@ -283,10 +277,6 @@ showLoaderAndFadeInContent(5000);
   generatePdf(selectedOptions, 'newWindow'); // Call the PDF generation function
   // break so it only runs once
   return false;
-
-
-
 });
 
-}
-);
+});

@@ -289,154 +289,136 @@ function renderStyleDetails(doc, selectedOptions) {
     function renderOtherDetails(doc, selectedOptions) {
       try {
         const defaultMaxWidth = 40;
-
-    const details = [
-        { label: 'Quantity', sku: false, value: selectedOptions.find(option => option.dataName === 'Quantity')?.value || 'N/A', x: 198, y: 74 },
-        { circle: 2,value: selectedOptions.find(option => option.dataName === 'Mirror Style')?.value || 'N/A', x: 100, y: 171 },
-        { circle: 3, value: selectedOptions.find(option => option.dataName === 'Light Direction')?.value || 'N/A', x: 148, y: 171 },
-        // size is next but brought in from the previous function
-        { circle: 5, value: selectedOptions.find(option => option.dataName === 'Light Output')?.value || 'N/A', x: 100, y: 201 },
-        { circle: 6, value: selectedOptions.find(option => option.dataName === 'Color Temperature')?.value || 'N/A', x: 148, y: 201 },        
-        { circle: 7, value: selectedOptions.find(option => option.dataName === 'Dimming')?.value || 'N/A', x: 50, y: 231 },
-        { circle: 8, value: selectedOptions.find(option => option.dataName === 'Orientation')?.value || 'N/A', x: 100, y: 231 },
-        
-      ];
-
- 
-
- // Conditionally add product line-specific options
-  if (!isExcluded('Frame Color')) {
-    if (productLine === 'Anti-Ligature') {
-      details.push({ circle: 9, value: selectedOptions.find(option => option.dataName === 'Frame Color')?.value || 'N/A', x: 148, y: 231 },
-      { maxWidth: 60, label: 'Accessories', circle: 10, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 50, y: 261 },
-          {  maxWidth: 95, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'Wall Switch Only', x: 105, y: 261 },
-          );
-    } else {
-details.push({ circle: 9, value: selectedOptions.find(option => option.dataName === 'Frame Color')?.value || 'N/A', x: 148, y: 231 },
-    { maxWidth: 60, label: 'Accessories', circle: 10, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 50, y: 261 },
-        {  maxWidth: 95, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 105, y: 261 },
-        );
-  } } else {
-    details.push({ label: 'Accessories', circle: 9, value: selectedOptions.find(option => option.dataName === 'Accessories')?.value || 'N/A', x: 148, y: 231 },
-    {  maxWidth: 115, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'N/A', x: 50, y: 261 },);
-  }
-  if (!isExcluded('Frame Thickness')) {
-    details.push({ circle: 1, value: selectedOptions.find(option => option.dataName === 'Frame Thickness')?.value || 'N/A', x: 50, y: 171 }
-     );
-  } else {
-    details.push({ label: 'Product Line', circle: 1, value: productLine , x: 50, y: 171 });
-  }
-  
-  if (details.some(detail => detail.value === 'Touch Sensor - Light Controls Only')) {
-    //details.find(detail => detail.label === 'Mirror Controls Specs').value = 'Matrix Touch System is a triple touch system with built in ON/OFF/Dimming, Color Temperature, & Anti-Fog controls';
-    const accessoriesDetail = details.find(detail => detail.label === 'Accessories');
-    if (accessoriesDetail) {
-      accessoriesDetail.value = 'Touch Sensor';
-    }
-}
-
-
-
-  
-      if (details.some(detail => detail.value === 'Matrix Touch System')) {
-        
-        const accessoriesDetail = details.find(detail => detail.label === 'Accessories');
-        if (accessoriesDetail) {
-          accessoriesDetail.value = 'Matrix Touch System';
-        }
-    }
-
-
     
-      
-    details.forEach(detail => {
-  let skuText = ''; // Declare skuText here to make it accessible throughout this block
-
-  // Provide default values if sku and label are not defined
-  const sku = detail.hasOwnProperty('sku') ? detail.sku : true;
-  const maxWidth = detail.maxWidth !== undefined ? detail.maxWidth : defaultMaxWidth;
-
-  let text = detail.value;
-  const dataName = detail.label || selectedOptions.find(option => option.value === detail.value)?.dataName;
-
-  // Determine the SKU text for the current detail
-  if (sku && skuMapping[dataName]) {
-    // If the dataName is "Accessories", handle the custom logic
-    if (dataName === 'Accessories') {
-      selectedOptions.forEach(option => {
-        if (option.dataName === 'Accessories' && skuMapping['Accessories'][option.value]) {
-          skuText += skuMapping['Accessories'][option.value];
-        }
-      });
-      // Special handling for "Matrix Touch System"
-      if (details.some(detail => detail.value === 'Matrix Touch System' && skuText === 'NL')) {
-        skuText = 'TL';
-        text = 'Matrix Touch System & Night Light';
-      } else if (details.some(detail => detail.value === 'Matrix Touch System' && skuText === '')) {
-        skuText = 'TR'; // Use the appropriate SKU code
-      } else if (skuText === 'NLAF') {
-        skuText = 'AN'; // Both Night-Light and Anti-Fog selected
-        text = 'Anti-Fog & Night Light';
-      } else if (details.some(detail => detail.value === 'Touch Sensor - Light Controls Only')) {
-        if (skuText === 'AF') {
-        skuText = 'AT';
-        text = 'Anti-Fog & Touch Sensor';
-        } else if (skuText === 'NL') {
-          skuText = 'NT';
-          text = 'Night Light & Touch Sensor';
+        const details = [
+          { label: 'Quantity', sku: false, value: selectedOptions.find(option => option.dataName === 'Quantity')?.value || 'N/A', x: 198, y: 74 },
+          { circle: 2, value: selectedOptions.find(option => option.dataName === 'Mirror Style')?.value || 'N/A', x: 100, y: 171 },
+          { circle: 3, value: selectedOptions.find(option => option.dataName === 'Light Direction')?.value || 'N/A', x: 148, y: 171 },
+          { circle: 5, value: selectedOptions.find(option => option.dataName === 'Light Output')?.value || 'N/A', x: 100, y: 201 },
+          { circle: 6, value: selectedOptions.find(option => option.dataName === 'Color Temperature')?.value || 'N/A', x: 148, y: 201 },        
+          { circle: 7, value: selectedOptions.find(option => option.dataName === 'Dimming')?.value || 'N/A', x: 50, y: 231 },
+          { circle: 8, value: selectedOptions.find(option => option.dataName === 'Orientation')?.value || 'N/A', x: 100, y: 231 },
+        ];
+    
+        // Conditionally add product line-specific options
+        if (!isExcluded('Frame Color')) {
+          if (productLine === 'Anti-Ligature') {
+            details.push(
+              { circle: 9, value: selectedOptions.find(option => option.dataName === 'Frame Color')?.value || 'N/A', x: 148, y: 231 },
+              { maxWidth: 60, label: 'Accessories', circle: 10, value: getAccessoriesValue(selectedOptions), x: 50, y: 261 },
+              { maxWidth: 95, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'Wall Switch Only', x: 105, y: 261 },
+            );
+          } else {
+            details.push(
+              { circle: 9, value: selectedOptions.find(option => option.dataName === 'Frame Color')?.value || 'N/A', x: 148, y: 231 },
+              { maxWidth: 60, label: 'Accessories', circle: 10, value: getAccessoriesValue(selectedOptions), x: 50, y: 261 },
+              { maxWidth: 95, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'Wall Switch Only', x: 105, y: 261 },
+            );
+          }
         } else {
-          skuText = 'TS';
-          text = 'Touch Sensor';
-        } // Use the appropriate SKU code
+          details.push(
+            { label: 'Accessories', circle: 9, value: getAccessoriesValue(selectedOptions), x: 148, y: 231 },
+            { maxWidth: 115, sku: false, value: selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value || 'Wall Switch Only', x: 50, y: 261 },
+          );
+        }
+    
+        if (!isExcluded('Frame Thickness')) {
+          details.push({ circle: 1, value: selectedOptions.find(option => option.dataName === 'Frame Thickness')?.value || 'N/A', x: 50, y: 171 });
+        } else {
+          details.push({ label: 'Product Line', circle: 1, value: productLine, x: 50, y: 171 });
+        }
+    
+        details.forEach(detail => {
+          let skuText = '';
+          const sku = detail.hasOwnProperty('sku') ? detail.sku : true;
+          const maxWidth = detail.maxWidth !== undefined ? detail.maxWidth : defaultMaxWidth;
+    
+          let text = detail.value;
+          const dataName = detail.label || selectedOptions.find(option => option.value === detail.value)?.dataName;
+    
+          if (sku && skuMapping[dataName]) {
+            if (dataName === 'Accessories' || dataName === 'Mirror Controls') {
+              const mirrorControlsOption = selectedOptions.find(option => option.dataName === 'Mirror Controls');
+              const accessoriesOptions = selectedOptions.filter(option => option.dataName === 'Accessories');
+    
+              if (mirrorControlsOption) {
+                switch (mirrorControlsOption.value) {
+                  case 'Wall Switch Only':
+                    skuText = accessoriesOptions.length > 0 ? 'AN' : 'NA';
+                    text = accessoriesOptions.length > 0 ? 'Anti-Fog & Night Light' : 'Wall Switch Only';
+                    break;
+                  case 'Matrix Touch System':
+                    skuText = accessoriesOptions.some(opt => opt.value === 'Night-Light') ? 'TL' : 'TR';
+                    text = accessoriesOptions.some(opt => opt.value === 'Night-Light') ? 'Matrix Touch System & Night Light' : 'Matrix Touch System';
+                    break;
+                  case 'Touch Sensor - Light Controls Only':
+                    if (accessoriesOptions.length === 2) {
+                      skuText = 'AL';
+                      text = 'Touch Sensor, Anti-Fog & Night Light';
+                    } else if (accessoriesOptions.some(opt => opt.value === 'Anti-Fog')) {
+                      skuText = 'AT';
+                      text = 'Anti-Fog & Touch Sensor';
+                    } else if (accessoriesOptions.some(opt => opt.value === 'Night-Light')) {
+                      skuText = 'NT';
+                      text = 'Night Light & Touch Sensor';
+                    } else {
+                      skuText = 'TS';
+                      text = 'Touch Sensor';
+                    }
+                    break;
+                  case 'CCTSync':
+                    if (accessoriesOptions.length === 2) {
+                      skuText = 'CL';
+                      text = 'CCTSync, Anti-Fog & Night Light';
+                    } else if (accessoriesOptions.some(opt => opt.value === 'Anti-Fog')) {
+                      skuText = 'CF';
+                      text = 'CCTSync & Anti-Fog';
+                    } else if (accessoriesOptions.some(opt => opt.value === 'Night-Light')) {
+                      skuText = 'CN';
+                      text = 'CCTSync & Night Light';
+                    } else {
+                      skuText = 'CT';
+                      text = 'CCTSync';
+                    }
+                    break;
+                }
+              }
+            } else {
+              skuText = skuMapping[dataName][text];
+            }
+            text = skuText + ' - ' + text;
+          }
+    
+          if (detail.value === 'N/A') {
+            skuText = 'N/A';
+            if (detail.label !== 'Quantity') {
+              text = 'N/A - Not Selected';
+            }
+            doc.setTextColor(224, 113, 115);
+          } else {
+            doc.setTextColor(0, 0, 0);
+          }
+    
+          let lines = doc.splitTextToSize(text, maxWidth);
+          for (let i = 0; i < lines.length; i++) {
+            doc.text(lines[i], detail.x, detail.y + (i * (detail.gap || 5)));
+          }
+    
+          if (detail.circle !== undefined) {
+            doc.setFontSize(18);
+            doc.setFont("Inter", "bold");
+            const circlePosition = circlePositions[detail.circle - 1];
+            if (circlePosition) {
+              doc.text(skuText, circlePosition.first.x, circlePosition.first.y - 7, 'center');
+            }
+            doc.setFontSize(10);
+            doc.setFont("Inter", "normal");
+          }
+        });
+      } catch (e) {
+        console.error('Error in renderOtherDetails:', e);
       }
-    } else {
-      skuText = skuMapping[dataName][text]; // Use simple mapping for other categories
     }
-    text = skuText + ' - ' + text;
-  }
-
-  if (text === 'Matrix Touch System') {
-    text = 'Matrix Touch System is a triple touch system with built in ON/OFF/Dimming, Color Temperature, & Anti-Fog controls'; 
-  }
-
-  if (detail.value === 'N/A') {
-    skuText = 'N/A';
-    if (detail.label != 'Quantity') {
-      text = 'N/A - Not Selected'
-    }
-    doc.setTextColor(224, 113, 115);
-  } else {
-    doc.setTextColor(0, 0, 0);
-  }
-
-  let lines = [text];
-  if (maxWidth !== false) {
-    lines = doc.splitTextToSize(text, maxWidth);
-  }
-  for (let i = 0; i < lines.length; i++) {
-    doc.text(lines[i], detail.x, detail.y + (i * (detail.gap || 5)));
-  }
-
-  if (typeof skuText === 'undefined') {
-    console.error('skuText is undefined for the detail:', detail);
-  }
-
-  // If a circle index is provided, render the SKU above the corresponding circle
-  if (detail.circle !== undefined) {
-    doc.setFontSize(18);
-    doc.setFont("Inter", "bold");
-    const circlePosition = circlePositions[detail.circle - 1]; // Get the position of the corresponding circle
-    if (circlePosition) {
-      doc.text(skuText, circlePosition.first.x, circlePosition.first.y - 7, 'center'); // Render SKU above the circle
-    }
-    doc.setFontSize(10);
-    doc.setFont("Inter", "normal");
-  }
-});
-    } catch (e) {
-      console.error('Error in renderOtherDetails:', e);
-    }
-  }
   
   
   
@@ -478,4 +460,41 @@ function renderFooter(doc) {
   doc.text(footerText.toUpperCase(), 118, 290, 'center');
 }
 
+function getAccessoriesValue(selectedOptions) {
+  const mirrorControls = selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value;
+  const accessories = selectedOptions.filter(option => option.dataName === 'Accessories').map(option => option.value);
 
+  if (mirrorControls === 'Matrix Touch System') {
+    return accessories.includes('Night-Light') ? 'Matrix Touch System & Night Light (TL)' : 'Matrix Touch System (TR)';
+  } else if (mirrorControls === 'Touch Sensor - Light Controls Only') {
+    if (accessories.includes('Anti-Fog') && accessories.includes('Night-Light')) {
+      return 'All Accessories (AL)';
+    } else if (accessories.includes('Night-Light')) {
+      return 'Night Light & Touch Sensor (NT)';
+    } else if (accessories.includes('Anti-Fog')) {
+      return 'Anti-Fog & Touch Sensor (AT)';
+    } else {
+      return 'Touch Sensor (TS)';
+    }
+  } else if (mirrorControls === 'CCTSync') {
+    if (accessories.includes('Anti-Fog') && accessories.includes('Night-Light')) {
+      return 'CCTSync Anti-Fog & Night Light (CL)';
+    } else if (accessories.includes('Night-Light')) {
+      return 'CCTSync & Night Light (CN)';
+    } else if (accessories.includes('Anti-Fog')) {
+      return 'CCTSync & Anti-Fog (CF)';
+    } else {
+      return 'CCTSync (CT)';
+    }
+  } else {
+    if (accessories.includes('Anti-Fog') && accessories.includes('Night-Light')) {
+      return 'Anti-Fog & Night Light (AN)';
+    } else if (accessories.includes('Anti-Fog')) {
+      return 'Anti-Fog (AF)';
+    } else if (accessories.includes('Night-Light')) {
+      return 'Night Light (NL)';
+    } else {
+      return 'Wall Switch Only (NA)';
+    }
+  }
+}

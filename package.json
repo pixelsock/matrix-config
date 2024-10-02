@@ -1,13 +1,14 @@
 {
   "name": "matrix-config",
-  "version": "4.1.1",
+  "version": "4.4.0",
   "description": "",
   "main": "build.js",
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack-dev-server --open",
-    "watch": "npm run start & webpack --watch --mode development",
-    "sync": "browser-sync start --config bs-config.js"
+    "watch": "webpack --watch --mode development",
+    "sync": "browser-sync start --config bs-config.js",
+     "release": "git add . && git commit -m \"Release v$(node -p \"require('./package.json').version\")\" && git push && git push --tags && gh release create v$(node -p \"require('./package.json').version\") --generate-notes"
   },
   "keywords": [],
   "author": "",
