@@ -2,31 +2,31 @@ const path = require('path');
 
 module.exports = {
   entry: {
-    main: path.resolve(__dirname, 'src', 'main.js'), // Entry point of your application
-    productsPage: path.resolve(__dirname, 'src', 'products-page.js') // Entry point for products-page.js
+    main: path.resolve(__dirname, 'src', 'main.js'),
+    productsPage: path.resolve(__dirname, 'src', 'products-page.js')
   },
   output: {
-    filename: '[name].build.js', // Output bundle file with dynamic name
-    path: path.resolve(__dirname, 'dist'), // Output directory
-    publicPath: '/'
+    filename: '[name].build.js',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/matrix-config/' // Updated for GitHub Pages
   },
   
   module: {
     rules: [
       {
-        test: /\.js$/, // Apply this rule to files ending in .js
-        exclude: /node_modules/, // Exclude the node_modules directory
+        test: /\.js$/,
+        exclude: /node_modules/,
         use: {
-          loader: 'babel-loader', // Use Babel to transpile JavaScript
+          loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'], // Use the preset for latest ECMAScript features
+            presets: ['@babel/preset-env'],
           },
         },
       },
     ],
   },
   devServer: {
-    host: '0.0.0.0', // This allows external access
+    host: '0.0.0.0',
     port: 9000,
     https: false,
     hot: true,
