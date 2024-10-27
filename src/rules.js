@@ -113,26 +113,11 @@ const rules = {
     },
 
     'Stadium': {
-      showAndClick: ['Vertical-Mounting'],
-      disable: ['Horizontal-Mounting'],
-      enable: ['Vertical-Mounting'],
+      showAndClick: ['Vertical-Mounting', 'Indirect'],
+      disable: ['Horizontal-Mounting', 'Direct', 'Both-Direct-And-Indirect'],
+      enable: ['Vertical-Mounting', 'Indirect'],
       excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
     },
-
-    'Stadium Full Frame Inset': {
-      showAndClick: ['Both-Direct-And-Indirect'],
-      disable: ['Direct','Indirect'],
-      enable: ['Both-Direct-And-Indirect'],
-      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
-    },
-
-    'Stadium Full Frame Edge': {
-      showAndClick: ['Indirect'],
-      disable: ['Direct','Both-Direct-And-Indirect'],
-      enable: [],
-      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'], 
-    },
-    
  
     'Touch && Adjustable': {
       showAndClick: ['High', 'Non-Dimming'],
