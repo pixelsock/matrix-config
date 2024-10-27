@@ -6,8 +6,6 @@ import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity, updateOrientation } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
 
-alert('test');
-
 export function getSelectedOptions() {
   const form = $('#full-filter-form');
   const selectedOptions = [];
