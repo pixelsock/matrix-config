@@ -8,7 +8,7 @@ module.exports = {
   output: {
     filename: '[name].build.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/matrix-config/' // Updated for GitHub Pages
+    publicPath: '/'
   },
   
   module: {
@@ -30,6 +30,9 @@ module.exports = {
     port: 9000,
     https: false,
     hot: true,
+    static: {
+      directory: path.join(__dirname, 'public'),
+    },
     allowedHosts: [
       'localhost',
     ],
