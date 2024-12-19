@@ -8,6 +8,7 @@ import { isExcluded, productLine, isCustomSize } from './utils';
 
 
 export function generatePdf(selectedOptions, buttonId) {
+  console.log('Generating PDF with options:', selectedOptions, 'and buttonId:', buttonId);
   const doc = new jsPDF();  
   setDocStyles(doc);
   renderHeader(doc);
