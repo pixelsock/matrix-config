@@ -268,14 +268,20 @@ showLoaderAndFadeInContent(5000);
   $('#wf-form-Request-A-Quote').on('submit', function(event) {
     event.preventDefault(); // Prevent the form from submitting normally
 
+    // Log form submission
+    console.log('Form submitted');
+
     // Call the PDF generation function with the selected options
     const selectedOptions = getSelectedOptions();
+    console.log('Selected options:', selectedOptions);
     generatePdf(selectedOptions, 'save');
   });
   
   $('#download-button').on('click', function() {
     const selectedOptions = getSelectedOptions();
-  generatePdf(selectedOptions, 'newWindow'); // Call the PDF generation function
+    console.log('Download button clicked');
+    console.log('Selected options:', selectedOptions);
+    generatePdf(selectedOptions, 'newWindow'); // Call the PDF generation function
   // break so it only runs once
   return false;
 });
