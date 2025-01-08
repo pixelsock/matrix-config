@@ -1,12 +1,8 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
-const isProduction = process.env.NODE_ENV === 'production';
-const isDevelopment = process.env.NODE_ENV === 'development';
-const baseUrl = isProduction ? '/matrix-config/production/' : '/matrix-config/development/';
-
 module.exports = {
-  mode: isProduction ? 'production' : 'development',
+  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
     main: './src/main.js',
     productsPage: './src/products-page.js',
@@ -14,7 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].build.js',
-    publicPath: baseUrl,
+    publicPath: '/',
   },
   optimization: {
     splitChunks: {
@@ -70,18 +66,7 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { 
-          from: 'public/index.html', 
-          to: 'index.html',
-          transform(content) {
-            return content
-              .toString()
-              .replace(
-                './main.build.js',
-                `${baseUrl}main.build.js`
-              );
-          },
-        },
+        { from: 'public/index.html', to: 'index.html' },
       ],
     }),
   ],

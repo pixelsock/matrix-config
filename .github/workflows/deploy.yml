@@ -4,22 +4,12 @@ on:
   push:
     branches:
       - development
-      - main
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages-${{ github.ref }}
-  cancel-in-progress: true
 
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -31,34 +21,14 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: |
-          npm ci
-          npm install copy-webpack-plugin --save-dev
-
-      - name: List files before build
-        run: ls -la
+        run: npm ci
 
       - name: Build
-        run: |
-          echo "Building for branch: ${{ github.ref }}"
-          echo "Destination: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}"
-          npm run build
-
-      - name: List files after build
-        run: |
-          echo "Contents of dist directory:"
-          ls -la dist/
-          echo "Contents of dist/index.html:"
-          cat dist/index.html
-
-      - name: Setup Pages
-        uses: actions/configure-pages@v3
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v2
-        with:
-          path: './dist'
+        run: npm run build
 
       - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v2
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          force_orphan: true
