@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].build.js',
-    publicPath: '/',
+    publicPath: '/matrix-config/',
   },
   optimization: {
     splitChunks: {
@@ -49,7 +49,7 @@ module.exports = {
     hot: true,
     static: {
       directory: path.join(__dirname, 'dist'),
-      publicPath: '/'
+      publicPath: '/matrix-config/'
     },
     allowedHosts: 'all',
     headers: {
@@ -59,7 +59,7 @@ module.exports = {
       'Access-Control-Allow-Credentials': 'true'
     },
     devMiddleware: {
-      publicPath: '/',
+      publicPath: '/matrix-config/',
       writeToDisk: true
     }
   },
