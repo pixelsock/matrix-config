@@ -4,13 +4,13 @@ const CopyPlugin = require('copy-webpack-plugin');
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
-    main: path.resolve(__dirname, 'src', 'main.js'),
-    productsPage: path.resolve(__dirname, 'src', 'products-page.js'),
+    main: './src/main.js',
+    productsPage: './src/products-page.js',
   },
   output: {
-    filename: '[name].build.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    filename: '[name].build.js',
+    publicPath: '',
   },
   optimization: {
     splitChunks: {
