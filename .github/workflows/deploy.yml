@@ -34,12 +34,17 @@ jobs:
         run: ls -la
 
       - name: Build
-        run: npm run build
+        run: |
+          echo "Building for branch: ${{ github.ref }}"
+          echo "Destination: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}"
+          npm run build
 
       - name: List files after build
         run: |
           echo "Contents of dist directory:"
           ls -la dist/
+          echo "Contents of dist/index.html:"
+          cat dist/index.html
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

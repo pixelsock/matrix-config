@@ -66,7 +66,18 @@ module.exports = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: 'public/index.html', to: 'index.html' },
+        { 
+          from: 'public/index.html', 
+          to: 'index.html',
+          transform(content) {
+            return content
+              .toString()
+              .replace(
+                './main.build.js',
+                'main.build.js'
+              );
+          },
+        },
       ],
     }),
   ],
