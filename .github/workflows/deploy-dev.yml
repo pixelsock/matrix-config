@@ -17,8 +17,10 @@ jobs:
     environment:
       name: github-pages
     steps:
-      - name: Checkout
+      - name: Checkout development branch
         uses: actions/checkout@v3
+        with:
+          ref: development
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -32,13 +34,21 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+      - name: Checkout gh-pages-dev branch
+        uses: actions/checkout@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
-          destination_dir: dist
-          publish_branch: gh-pages-dev
-          user_name: 'github-actions[bot]'
-          user_email: 'github-actions[bot]@users.noreply.github.com'
-          commit_message: 'chore: Deploy development build'
+          ref: gh-pages-dev
+          clean: false
+
+      - name: Copy build files
+        run: |
+          mkdir -p dist
+          cp -r dist/* dist/
+
+      - name: Commit and push to gh-pages-dev
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add dist/
+          git commit -m "chore: Deploy development build" || echo "No changes to commit"
+          git push origin gh-pages-dev
