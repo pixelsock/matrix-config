@@ -1,8 +1,12 @@
 const path = require('path');
 const CopyPlugin = require('copy-webpack-plugin');
 
+const isProduction = process.env.NODE_ENV === 'production';
+const isDevelopment = process.env.NODE_ENV === 'development';
+const baseUrl = isProduction ? '/matrix-config/production/' : '/matrix-config/development/';
+
 module.exports = {
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
+  mode: isProduction ? 'production' : 'development',
   entry: {
     main: './src/main.js',
     productsPage: './src/products-page.js',
@@ -10,7 +14,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].build.js',
-    publicPath: '',
+    publicPath: baseUrl,
   },
   optimization: {
     splitChunks: {
@@ -74,7 +78,7 @@ module.exports = {
               .toString()
               .replace(
                 './main.build.js',
-                'main.build.js'
+                `${baseUrl}main.build.js`
               );
           },
         },
