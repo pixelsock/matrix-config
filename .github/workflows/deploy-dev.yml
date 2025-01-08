@@ -17,10 +17,8 @@ jobs:
     environment:
       name: github-pages
     steps:
-      - name: Checkout development branch
+      - name: Checkout
         uses: actions/checkout@v3
-        with:
-          ref: development
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -34,21 +32,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Checkout gh-pages-dev branch
-        uses: actions/checkout@v3
-        with:
-          ref: gh-pages-dev
-          clean: false
-
-      - name: Copy build files
-        run: |
-          mkdir -p dist
-          cp -r dist/* dist/
-
-      - name: Commit and push to gh-pages-dev
+      - name: Commit build
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add dist/
-          git commit -m "chore: Deploy development build" || echo "No changes to commit"
-          git push origin gh-pages-dev
+          git commit -m "chore: Update development build" || echo "No changes to commit"
+          git push
