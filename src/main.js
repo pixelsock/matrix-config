@@ -8,6 +8,7 @@ import { generatePdf } from './pdfGenerator.js';
 
 
 export function getSelectedOptions() {
+  alert('getSelectedOptions called');
   const form = $('#full-filter-form');
   const selectedOptions = [];
 
@@ -148,10 +149,15 @@ function updateSelectedOptionsDisplay(filterInstances) {
       if (key === 'Driver') {
         key = "Dimming"
       }
-      const selectedOptionElement = $(`.selected-option[filter-target="${key}"]`);
-      if (key === 'Accessories' || key === 'Mirror Controls') {
+      // Handle Hanging Technique
+      if (key === 'Hanging Techniques') {
+        const selectedOptionElement = $(`.selected-option[filter-target="Hanging Techniques"]`);
+        updateSelectedOption(selectedOptionElement, values[values.length - 1] || '', selectedOptions);
+      } else if (key === 'Accessories' || key === 'Mirror Controls') {
+        const selectedOptionElement = $(`.selected-option[filter-target="${key}"]`);
         updateAccessoriesDisplay(selectedOptionElement, options, selectedOptions);
       } else {
+        const selectedOptionElement = $(`.selected-option[filter-target="${key}"]`);
         updateSelectedOption(selectedOptionElement, values[values.length - 1] || '', selectedOptions);
       }
     });
