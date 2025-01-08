@@ -32,10 +32,7 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Commit build
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-          git add dist/
-          git commit -m "chore: Update development build" || echo "No changes to commit"
-          git push
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
+        with:
+          base_path: /matrix-config/
