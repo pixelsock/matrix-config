@@ -121,6 +121,7 @@ function updateStandardAccessories(element, values, selectedOptions) {
 
 // Main function
 function updateSelectedOptionsDisplay(filterInstances) {
+  // Test comment for development branch
   const filtersData = filterInstances[0].filtersData;
   let options = {
     isMatrixTouchSystemSelected: false,
