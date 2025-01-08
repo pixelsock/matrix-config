@@ -2,17 +2,19 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, development ]
   workflow_dispatch:
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.ref_name == 'main' && 'production' || 'github-pages' }}
     steps:
       - uses: actions/checkout@v3
       
@@ -20,13 +22,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-          cache: 'yarn'
+          cache: 'npm'
       
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
       
       - name: Build
-        run: yarn build
+        run: npm run build
       
       - name: Setup Pages
         uses: actions/configure-pages@v3
@@ -38,3 +40,5 @@ jobs:
       
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
