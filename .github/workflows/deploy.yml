@@ -2,40 +2,34 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [ main, development ]
-  workflow_dispatch:
+    branches:
+      - development
+      - main
 
 permissions:
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Use Node.js 18.x
+
+      - name: Setup Node
         uses: actions/setup-node@v3
         with:
-          node-version: 18.x
+          node-version: '18'
           cache: 'npm'
-      
+
       - name: Install dependencies
         run: npm ci
-      
+
       - name: Build
         run: npm run build
-      
+
       - name: Deploy to GitHub Pages
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout gh-pages || git checkout -b gh-pages
-          rm -rf ${{ github.ref_name }}
-          mkdir -p ${{ github.ref_name }}
-          cp -r dist/* ${{ github.ref_name }}/
-          git add .
-          git commit -m "Deploy ${{ github.ref_name }} build" || echo "No changes to commit"
-          git push origin gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist
+          destination_dir: ${{ github.ref == 'refs/heads/main' && 'production' || 'development' }}
