@@ -133,7 +133,17 @@ function initializeReset() {
 
 // on document ready reset the size filter
 $(document).ready(function() {
-resetFilters(resetRules['size'].resetKey);
+  // Only reset size if no size is selected
+  const selectedOptions = getSelectedOptions();
+  const hasSize = selectedOptions.some(option => 
+    option.dataName === 'Standard Size' || 
+    option.dataName === 'Width' || 
+    option.dataName === 'Height' || 
+    option.dataName === 'Diameter'
+  );
+  if (!hasSize) {
+    resetFilters(resetRules['size'].resetKey);
+  }
 });
 
 export { initializeReset };
