@@ -8,6 +8,8 @@ import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity, updateOrientat
 import { generatePdf } from './pdfGenerator.js';
 import { generatePolishedPdf } from './polishedPdfGenerator.js';
 
+alert('all is well!')
+
 
 export function getSelectedOptions() {
  
