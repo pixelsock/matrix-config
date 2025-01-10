@@ -7,7 +7,7 @@ export function generatePolishedPdf(selectedOptions, buttonId) {
   const doc = new jsPDF();  
   setDocStyles(doc);
   renderHeader(doc);
-  renderItemCode(doc);
+  renderItemCode(doc, selectedOptions);
   renderSkuAndDate(doc);
   renderSelectedImage(doc);
   renderPolishedDetails(doc, selectedOptions);
@@ -16,9 +16,8 @@ export function generatePolishedPdf(selectedOptions, buttonId) {
   let skuString = $('#productSku').text();
   const filename = skuString + '.pdf';
  
-  if (buttonId === 'newWindow' || buttonId === 'save') {
-    doc.save(filename);
-  }
+  // Save the PDF
+  doc.save(filename);
 }
 
 function setDocStyles(doc) {
@@ -55,11 +54,19 @@ function drawHeaderLines(doc) {
   doc.line(43, 154, 207, 154);
 }
 
+
 function renderSkuAndDate(doc) {
-  doc.setFontSize(10);
-  doc.setFont("Inter", "normal");
-  var date = new Date();
-  doc.text("Created @matrixmirrors.com on: " + (date.getMonth() + 1) + "/" + date.getDate() + "/" + date.getFullYear(), 199, 69, 'right');
+   
+  
+    // Date
+    doc.setFontSize(8);
+    doc.setFont("Inter", "normal");
+    var date = new Date();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var year = date.getFullYear();
+    doc.text("Created @matrixmirrors.com on: " + month + "/" + day + "/" + year, 118, 69, 'left');
+
 }
 
 function renderSelectedImage(doc) {
@@ -68,12 +75,16 @@ function renderSelectedImage(doc) {
   doc.addImage(encodedPhotoURL, 'JPEG', 46, 12, 65, 65);
 }
 
-function renderItemCode(doc) {
+function renderItemCode(doc, selectedOptions) {
   doc.setCharSpace(0.5);
   doc.setFontSize(12);
   doc.text("ITEM CODE", 46, 90);
   doc.setFontSize(10);
-  doc.text("Quantity Requested:", 190, 74, 'right');
+ 
+  // Add quantity from selectedOptions
+  const quantityOption = selectedOptions.find(option => option.dataName === 'Quantity');
+  const quantity = quantityOption?.value || 'N/A';
+  doc.text(`Quantity Requested: ${quantity}`, 118, 74, 'left');
   doc.text("Additional Specification Notes", 47, 122, 'left');
 }
 
@@ -83,50 +94,108 @@ function renderPolishedDetails(doc, selectedOptions) {
   renderHeaderOpener(doc, headerText);
   
   // Side text
-  renderStyleText(doc, 'MIRR');
+  renderStyleText(doc, 'POLISHED MIRROR');
 
-  // Draw SKU codes and circles
-  const skuComponents = [
-    { value: 'MIRR', x: 50 },
-    { value: getSizeText(selectedOptions), x: 100 },
-    { value: getHangingTechniqueCode(selectedOptions), x: 150 },
-    { value: getOrientationCode(selectedOptions), x: 200 }
+  // Get selected values
+  const selectedSize = getSizeText(selectedOptions);
+  const selectedHanging = selectedOptions.find(opt => opt.dataName === 'Hanging Techniques')?.value || 'N/A';
+  const selectedOrientation = selectedOptions.find(opt => opt.dataName === 'Orientation')?.value || 'N/A';
+
+  // Define top components
+  const topComponents = [
+    { value: 'MIRR', x: 55, lineWidth: 10 },
+    { value: selectedSize === 'N/A' ? 'N/A' : selectedSize, x: 90, lineWidth: 10 },
+    { value: getHangingTechniqueCode(selectedOptions), x: 125, lineWidth: 10 },
+    { value: getOrientationCode(selectedOptions), x: 160, lineWidth: 10 }
+  ];
+
+  // Define bottom circles with custom positions and descriptions
+  const bottomCircles = [
+    { 
+      number: 1, 
+      x: 50, 
+      y: 163, 
+      label: "Type",
+      labelX: 55, 
+      labelY: 164.5,
+      description: "MIRR - Clear silver mirror, 1/4\" thick, pencil polish, copper-free (corrosion resistant), ANSI Z97.1 rated",
+      maxWidth: 130
+    },
+    { 
+      number: 2, 
+      x: 50, 
+      y: 193, 
+      label: "Glass Size",
+      labelX: 55, 
+      labelY: 194.5,
+      description: selectedSize,
+      maxWidth: 40
+    },
+    { 
+      number: 3, 
+      x: 90, 
+      y: 193, 
+      label: "Mounting",
+      labelX: 95, 
+      labelY: 194.5,
+      description: selectedHanging,
+      maxWidth: 40
+    },
+    { 
+      number: 4, 
+      x: 145, 
+      y: 193, 
+      label: "Orientation",
+      labelX: 150, 
+      labelY: 194.5,
+      description: selectedOrientation,
+      maxWidth: 40
+    }
   ];
 
   // Draw SKU codes
-  doc.setFontSize(16);
+  doc.setFontSize(18);
   doc.setFont("Inter", "bold");
-  skuComponents.forEach((component, index) => {
-    if (component.value !== 'N/A') {
-      doc.text(component.value, component.x, 103, 'center');
+  topComponents.forEach((component) => {
+    if (component.value === 'N/A') {
+      doc.setTextColor(224, 113, 115); // Red color for N/A
+    } else {
+      doc.setTextColor(20, 20, 20); // Default color
     }
+    doc.text(component.value, component.x, 103, 'center');
   });
+  doc.setTextColor(20, 20, 20); // Reset to default color
 
-  // Draw circles and numbers
+  // Draw top circles and numbers
   doc.setFontSize(10);
-  skuComponents.forEach((component, index) => {
+  topComponents.forEach((component, index) => {
     // Top circle
-    doc.circle(component.x, 110, 2);
+    doc.circle(component.x, 110, 2.5);
     doc.text((index + 1).toString(), component.x, 111.5, 'center');
 
-    // Bottom circle
-    doc.circle(component.x, 163, 2);
-    doc.text((index + 1).toString(), component.x, 164.5, 'center');
-
-    // Connecting line (except for last component)
-    if (index < skuComponents.length - 1) {
-      doc.line(component.x + 3, 110, component.x + 37, 110);
-    }
+    // Draw individual line above each component
+    doc.line(component.x - component.lineWidth, 105, component.x + component.lineWidth, 105);
   });
 
-  // Labels
-  doc.setFont("Inter", "normal");
-  doc.text("Size", 50, 175, 'center');
-  doc.text("Hanging Technique", 100, 175, 'center');
-  doc.text("Mounting Orientation", 150, 175, 'center');
+  // Draw bottom circles, numbers, and labels with descriptions
+  doc.setFont("Inter", "bold");
+  bottomCircles.forEach(circle => {
+    // Draw circle
+    doc.circle(circle.x, circle.y, 2.5);
+    doc.text(circle.number.toString(), circle.x, circle.y + 1.5, 'center');
+    
+    // Draw label
+    doc.text(circle.label, circle.labelX, circle.labelY, 'left');
 
-  // Values
-  renderValues(doc, selectedOptions);
+    // Draw description with wrapping
+    doc.setFont("Inter", "normal");
+    const lines = doc.splitTextToSize("• " + circle.description, circle.maxWidth);
+    lines.forEach((line, index) => {
+      doc.text(line, circle.labelX, circle.labelY + 5 + (index * 5), 'left');
+    });
+
+    doc.setFont("Inter", "bold");
+  });
 }
 
 function renderHeaderOpener(doc, headerText) {
@@ -144,18 +213,18 @@ function renderHeaderOpener(doc, headerText) {
 
 function renderStyleText(doc, text) {
   doc.setFont("Inter", "bold");
-  doc.setFontSize(85);
-  doc.setCharSpace(1);
-  doc.text(15, 10, text, null, -90);
+  doc.setFontSize(75);
+  doc.setCharSpace(0.25);
+  doc.text(12, 10, text, null, -90);
   doc.setFontSize(10);
   doc.setFont("Inter", "normal");
 }
 
 function renderValues(doc, selectedOptions) {
   const values = [
-    { x: 50, y: 185, value: getSizeText(selectedOptions) },
-    { x: 100, y: 185, value: selectedOptions.find(opt => opt.dataName === 'Hanging Techniques')?.value || 'N/A' },
-    { x: 150, y: 185, value: selectedOptions.find(opt => opt.dataName === 'Orientation')?.value || 'N/A' }
+    { x: 50, y: 171, value: getSizeText(selectedOptions) },
+    { x: 100, y: 171, value: selectedOptions.find(opt => opt.dataName === 'Hanging Techniques')?.value || 'N/A' },
+    { x: 150, y: 171, value: selectedOptions.find(opt => opt.dataName === 'Orientation')?.value || 'N/A' }
   ];
 
   doc.setFont("Inter", "normal");
