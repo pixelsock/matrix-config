@@ -80,6 +80,18 @@ function renderSelectedImage(doc) {
 function renderStyleDetails(doc, selectedOptions) {
     const skuString = $('#productSku').text();
     const productLine = $('#product-line').text();
+
+    // Special handling for Polished Mirrors
+    if (productLine.includes('Polished')) {
+      const headerText = 'Your Custom Configuration For Polished Mirror';
+      renderHeaderOpener(doc, headerText);
+      renderStyleText(doc, 'Polished - MIRR');
+      renderPolishedSizeDetails(doc, selectedOptions);
+      renderPolishedDetails(doc, selectedOptions);
+      return;
+    }
+
+    // Regular handling for other product lines
     const skuStringNoDash = skuString.replace(/-/g, '');
     const skuStringFirstFour = skuStringNoDash.substring(0, 4);
     const styleDetails = productLine + ' ' + skuStringFirstFour;
@@ -88,18 +100,99 @@ function renderStyleDetails(doc, selectedOptions) {
     const lightDirectionOption = selectedOptions.find(option => option.dataName === 'Light Direction');
     const frameColorOption = !isExcluded('Frame Color') ? selectedOptions.find(option => option.dataName === 'Frame Color') : null;
   
-    // Accessing the value property of frameColorOption, mirrorStyleOption, and lightDirectionOption
     const headerText = 'Your Custom Configuration For ' + productLine +
-    (frameThicknessOption ? ' ' + frameThicknessOption.value : '') +
-    (frameColorOption ? ' ' + frameColorOption.value : '') +
-    ' ' + mirrorStyleOption.value + ' ' + lightDirectionOption.value;
+      (frameThicknessOption ? ' ' + frameThicknessOption.value : '') +
+      (frameColorOption ? ' ' + frameColorOption.value : '') +
+      ' ' + mirrorStyleOption.value + ' ' + lightDirectionOption.value;
     renderHeaderOpener(doc, headerText);
     renderStyleText(doc, styleDetails);
     renderSizeDetails(doc, selectedOptions);
     renderOtherDetails(doc, selectedOptions);
-  }
+}
 
-  function renderHeaderOpener(doc, headerText) {
+function renderPolishedSizeDetails(doc, selectedOptions) {
+    let sizeValue = '';
+    let skuValue = '';
+
+    // Try to get standard size first
+    const standardSizeOption = selectedOptions.find(option => option.dataName === 'Standard Size');
+    if (standardSizeOption && standardSizeOption.value) {
+        sizeValue = standardSizeOption.value;
+        skuValue = standardSizeOption.value.replace(/[^0-9]/g, '');
+    } else {
+        // If no standard size, try custom dimensions
+        const width = selectedOptions.find(option => option.dataName === 'Width')?.value;
+        const height = selectedOptions.find(option => option.dataName === 'Height')?.value;
+        if (width && height) {
+            sizeValue = `${width}" x ${height}"`;
+            skuValue = `${width}${height}`;
+        } else {
+            sizeValue = 'N/A';
+            skuValue = 'N/A';
+        }
+    }
+
+    // Add size details
+    addDetail(doc, sizeValue, 50, 201, 'Size: ');
+    if (skuValue !== 'N/A') {
+        addSku(doc, skuValue, 1);
+    }
+
+    // Add quantity if present
+    const quantityOption = selectedOptions.find(option => option.dataName === 'Quantity');
+    if (quantityOption && quantityOption.value) {
+        addDetail(doc, quantityOption.value, 50, 211, 'Quantity: ');
+    }
+}
+
+function renderPolishedDetails(doc, selectedOptions) {
+    doc.setCharSpace(0.5);
+    doc.setFontSize(12);
+    doc.text("ITEM CODE", 46, 90);
+    doc.setFontSize(10);
+
+
+    // Simplified layout for Polished Mirrors
+    doc.text("Size", 57, 164.5, 'left');
+    doc.text("Hanging Technique", 107, 164.5, 'left');
+    doc.text("Mounting Orientation", 155, 164.5, 'left');
+
+    // Draw only the necessary circles (3 instead of 9)
+    drawPolishedCircles(doc);
+
+    // Add the details
+    const details = [
+        { circle: 1, value: getSizeText(selectedOptions), x: 50, y: 171 },
+        { circle: 2, value: selectedOptions.find(option => option.dataName === 'Hanging Techniques')?.value || 'N/A', x: 100, y: 171 },
+        { circle: 3, value: selectedOptions.find(option => option.dataName === 'Orientation')?.value || 'N/A', x: 148, y: 171 }
+    ];
+
+    details.forEach(detail => {
+        if (detail.value === 'N/A') {
+            doc.setTextColor(224, 113, 115);
+        } else {
+            doc.setTextColor(0, 0, 0);
+        }
+
+        let lines = doc.splitTextToSize(detail.value, 40);
+        for (let i = 0; i < lines.length; i++) {
+            doc.text(lines[i], detail.x, detail.y + (i * 5));
+        }
+
+        // Add SKU codes above circles
+        if (detail.circle === 2 && detail.value !== 'N/A') {
+            const hangingTechniqueMap = { 'J-Channels': 'J', 'Sliver Z-Brackets': 'Z', 'Anodized Hanger Clips': 'C' };
+            const skuCode = hangingTechniqueMap[detail.value] || '';
+            if (skuCode) addSku(doc, skuCode, 2);
+        } else if (detail.circle === 3 && detail.value !== 'N/A') {
+            const orientationMap = { 'Vertical Mounting': '1', 'Horizontal Mounting': '2' };
+            const skuCode = orientationMap[detail.value] || '';
+            if (skuCode) addSku(doc, skuCode, 3);
+        }
+    });
+}
+
+function renderHeaderOpener(doc, headerText) {
     doc.setFontSize(16);
     doc.setFont("Inter", "bold");
     const lines = doc.splitTextToSize(headerText, 85);
@@ -498,4 +591,36 @@ function getAccessoriesValue(selectedOptions) {
       return 'Wall Switch Only (NA)';
     }
   }
+}
+
+function drawPolishedCircles(doc) {
+  const polishedCirclePositions = [
+    { first: { x: 50, y: 110, gap: 5}, second: { x: 52, y: 163 } },
+    { first: { x: 100, y: 110, gap: 15}, second: { x: 102, y: 163 } },
+    { first: { x: 150, y: 110, gap: 5}, second: { x: 150, y: 163 } }
+  ];
+
+  doc.setFont("Inter", "bold");
+  polishedCirclePositions.forEach((positions, index) => {
+    const lineLength = positions.first.gap ? positions.first.gap / 2 : 2.5;
+    
+    if (index < polishedCirclePositions.length - 1) {
+      doc.line(positions.first.x - lineLength, positions.first.y - 5, positions.first.x + lineLength, positions.first.y - 5);
+    }
+
+    doc.circle(positions.first.x, positions.first.y, 2.5);
+    doc.text((index + 1).toString(), positions.first.x, positions.first.y + 1.5, 'center');
+    
+    doc.circle(positions.second.x, positions.second.y, 2.5);
+    doc.text((index + 1).toString(), positions.second.x, positions.second.y + 1.5, 'center');
+  });
+}
+
+function getSizeText(selectedOptions) {
+  const width = selectedOptions.find(option => option.dataName === 'Width')?.value;
+  const height = selectedOptions.find(option => option.dataName === 'Height')?.value;
+  if (width && height) {
+    return `${width}" x ${height}"`;
+  }
+  return 'N/A';
 }

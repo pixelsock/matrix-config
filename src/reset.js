@@ -40,6 +40,10 @@ const resetRules = {
   'size' : {
     resetKey: ['size', 'width', 'diameter', 'height'],
   },
+  'Polished': {
+    ifSelected: ['*'],
+    resetKey: ['mirror controls', 'light direction', 'color temperature', 'light output', 'dimming', 'accessories'],
+  }
 };
 
 function resetFilters(resetKeys) {

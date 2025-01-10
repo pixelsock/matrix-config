@@ -85,8 +85,13 @@ const skuMapping = {
       'Future': 'F',
       'Deco': 'D',
       'Anti-Ligature': 'L',
+      'Polished': 'P',
+    },
+    'Hanging Techniques': {
+      'J-Channels': 'J',
+      'Sliver Z-Brackets': 'Z',
+      'Anodized Hanger Clips': 'C',
     }
-  
   };
 
   function getPrefix() {
@@ -96,6 +101,7 @@ const skuMapping = {
     if (productLine.includes('Deco')) return 'D'; // Return 'D' for Deco
     if (productLine.includes('Bright')) return 'B'; // Return 'B' for Bright Line
     if (productLine.includes('Anti-Ligature')) return 'L';
+    if (productLine.includes('Polished')) return 'P'; // Return 'P' for Polished
     return ''; // Default case
   }
   
@@ -113,13 +119,44 @@ const skuMapping = {
       'Accessories': ''      
     };
 
-    // if (productLine === 'Deco') { add frame thickness to skuComponents }
+    // Special handling for Polished Mirrors
+    if (getPrefix() === 'P') {
+      const polishedComponents = {
+        'Width': '',
+        'Height': '',
+        'Hanging Techniques': '',
+        'Orientation': ''
+      };
+
+      // Handle the size logic first
+      const sizeSku = getSizeSku();
+      polishedComponents['Width'] = sizeSku.width;
+      polishedComponents['Height'] = sizeSku.height;
+
+      selectedOptions.forEach(option => {
+        const category = option.dataName;
+        const value = option.value;
+        
+        if (skuMapping[category] && skuMapping[category][value]) {
+          polishedComponents[category] = skuMapping[category][value];
+        }
+      });
+
+      // Build the SKU string in the correct order for Polished Mirrors
+      const sku = 'MIRR' + '-' + polishedComponents['Width'] + '-' + 
+                 polishedComponents['Height'] + '-' + 
+                 polishedComponents['Hanging Techniques'] + '-' + 
+                 polishedComponents['Orientation'];
+      $('#productSku').text(sku);
+      console.log('Generated SKU:', sku);
+      return;
+    }
+
+    // Regular SKU generation for other product lines
     if (getPrefix() === 'D') {
       skuComponents['Frame Thickness'] = '';
     }    
 
-
-  
     let mirrorControlsValue = null;
   
     // Handle the size logic first

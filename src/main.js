@@ -6,10 +6,12 @@ import { matchesCombination } from './utils.js';
 import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity, updateOrientation } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
+import { generatePolishedPdf } from './polishedPdfGenerator.js';
 
+alert('testing')
 
 export function getSelectedOptions() {
-  alert('getSelectedOptions called');
+ 
   const form = $('#full-filter-form');
   const selectedOptions = [];
 
@@ -279,19 +281,31 @@ showLoaderAndFadeInContent(5000);
     // Log form submission
     console.log('Form submitted');
 
-    // Call the PDF generation function with the selected options
+    // Call the appropriate PDF generation function based on product line
     const selectedOptions = getSelectedOptions();
+    const productLine = $('#product-line').text();
     console.log('Selected options:', selectedOptions);
-    generatePdf(selectedOptions, 'save');
+    
+    if (productLine.includes('Polished')) {
+      generatePolishedPdf(selectedOptions, 'save');
+    } else {
+      generatePdf(selectedOptions, 'save');
+    }
   });
   
   $('#download-button').on('click', function() {
     const selectedOptions = getSelectedOptions();
+    const productLine = $('#product-line').text();
     console.log('Download button clicked');
     console.log('Selected options:', selectedOptions);
-    generatePdf(selectedOptions, 'newWindow'); // Call the PDF generation function
-  // break so it only runs once
-  return false;
-});
+    
+    if (productLine.includes('Polished')) {
+      generatePolishedPdf(selectedOptions, 'newWindow');
+    } else {
+      generatePdf(selectedOptions, 'newWindow');
+    }
+    // break so it only runs once
+    return false;
+  });
 
 });

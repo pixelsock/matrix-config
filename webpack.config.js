@@ -1,33 +1,16 @@
 const path = require('path');
-const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
-    main: './src/main.js',
-    productsPage: './src/products-page.js',
+    main: path.resolve(__dirname, 'src', 'main.js'),
+    productsPage: path.resolve(__dirname, 'src', 'products-page.js')
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
     filename: '[name].build.js',
-    publicPath: '/matrix-config/',
+    path: path.resolve(__dirname, 'dist'),
+    publicPath: '/'
   },
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-      maxInitialRequests: Infinity,
-      minSize: 0,
-      cacheGroups: {
-        vendor: {
-          test: /[\\/]node_modules[\\/]/,
-          name(module) {
-            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-            return `vendor.${packageName.replace('@', '')}`;
-          },
-        },
-      },
-    },
-  },
+  
   module: {
     rules: [
       {
@@ -47,27 +30,14 @@ module.exports = {
     port: 9000,
     https: false,
     hot: true,
-    static: {
-      directory: path.join(__dirname, 'dist'),
-      publicPath: '/matrix-config/'
-    },
     allowedHosts: 'all',
     headers: {
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, PATCH, OPTIONS',
-      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization, Private-Token',
-      'Access-Control-Allow-Credentials': 'true'
+      'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
     },
-    devMiddleware: {
-      publicPath: '/matrix-config/',
-      writeToDisk: true
+    static: {
+      directory: path.join(__dirname, 'dist')
     }
   },
-  plugins: [
-    new CopyPlugin({
-      patterns: [
-        { from: 'public/index.html', to: 'index.html' },
-      ],
-    }),
-  ],
-}
+};
