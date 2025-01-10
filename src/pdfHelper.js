@@ -102,38 +102,55 @@ const PDFHelper = {
         doc.setFontSize(12); // Reset Font Size
         doc.setFont("Inter", "normal");
       },
-      renderItemCode(doc) {
-        // Item Code Start
+      renderItemCode(doc, selectedOptions) {
+        const productLine = $('#product-line').text();
+        let isPolished = false;
+        if(productLine.includes('Polished')) {
+          isPolished = true;
+        }
+        
+        // Special handling for Polished Mirrors
+        if (productLine.includes('Polished')) {
+          doc.setCharSpace(0.5);
+          doc.setFontSize(12);
+          doc.text("ITEM CODE", 46, 90);
+          
+          doc.text("Size", 57, 164.5, 'left');
+          doc.text("Hanging Technique", 107, 164.5, 'left');
+          doc.text("Mounting Orientation", 155, 164.5, 'left');
+          return;
+        }
+
+        // Regular handling for other product lines
         doc.setCharSpace(0.5);
         doc.setFontSize(12);
         doc.text("ITEM CODE", 46, 90);
         doc.setFontSize(10);
         doc.text("Quantity Requested:", 190, 74, 'right');
         doc.text("Additional Specification Notes", 47, 122, 'left');
-      doc.text("Type", 57, 164.5, 'left');
-      doc.text("Style", 107, 164.5, 'left');
-      doc.text("Lighitng Style", 155, 164.5, 'left');
-      doc.text("Size", 57, 194.5, 'left');
-      doc.text("Output", 107, 194.5, 'left');
-      doc.text("Color Temperature", 155, 194.5, 'left');
-      doc.text("Driver", 57, 224.5, 'left');
-      doc.text("Mounting", 107, 224.5, 'left');
-      if (!isExcluded('Frame Color')) {
-      doc.text("Frame Color", 155, 224.5, 'left');
-      doc.text("Accessories", 57, 254.5, 'left');
-      doc.text("Mirror Controls", 105, 254.5, 'left');
-      } else {
-        doc.text("Accessories", 155, 224.5, 'left');
-        doc.text("Mirror Controls", 50, 254.5, 'left');
-      }
-      doc.setFontSize(10);
-      doc.setTextColor(224, 113, 115); // set to red
-      doc.setCharSpace(.25);
-      doc.setFont("Inter", "normal");
-      doc.text("(Mirrors with touch contols have to use a non dimming driver)", 46, 127, 'left');
-      doc.setTextColor(20, 20, 20); // set to black
-      // Item Code End
-        },
+        doc.text("Type", 57, 164.5, 'left');
+        doc.text("Style", 107, 164.5, 'left');
+        doc.text("Lighitng Style", 155, 164.5, 'left');
+        doc.text("Size", 57, 194.5, 'left');
+        doc.text("Output", 107, 194.5, 'left');
+        doc.text("Color Temperature", 155, 194.5, 'left');
+        doc.text("Driver", 57, 224.5, 'left');
+        doc.text("Mounting", 107, 224.5, 'left');
+        if (!isExcluded('Frame Color')) {
+          doc.text("Frame Color", 155, 224.5, 'left');
+          doc.text("Accessories", 57, 254.5, 'left');
+          doc.text("Mirror Controls", 105, 254.5, 'left');
+        } else {
+          doc.text("Accessories", 155, 224.5, 'left');
+          doc.text("Mirror Controls", 50, 254.5, 'left');
+        }
+        doc.setFontSize(10);
+        doc.setTextColor(224, 113, 115); // set to red
+        doc.setCharSpace(.25);
+        doc.setFont("Inter", "normal");
+        doc.text("(Mirrors with touch contols have to use a non dimming driver)", 46, 127, 'left');
+        doc.setTextColor(20, 20, 20); // set to black
+      },
         renderSkuAndDate(doc) {
    
   
@@ -204,11 +221,36 @@ const PDFHelper = {
         doc.text(footerText.toUpperCase(), 118, 290, 'center');
       },
       drawCirclesWithNumbers(doc) {
-   
-  
+        const productLine = $('#product-line').text();
+        
+        // Special handling for Polished Mirrors
+        if (productLine.includes('Polished')) {
+          const polishedCirclePositions = [
+            { first: { x: 50, y: 110, gap: 5}, second: { x: 52, y: 163 } },
+            { first: { x: 100, y: 110, gap: 15}, second: { x: 102, y: 163 } },
+            { first: { x: 150, y: 110, gap: 5}, second: { x: 150, y: 163 } }
+          ];
+
+          doc.setFont("Inter", "bold");
+          polishedCirclePositions.forEach((positions, index) => {
+            const lineLength = positions.first.gap ? positions.first.gap / 2 : 2.5;
+            
+            if (index < polishedCirclePositions.length - 1) {
+              doc.line(positions.first.x - lineLength, positions.first.y - 5, positions.first.x + lineLength, positions.first.y - 5);
+            }
+
+            doc.circle(positions.first.x, positions.first.y, 2.5);
+            doc.text((index + 1).toString(), positions.first.x, positions.first.y + 1.5, 'center');
+            
+            doc.circle(positions.second.x, positions.second.y, 2.5);
+            doc.text((index + 1).toString(), positions.second.x, positions.second.y + 1.5, 'center');
+          });
+          return;
+        }
+
+        // Regular handling for other product lines
         doc.setFont("Inter", "bold");
         circlePositions.forEach((positions, index) => {
-         
           // Calculate the line length based on the gap value
           const lineLength = positions.first.gap ? positions.first.gap / 2 : 2.5;
           // Allow for custom text to be rendered in the circle

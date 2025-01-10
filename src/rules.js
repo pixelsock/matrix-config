@@ -137,6 +137,14 @@ const rules = {
       disable: [],
       enable: [],
       excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
+    },
+    'Polished': {
+      showAndClick: [],
+      disable: ['Matrix-Touch-System', 'Touch-Sensor', 'CCTSync', 'Anti-Fog', 'Night-Light',
+                'Direct', 'Indirect', 'Both-Direct-And-Indirect', 'Standard', 'High',
+                'Non-Dimming', 'ELV-Dimmable', '0-10-Dimmable', '2700', '3000', '3500', '4000', '5000', 'Adjustable'],
+      enable: ['J-Channels', 'Sliver-Z-Brackets', 'Anodized-Hanger-Clips', 'Vertical-Mounting', 'Horizontal-Mounting'],
+      excludeProductLines: [],
     }
   };
 
