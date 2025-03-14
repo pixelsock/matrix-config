@@ -5,7 +5,7 @@ import { skuMapping } from './skuGeneration';
 import { isExcluded, productLine } from './utils';
 
 
-export class PDFGenerator {
+export class PDFGenerator { 
   constructor(selectedOptions) {
     this.selectedOptions = selectedOptions;
     this.doc = new jsPDF();
