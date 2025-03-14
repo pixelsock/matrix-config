@@ -1,5 +1,6 @@
 const path = require('path');
 const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
@@ -76,6 +77,11 @@ module.exports = {
           return error;
         }
       ],
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        { from: 'index.html', to: 'index.html' }
+      ]
     }),
   ],
 };
