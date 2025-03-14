@@ -27,6 +27,9 @@ const skuMapping = {
       'Silver Frame': 'SF',
       'Gold Frame': 'GF',
       'White Frame': 'WF',
+      'Bronze Frame': 'BR',
+      'Frameless': 'NA',
+      
       
     },
     'Frame Thickness': {
@@ -86,6 +89,7 @@ const skuMapping = {
       'Deco': 'D',
       'Anti-Ligature': 'L',
       'Polished': 'P',
+      'Suspended': 'S',
     },
     'Hanging Techniques': {
       'J-Channels': 'J',
@@ -102,11 +106,126 @@ const skuMapping = {
     if (productLine.includes('Bright')) return 'B'; // Return 'B' for Bright Line
     if (productLine.includes('Anti-Ligature')) return 'L';
     if (productLine.includes('Polished')) return 'P'; // Return 'P' for Polished
+    if (productLine.includes('Suspended')) return 'S'; // Return 'S' for Suspended
     return ''; // Default case
   }
   
   function generateSku(selectedOptions) {
-    // Define the SKU components
+    // For Suspended line, define components in the correct order
+    if (getPrefix() === 'S') {
+      const suspendedComponents = {
+        'Mirror Style': '',
+        'Light Direction': '',
+        'Width': '',
+        'Height': '',
+        'Light Output': '',
+        'Color Temperature': '',
+        'Dimming': '',
+        'Orientation': '',
+        'Frame Color': '',
+        'Accessories': ''
+      };
+      
+      // Handle the size logic first
+      const sizeSku = getSizeSku();
+      suspendedComponents['Width'] = sizeSku.width;
+      suspendedComponents['Height'] = sizeSku.height;
+      
+      let accessoriesSku = '';
+      let mirrorControlsValue = null;
+      let isCustomSize = false;
+      
+      if (selectedOptions.find(option => option.dataName === 'Custom Size Checkbox')) {
+        isCustomSize = true;
+      }
+      
+      selectedOptions.forEach(option => {
+        const category = option.dataName;
+        const value = option.value;
+        
+        // Check if the category and value are defined in the mapping
+        if (skuMapping[category] && skuMapping[category][value]) {
+          let skuComponent = skuMapping[category][value];
+          if (category === 'Accessories') {
+            // Concatenate the accessories SKU components
+            accessoriesSku += skuComponent;
+          } else if (category === 'Mirror Controls') {
+            mirrorControlsValue = value;
+          } else {
+            suspendedComponents[category] = skuComponent;
+          }
+        }
+        
+        if (category === 'Mirror Style' && value.includes('Round') && isCustomSize) {
+          let diameter = $('#Diameter').val();
+          if (diameter) {
+            suspendedComponents['Height'] = diameter;
+            suspendedComponents['Width'] = '00';
+          } else {
+            suspendedComponents['Height'] = '';
+            suspendedComponents['Width'] = '';
+          }
+        } else if (category === 'Mirror Style' && value.includes('Round') && !isCustomSize) {
+          let standardDiameter = $('#Standard-Diameter').val();
+          if (standardDiameter) {
+            suspendedComponents['Height'] = String(standardDiameter).slice(0, 2);
+            suspendedComponents['Width'] = '00';
+          } else {
+            suspendedComponents['Height'] = '';
+            suspendedComponents['Width'] = '';
+          }
+        }
+      });
+      
+      // Handle special logic for Mirror Controls and Accessories
+      switch (mirrorControlsValue) {
+        case 'Wall Switch Only':
+          console.log('accessoriesSku Wall Switch Only', accessoriesSku);
+          if (accessoriesSku === 'NLAF') accessoriesSku = 'AN'; // Both Night-Light and Anti-Fog selected
+          else if (accessoriesSku === '') accessoriesSku = 'NA'; // No accessories selected
+          break;
+        case 'Matrix Touch System':
+          console.log('accessoriesSku Matrix Touch System', accessoriesSku);
+          if (accessoriesSku === 'NL') accessoriesSku = 'TL';
+          else if (accessoriesSku === '') accessoriesSku = 'TR';
+          break;
+        case 'Touch Sensor - Light Controls Only':
+          console.log('accessoriesSku Touch Sensor - Light Controls Only', accessoriesSku);
+          if (accessoriesSku === 'AF') accessoriesSku = 'AT'; // Touch Sensor and Anti-Fog selected
+          else if (accessoriesSku === 'NL') accessoriesSku = 'NT'; // Touch Sensor and Night-Light selected
+          else if (accessoriesSku === '') accessoriesSku = 'TS'; // No accessories selected
+          else if (accessoriesSku === 'NLAF') accessoriesSku = 'AL'; // All accessories selected
+          break;
+        case 'CCTSync':
+          console.log('accessoriesSku CCTSync', accessoriesSku);
+          if (accessoriesSku === 'AF') accessoriesSku = 'CF'; // CCTSync and Anti-Fog selected
+          else if (accessoriesSku === 'NL') accessoriesSku = 'CN'; // CCTSync and Night-Light selected
+          else if (accessoriesSku === '') accessoriesSku = 'CT'; // No accessories selected
+          else if (accessoriesSku === 'NLAF') accessoriesSku = 'CL'; // All accessories selected
+          break;
+        // ... other cases if needed ...
+      }
+      
+      suspendedComponents['Accessories'] = accessoriesSku;
+      
+      // Check if Frameless is selected
+      const frameColorOption = selectedOptions.find(option => 
+        option.dataName === 'Frame Color' && option.value === 'Frameless'
+      );
+      
+      if (frameColorOption) {
+        // If Frameless is selected, remove Frame Color from the components
+        delete suspendedComponents['Frame Color'];
+      }
+      
+      // Build the SKU string in the correct order for Suspended line
+      const sku = 'S' + Object.values(suspendedComponents).join('-');
+      $('#productSku').text(sku);
+      console.log('Generated SKU:', sku);
+      return;
+    }
+    
+    // Original code for other product lines
     const skuComponents = {
       'Mirror Style': '',
       'Light Direction': '',
@@ -118,7 +237,7 @@ const skuMapping = {
       'Orientation': '',
       'Accessories': ''      
     };
-
+    
     // Special handling for Polished Mirrors
     if (getPrefix() === 'P') {
       const polishedComponents = {
@@ -152,7 +271,7 @@ const skuMapping = {
       return;
     }
 
-    // Regular SKU generation for other product lines
+    // Add special handling for Suspended line
     if (getPrefix() === 'D') {
       skuComponents['Frame Thickness'] = '';
     }    
@@ -165,127 +284,116 @@ const skuMapping = {
     skuComponents['Height'] = sizeSku.height;
   
     // Define a variable to hold the accessories SKU
-let accessoriesSku = '';
+    let accessoriesSku = '';
 
-let isCustomSize = false;
-  if (selectedOptions.find(option => option.dataName === 'Custom Size Checkbox')) {
-   
-    isCustomSize = true;
-  }
-
-selectedOptions.forEach(option => {
-  const category = option.dataName;
-  const value = option.value;
-  
-
-  // Check if the category and value are defined in the mapping
-  if (skuMapping[category] && skuMapping[category][value]) {
-    let skuComponent = skuMapping[category][value];
-    if (category === 'Accessories') {
-      // Concatenate the accessories SKU components
-      accessoriesSku += skuComponent;
-    } else {
-      skuComponents[category] = skuComponent;
-    }
-
-    if (category === 'Custom Size Checkbox' && value === 'Custom-Size-Checkbox') {
+    let isCustomSize = false;
+    if (selectedOptions.find(option => option.dataName === 'Custom Size Checkbox')) {
       isCustomSize = true;
-     
     }
 
-    // Store the value of Mirror Controls for later use
-    if (category === 'Mirror Controls') {
-      mirrorControlsValue = value;
-    }
-  } 
+    selectedOptions.forEach(option => {
+      const category = option.dataName;
+      const value = option.value;
+      
+      // Check if the category and value are defined in the mapping
+      if (skuMapping[category] && skuMapping[category][value]) {
+        let skuComponent = skuMapping[category][value];
+        if (category === 'Accessories') {
+          // Concatenate the accessories SKU components
+          accessoriesSku += skuComponent;
+        } else {
+          skuComponents[category] = skuComponent;
+        }
 
-  if (category === 'Mirror Style' && value.includes('Round') && isCustomSize) {
-    let diameter = $('#Diameter').val();
-    if (diameter) {
-    skuComponents['Height'] = diameter;
-    skuComponents['Width'] = '00';
+        if (category === 'Custom Size Checkbox' && value === 'Custom-Size-Checkbox') {
+          isCustomSize = true;
+        }
+
+        // Store the value of Mirror Controls for later use
+        if (category === 'Mirror Controls') {
+          mirrorControlsValue = value;
+        }
+      } 
+
+      if (category === 'Mirror Style' && value.includes('Round') && isCustomSize) {
+        let diameter = $('#Diameter').val();
+        if (diameter) {
+          skuComponents['Height'] = diameter;
+          skuComponents['Width'] = '00';
+        } else {
+          skuComponents['Height'] = '';
+          skuComponents['Width'] = '';
+        }
+      } else if (category === 'Mirror Style' && value.includes('Round') && !isCustomSize) {
+        let standardDiameter = $('#Standard-Diameter').val();
+        if (standardDiameter) {
+          skuComponents['Height'] = String(standardDiameter).slice(0, 2);
+          skuComponents['Width'] = '00';
+        } else {
+          skuComponents['Height'] = '';
+          skuComponents['Width'] = '';
+        }
+      }
+    });
+
+    // Handle special logic for Mirror Controls and Accessories
+    switch (mirrorControlsValue) {
+      case 'Wall Switch Only':
+        console.log('accessoriesSku Wall Switch Only', accessoriesSku);
+        if (accessoriesSku === 'NLAF') accessoriesSku = 'AN'; // Both Night-Light and Anti-Fog selected
+        else if (accessoriesSku === '') accessoriesSku = 'NA'; // No accessories selected
+        break;
+      case 'Matrix Touch System':
+        console.log('accessoriesSku Matrix Touch System', accessoriesSku);
+        if (accessoriesSku === 'NL') accessoriesSku = 'TL';
+        else if (accessoriesSku === '') accessoriesSku = 'TR';
+        break;
+      case 'Touch Sensor - Light Controls Only':
+        console.log('accessoriesSku Touch Sensor - Light Controls Only', accessoriesSku);
+        if (accessoriesSku === 'AF') accessoriesSku = 'AT'; // Touch Sensor and Anti-Fog selected
+        else if (accessoriesSku === 'NL') accessoriesSku = 'NT'; // Touch Sensor and Night-Light selected
+        else if (accessoriesSku === '') accessoriesSku = 'TS'; // No accessories selected
+        else if (accessoriesSku === 'NLAF') accessoriesSku = 'AL'; // All accessories selected
+        break;
+      case 'CCTSync':
+        console.log('accessoriesSku CCTSync', accessoriesSku);
+        if (accessoriesSku === 'AF') accessoriesSku = 'CF'; // CCTSync and Anti-Fog selected
+        else if (accessoriesSku === 'NL') accessoriesSku = 'CN'; // CCTSync and Night-Light selected
+        else if (accessoriesSku === '') accessoriesSku = 'CT'; // No accessories selected
+        else if (accessoriesSku === 'NLAF') accessoriesSku = 'CL'; // All accessories selected
+        break;
+      // ... other cases if needed ...
+    }
+
+    delete skuComponents['Mirror Controls']; 
+
+    skuComponents['Accessories'] = accessoriesSku;
+
+    // Get the prefix
+    const prefix = getPrefix();
+
+    // If the product line is Deco, prepend the frame thickness to the mirror style SKU
+    if (prefix === 'D') {
+      const frameThicknessOption = selectedOptions.find(option => option.dataName === 'Frame Thickness');
+      if (frameThicknessOption) {
+        const frameThickness = skuMapping['Frame Thickness'][frameThicknessOption.value];
+        skuComponents['Mirror Style'] = frameThickness + skuComponents['Mirror Style'];
+        delete skuComponents['Frame Thickness'];
+      }
+    }
+
+    // Build the SKU string in the correct order
+    if (prefix !== 'D') {
+      const sku = prefix + Object.values(skuComponents).join('-');
+      $('#productSku').text(sku);
+      console.log('Generated SKU:', sku);
     } else {
-      skuComponents['Height'] = '';
-      skuComponents['Width'] = '';
-    }
-    
-    
-  } else if (category === 'Mirror Style' && value.includes('Round') && !isCustomSize) {
-    let standardDiameter = $('#Standard-Diameter').val();
-    if (standardDiameter) {
-    skuComponents['Height'] = String(standardDiameter).slice(0, 2);
-    skuComponents['Width'] = '00';
-    } else {
-      skuComponents['Height'] = '';
-      skuComponents['Width'] = '';
-    }
-    
-    
-  }
-});
-
-// Handle special logic for Mirror Controls and Accessories
-switch (mirrorControlsValue) {
-  case 'Wall Switch Only':
-    console.log('accessoriesSku Wall Switch Only', accessoriesSku);
-    if (accessoriesSku === 'NLAF') accessoriesSku = 'AN'; // Both Night-Light and Anti-Fog selected
-    else if (accessoriesSku === '') accessoriesSku = 'NA'; // No accessories selected
-    break;
-  case 'Matrix Touch System':
-    console.log('accessoriesSku Matrix Touch System', accessoriesSku);
-    if (accessoriesSku === 'NL') accessoriesSku = 'TL';
-    else if (accessoriesSku === '') accessoriesSku = 'TR';
-    break;
-  case 'Touch Sensor - Light Controls Only':
-    console.log('accessoriesSku Touch Sensor - Light Controls Only', accessoriesSku);
-    if (accessoriesSku === 'AF') accessoriesSku = 'AT'; // Touch Sensor and Anti-Fog selected
-    else if (accessoriesSku === 'NL') accessoriesSku = 'NT'; // Touch Sensor and Night-Light selected
-    else if (accessoriesSku === '') accessoriesSku = 'TS'; // No accessories selected
-    else if (accessoriesSku === 'NLAF') accessoriesSku = 'AL'; // All accessories selected
-    break;
-  case 'CCTSync':
-    console.log('accessoriesSku CCTSync', accessoriesSku);
-    if (accessoriesSku === 'AF') accessoriesSku = 'CF'; // CCTSync and Anti-Fog selected
-    else if (accessoriesSku === 'NL') accessoriesSku = 'CN'; // CCTSync and Night-Light selected
-    else if (accessoriesSku === '') accessoriesSku = 'CT'; // No accessories selected
-    else if (accessoriesSku === 'NLAF') accessoriesSku = 'CL'; // All accessories selected
-    break;
-  // ... other cases if needed ...
-}
-
-delete skuComponents['Mirror Controls']; 
-
-skuComponents['Accessories'] = accessoriesSku;
-
- // Get the prefix
-  const prefix = getPrefix();
-
-  // If the product line is Deco, prepend the frame thickness to the mirror style SKU
-  if (prefix === 'D') {
-    const frameThicknessOption = selectedOptions.find(option => option.dataName === 'Frame Thickness');
-    if (frameThicknessOption) {
-      const frameThickness = skuMapping['Frame Thickness'][frameThicknessOption.value];
-      skuComponents['Mirror Style'] = frameThickness + skuComponents['Mirror Style'];
-      delete skuComponents['Frame Thickness'];
+      const sku = Object.values(skuComponents).join('-');
+      $('#productSku').text(sku);
+      console.log('Generated SKU:', sku);
     }
   }
 
-  // Build the SKU string in the correct order
-  if (prefix != 'D') {
-    const sku = prefix + Object.values(skuComponents).join('-');
-    $('#productSku').text(sku);
-    console.log('Generated SKU:', sku);
-  } else {
-    const sku = Object.values(skuComponents).join('-');
-    $('#productSku').text(sku);
-    console.log('Generated SKU:', sku);
-  }; 
-
-  
-}
-
-
-  
   function getSizeSku() {
     // Check if the mirror style is round
     let widthSku = '';

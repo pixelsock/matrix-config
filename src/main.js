@@ -7,6 +7,7 @@ import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity, updateOrientation } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
 import { generatePolishedPdf } from './polishedPdfGenerator.js';
+import { generateSuspendedPdf } from './suspendedPdfGenerator.js';
 
 export function getSelectedOptions() {
  
@@ -286,6 +287,8 @@ showLoaderAndFadeInContent(5000);
     
     if (productLine.includes('Polished')) {
       generatePolishedPdf(selectedOptions, 'save');
+    } else if (productLine.includes('Suspended')) {
+      generateSuspendedPdf(selectedOptions, 'save');
     } else {
       generatePdf(selectedOptions, 'save');
     }
@@ -299,6 +302,8 @@ showLoaderAndFadeInContent(5000);
     
     if (productLine.includes('Polished')) {
       generatePolishedPdf(selectedOptions, 'newWindow');
+    } else if (productLine.includes('Suspended')) {
+      generateSuspendedPdf(selectedOptions, 'newWindow');
     } else {
       generatePdf(selectedOptions, 'newWindow');
     }
