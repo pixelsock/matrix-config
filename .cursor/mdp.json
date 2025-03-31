@@ -1,0 +1,14 @@
+{
+    "mcpServers": {
+      "webflow": {
+        "command": "node",
+        "args": ["/Users/nick/MCP/servers/src/webflow-mcp-server/dist/mcp-server.js"],
+        "env": {
+          "WEBFLOW_API_TOKEN": "87e3961b7e2c182d477ae61c580fbaafcb5f9593072703d8dfea7066113373fb",
+          "DEFAULT_SITE_ID": "638fbc9b6d164e234dc677d7"
+        },
+        "disabled": false,
+        "autoApprove": []
+      }
+    }
+  }

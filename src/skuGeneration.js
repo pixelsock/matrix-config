@@ -15,12 +15,13 @@ const skuMapping = {
       'Single Short Side Edge': '10',
       'Single Short Side Inset': '11',
       'Round Full Frame Edge': '21',
-      'Round No Frost': '51',
-      'Oval No Frost': '52',
-      'Oval Full Frame Edge': '22',
+      'Rounded Corners Full Frame Inward Lighting': '45',
+      'Circle Full Frame Inward Lighting': '51',
+      'Oval Full Frame Inward Lighting': '52',
       'Stadium Full Frame Inset': '23',
       'Stadium Full Frame Edge': '24',
-      'Stadium No Frost': '53',
+      'Stadium Full Frame Inward Lighting': '53',
+      'Arch Full Frame Inward Lighting': '55',
     },
     'Frame Color':{
       'Black Frame': 'BF',
@@ -291,6 +292,15 @@ const skuMapping = {
       isCustomSize = true;
     }
 
+    // Helper function to check if it's a round style (but not rounded corners)
+    const isRoundStyle = (value) => {
+      const roundStyles = [
+        'Round Full Frame Edge',
+        'Circle Full Frame Inward Lighting'
+      ];
+      return roundStyles.includes(value);
+    };
+
     selectedOptions.forEach(option => {
       const category = option.dataName;
       const value = option.value;
@@ -315,7 +325,8 @@ const skuMapping = {
         }
       } 
 
-      if (category === 'Mirror Style' && value.includes('Round') && isCustomSize) {
+      // Update the round check to be more specific
+      if (category === 'Mirror Style' && isRoundStyle(value) && isCustomSize) {
         let diameter = $('#Diameter').val();
         if (diameter) {
           skuComponents['Height'] = diameter;
@@ -324,7 +335,7 @@ const skuMapping = {
           skuComponents['Height'] = '';
           skuComponents['Width'] = '';
         }
-      } else if (category === 'Mirror Style' && value.includes('Round') && !isCustomSize) {
+      } else if (category === 'Mirror Style' && isRoundStyle(value) && !isCustomSize) {
         let standardDiameter = $('#Standard-Diameter').val();
         if (standardDiameter) {
           skuComponents['Height'] = String(standardDiameter).slice(0, 2);

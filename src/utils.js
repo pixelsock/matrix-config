@@ -52,7 +52,16 @@ export function showHideSizesBasedOffStyle(selectedOptions) {
   const customSizeCheckbox = selectedOptions.find(option => option.dataName === 'Custom Size Checkbox');
   const isCustomSize = customSizeCheckbox && customSizeCheckbox.value === 'Custom-Size-Checkbox';
 
-  if (selectedOptions.some(option => option.value.includes('Round'))) {
+  // Helper function to check if it's a round style (but not rounded corners)
+  const isRoundStyle = (value) => {
+    const roundStyles = [
+      'Round Full Frame Edge',
+      'Circle Full Frame Inward Lighting'
+    ];
+    return roundStyles.includes(value);
+  };
+
+  if (selectedOptions.some(option => option.dataName === 'Mirror Style' && isRoundStyle(option.value))) {
     roundSizeFields.forEach(field => field.classList.remove('hide'));
     standardSizeFields.forEach(field => field.classList.add('hide'));
   } else {
