@@ -9,7 +9,7 @@
     "watch": "webpack --watch --mode development",
     "sync": "browser-sync start --config bs-config.js",
     "deploy": "gh-pages -d dist",
-    "release": "git add . && git commit -m \"Release v$(node -p \"require('./package.json').version\")\" && git push && git push --tags && gh release create v$(node -p \"require('./package.json').version\") --generate-notes"
+    "release": "git add . && git commit -m \"Pre-release commit\" && npm version patch && git push && git push --tags && gh release create v$(node -p \"require('./package.json').version\") --generate-notes"
   },
   "keywords": [],
   "author": "",
