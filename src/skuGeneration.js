@@ -1,9 +1,15 @@
+import { isRoundStyle } from './utils.js';
+
 // Define the mapping object
 const skuMapping = {
     'Mirror Style': {
       'Full Frame Inset': '01',
       'Full Frame Edge': '02',
       'Full Frame Inward Lighting': '05',
+      'Circle No Frost': '51',
+      'Oval No Frost': '52',
+      'Oval Full Frame Edge': '22',
+      'Stadium No Frost': '53',
       'Double Long Side Inset': '03',
       'Double Long Side Inset*': '33',
       'Double Long Side Edge': '04',
@@ -14,7 +20,7 @@ const skuMapping = {
       'Single Long Side Edge': '08',
       'Single Short Side Edge': '10',
       'Single Short Side Inset': '11',
-      'Round Full Frame Edge': '21',
+      'Circle Full Frame Edge': '21',
       'Rounded Corners Full Frame Inward Lighting': '45',
       'Circle Full Frame Inward Lighting': '51',
       'Oval Full Frame Inward Lighting': '52',
@@ -87,10 +93,12 @@ const skuMapping = {
       'Bright Line': 'B', // Return 'B' for Bright Line
       'Classic': 'L',
       'Future': 'F',
-      'Deco': 'D',
+      'Deco': 'T/W',
       'Anti-Ligature': 'L',
-      'Polished': 'P',
+      'Polished': 'MIRR',
       'Suspended': 'S',
+      'Future Deco': 'R',
+      'Makeup Mirrors': 'MA',
     },
     'Hanging Techniques': {
       'J-Channels': 'J',
@@ -101,14 +109,15 @@ const skuMapping = {
 
   function getPrefix() {
     const productLine = $('#product-line').text();
+    if (productLine.includes('Future Deco')) return 'R';
     if (productLine.includes('Classic')) return 'L';
     if (productLine.includes('Future')) return 'F';
-    if (productLine.includes('Deco')) return 'D'; // Return 'D' for Deco
-    if (productLine.includes('Bright')) return 'B'; // Return 'B' for Bright Line
+    if (productLine.includes('Deco')) return 'D';
+    if (productLine.includes('Bright')) return 'B';
     if (productLine.includes('Anti-Ligature')) return 'L';
-    if (productLine.includes('Polished')) return 'P'; // Return 'P' for Polished
-    if (productLine.includes('Suspended')) return 'S'; // Return 'S' for Suspended
-    return ''; // Default case
+    if (productLine.includes('Polished')) return 'P';
+    if (productLine.includes('Suspended')) return 'S';
+    return '';
   }
   
   function generateSku(selectedOptions) {
@@ -293,13 +302,6 @@ const skuMapping = {
     }
 
     // Helper function to check if it's a round style (but not rounded corners)
-    const isRoundStyle = (value) => {
-      const roundStyles = [
-        'Round Full Frame Edge',
-        'Circle Full Frame Inward Lighting'
-      ];
-      return roundStyles.includes(value);
-    };
 
     selectedOptions.forEach(option => {
       const category = option.dataName;
