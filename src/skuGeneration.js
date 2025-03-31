@@ -28,6 +28,9 @@ const skuMapping = {
       'Stadium Full Frame Edge': '24',
       'Stadium Full Frame Inward Lighting': '53',
       'Arch Full Frame Inward Lighting': '55',
+      'Arch Full Frame Inset': '25',
+      'Arch Full Frame Edge': '26',
+      'Arch No Frost': '55',
     },
     'Frame Color':{
       'Black Frame': 'BF',
