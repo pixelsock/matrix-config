@@ -177,7 +177,16 @@ const PDFHelper = {
       
         const mirrorStyleOption = selectedOptions.find(option => option.dataName === 'Mirror Style');
       
-        if (mirrorStyleOption && mirrorStyleOption.value.toLowerCase().includes('round')) {
+        // Helper function to check if it's a round style (but not rounded corners)
+        const isRoundStyle = (value) => {
+          const roundStyles = [
+            'Round Full Frame Edge',
+            'Circle Full Frame Inward Lighting'
+          ];
+          return roundStyles.includes(value);
+        };
+
+        if (mirrorStyleOption && isRoundStyle(mirrorStyleOption.value)) {
           const diameterOption = selectedOptions.find(option => option.dataName === 'Diameter');
           sizeDetailsLabel = 'Size: ';
           sizeDetailsValue = diameterOption ? diameterOption.value : 'N/A';

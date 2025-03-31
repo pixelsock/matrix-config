@@ -2,7 +2,7 @@
 import FilterHelper from './filterHelper.js';
 import { generateSku } from './skuGeneration.js';
 import { rules } from './rules.js';
-import { matchesCombination } from './utils.js';
+import { matchesCombination, productLine } from './utils.js';
 import { initializeReset } from './reset.js';
 import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity, updateOrientation } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
@@ -167,6 +167,15 @@ function updateSelectedOptionsDisplay(filterInstances) {
   });
 }
 
+// Helper function to check if it's a round style (but not rounded corners)
+const isRoundStyle = (value) => {
+  const roundStyles = [
+    'Round Full Frame Edge',
+    'Circle Full Frame Inward Lighting'
+  ];
+  return roundStyles.includes(value);
+};
+
 function updateSelectedOption(selectedOptionElement, text, selectedOptions) {
   if (selectedOptionElement) {
     const filterTarget = selectedOptionElement.attr('filter-target');
@@ -212,6 +221,12 @@ function updateConfigurator() {
 
 function applyRules(selectedOptions, rules) {
   Object.entries(rules).forEach(([ruleKey, ruleValue]) => {
+    // First check if this rule should be excluded for the current product line
+    if (ruleValue.excludeProductLines && ruleValue.excludeProductLines.includes(productLine)) {
+      return; // Skip this rule if it's excluded for the current product line
+    }
+    
+    // Only apply the rule if it matches and isn't excluded
     if (matchesCombination(selectedOptions, ruleKey)) {
       FilterHelper.disableOptions(ruleValue.disable);
       FilterHelper.enableOptions(ruleValue.enable);

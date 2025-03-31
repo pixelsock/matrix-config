@@ -226,7 +226,16 @@ function renderHeaderOpener(doc, headerText) {
     const standardDiameterOption = selectedOptions.find(option => option.dataName === 'Standard Diameter');
     const quantityOption = selectedOptions.find(option => option.dataName === 'Quantity');
 
-    if (mirrorStyleOption && mirrorStyleOption.value.toLowerCase().includes('round') && isCustomSize) {
+    // Helper function to check if it's a round style (but not rounded corners)
+    const isRoundStyle = (value) => {
+      const roundStyles = [
+        'Round Full Frame Edge',
+        'Circle Full Frame Inward Lighting'
+      ];
+      return roundStyles.includes(value);
+    };
+
+    if (mirrorStyleOption && isRoundStyle(mirrorStyleOption.value) && isCustomSize) {
       const diameterOption = selectedOptions.find(option => option.dataName === 'Diameter');
       sizeDetailsLabel = 'Diameter: ';
       sizeDetailsValue = diameterOption ? diameterOption.value + '"' : 'N/A';
@@ -235,7 +244,7 @@ function renderHeaderOpener(doc, headerText) {
       sizeDetailsLabel = 'Standard Size: ';
       sizeDetailsValue = standardSizeOption.value;
       sizeDetailsSku = standardSizeOption.value.replace(/[^0-9]/g, '');
-    } else if (standardDiameterOption && mirrorStyleOption.value.toLowerCase().includes('round') && standardDiameterOption.value) {
+    } else if (standardDiameterOption && isRoundStyle(mirrorStyleOption.value) && standardDiameterOption.value) {
       sizeDetailsLabel = 'Standard Diameter: ';
       sizeDetailsValue = standardDiameterOption.value;
       sizeDetailsSku = standardDiameterOption.value.replace(/[^0-9]/g, '').padStart(4, '0');
