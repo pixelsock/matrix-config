@@ -24,12 +24,12 @@ const resetRules = {
     resetKey: ['light direction'], 
     fallback: ['Indirect']
   },
-  'Round Full Frame Edge': {
+  'Circle Full Frame Edge': {
     ifSelected: ['Matrix Touch System'],
     resetKey: ['mirror controls', 'light direction'],
     fallback: ['Touch Sensor - Light Controls Only']
   },
-  'Round': {
+  'Circle': {
     ifSelected: ['*'], // Applies when any "Round" style is selected
     resetKey: ['size', 'width', 'height'], // Reset these keys
   },

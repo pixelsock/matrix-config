@@ -4,7 +4,7 @@ import { generateSku } from './skuGeneration.js';
 import { rules } from './rules.js';
 import { matchesCombination, productLine } from './utils.js';
 import { initializeReset } from './reset.js';
-import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity, updateOrientation } from './utils.js';
+import { showHideSizesBasedOffStyle, forSubmissionSkuAndQuantity, updateOrientation, isRoundStyle } from './utils.js';
 import { generatePdf } from './pdfGenerator.js';
 import { generatePolishedPdf } from './polishedPdfGenerator.js';
 import { generateSuspendedPdf } from './suspendedPdfGenerator.js';
@@ -167,15 +167,6 @@ function updateSelectedOptionsDisplay(filterInstances) {
   });
 }
 
-// Helper function to check if it's a round style (but not rounded corners)
-const isRoundStyle = (value) => {
-  const roundStyles = [
-    'Round Full Frame Edge',
-    'Circle Full Frame Inward Lighting'
-  ];
-  return roundStyles.includes(value);
-};
-
 function updateSelectedOption(selectedOptionElement, text, selectedOptions) {
   if (selectedOptionElement) {
     const filterTarget = selectedOptionElement.attr('filter-target');
@@ -258,36 +249,44 @@ window.fsAttributes = window.fsAttributes || [];
 window.fsAttributes.push([
   'cmsfilter',
   (filterInstances) => {
-    // The `renderitems` event runs whenever the list renders items after filtering.
+    // Show loader initially
+    $('#loader').show();
+
+    // First load completion
+    let initialLoadComplete = false;
+    
     filterInstances[0].listInstance.on('renderitems', () => {
       updateSelectedOptionsDisplay(filterInstances);
-      showLoaderAndFadeInContent(1000);
+      
+      if (!initialLoadComplete) {
+        // This is the first load
+        initialLoadComplete = true;
+        setTimeout(() => {
+          $('#loader').hide();
+          $('#product-collection').css('display', 'grid').hide().fadeIn(600);
+          $('#tag-wrapper').fadeIn(400);
+        }, 100);
+      } else {
+        // This is a subsequent filter operation - no delay needed
+        $('#loader').hide();
+        $('#product-collection').fadeIn(600);
+        $('#tag-wrapper').fadeIn(400);
+      }
     });
   },
 ]);
 
 initializeReset();
 
-document.addEventListener('DOMContentLoaded', function() {
-  
-});
-
-function showLoaderAndFadeInContent(timeout) {
-  // hide product collection and show loader for 3 seconds
+$(document).ready(function() {
+  // Only show the loader initially
   $('#loader').show();
-  $('#product-collection').hide();
-  $('#tag-wrapper').hide();
-  setTimeout(function() {
-    $('#loader').hide();
-    $('#product-collection').fadeIn(600); // Add fade in animation
-    $('#tag-wrapper').fadeIn(400); // Add fade in animation
-  }, timeout);
-}
+  
+  // Rest of your document.ready code...
+});
 
 $(document).ready(function() {
  
-showLoaderAndFadeInContent(5000);
-
   // Add a submit event listener to the Request-A-Quote form
   $('#wf-form-Request-A-Quote').on('submit', function(event) {
     event.preventDefault(); // Prevent the form from submitting normally

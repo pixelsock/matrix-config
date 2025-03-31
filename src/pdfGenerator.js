@@ -2,7 +2,7 @@ import { jsPDF } from "jspdf";
 import './fonts/Inter-Bold-bold.js';
 import './fonts/Inter-Regular-normal.js';
 import { skuMapping } from './skuGeneration';
-import { isExcluded, productLine, isCustomSize } from './utils';
+import { isExcluded, productLine, isCustomSize, isRoundStyle } from './utils';
 
 
 
@@ -226,14 +226,6 @@ function renderHeaderOpener(doc, headerText) {
     const standardDiameterOption = selectedOptions.find(option => option.dataName === 'Standard Diameter');
     const quantityOption = selectedOptions.find(option => option.dataName === 'Quantity');
 
-    // Helper function to check if it's a round style (but not rounded corners)
-    const isRoundStyle = (value) => {
-      const roundStyles = [
-        'Round Full Frame Edge',
-        'Circle Full Frame Inward Lighting'
-      ];
-      return roundStyles.includes(value);
-    };
 
     if (mirrorStyleOption && isRoundStyle(mirrorStyleOption.value) && isCustomSize) {
       const diameterOption = selectedOptions.find(option => option.dataName === 'Diameter');

@@ -46,20 +46,21 @@ export function matchesCombination(selectedOptions, combination) {
     }
   }
 }
+
+export const isRoundStyle = (value) => {
+  const roundStyles = [
+    'Circle Full Frame Edge',
+    'Circle Full Frame Inward Lighting',
+    'Circle No Frost'
+  ];
+  return roundStyles.includes(value);
+};
+
 export function showHideSizesBasedOffStyle(selectedOptions) {
   const roundSizeFields = document.querySelectorAll('.diameter');
   const standardSizeFields = document.querySelectorAll('.standard');
   const customSizeCheckbox = selectedOptions.find(option => option.dataName === 'Custom Size Checkbox');
   const isCustomSize = customSizeCheckbox && customSizeCheckbox.value === 'Custom-Size-Checkbox';
-
-  // Helper function to check if it's a round style (but not rounded corners)
-  const isRoundStyle = (value) => {
-    const roundStyles = [
-      'Round Full Frame Edge',
-      'Circle Full Frame Inward Lighting'
-    ];
-    return roundStyles.includes(value);
-  };
 
   if (selectedOptions.some(option => option.dataName === 'Mirror Style' && isRoundStyle(option.value))) {
     roundSizeFields.forEach(field => field.classList.remove('hide'));
