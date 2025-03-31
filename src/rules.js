@@ -8,6 +8,7 @@ const rules = {
       excludeProductLines: ['Anti-Ligature'],
      
     },
+    
     'Touch Sensor': {
       showAndClick: ['Non-Dimming'],
       disable: ['ELV-Dimmable', '0-10-Dimmable'],
@@ -137,6 +138,12 @@ const rules = {
       disable: [],
       enable: [],
       excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
+    },
+    'Arch': {
+      showAndClick: ['Indirect'],
+      disable: ['Direct', 'Both-Direct-And-Indirect'],
+      enable: ['Indirect'],
+      excludeProductLines: [],
     },
     'Polished': {
       showAndClick: [],
