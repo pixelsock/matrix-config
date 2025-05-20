@@ -8,7 +8,7 @@
     "start": "webpack-dev-server --open",
     "watch": "webpack --watch --mode development",
     "sync": "browser-sync start --config bs-config.js",
-    "deploy": "npm run build && git add dist/* --force && git commit -m \"Add build artifacts [skip ci]\" && npm version patch -m \"Bump version to %s [skip ci]\" && git push --follow-tags && gh workflow run deploy-cdn.yml --ref main",
+    "deploy": "npm run build && git add dist/* --force && git commit -m \"Add build artifacts [skip ci]\" && npm version patch -m \"Bump version to %s [skip ci]\" && git push --follow-tags && gh workflow run deploy-cdn.yml --ref main -f forceVersionBump=true",
     "prerelease": "npm run build",
     "version-bump": "npm version patch",
     "release": "npm run prerelease && git add . && git commit -m \"Version bump\" && npm run version-bump && git push origin main --follow-tags && gh release create v$(node -p \"require('./package.json').version\") --generate-notes"

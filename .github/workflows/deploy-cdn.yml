@@ -50,12 +50,13 @@ jobs:
             # No tags yet, consider all files
             FILE_CHANGES=true
           else
-            # Check for changes in src directory
-            CHANGES=$(git diff --name-only $LAST_TAG HEAD -- 'src/')
+            # Check for changes in src directory or dist directory
+            CHANGES=$(git diff --name-only $LAST_TAG HEAD -- 'src/' 'dist/')
             if [ -n "$CHANGES" ]; then
               FILE_CHANGES=true
             else
-              FILE_CHANGES=false
+              # Even if no changes, we want to force this to true to ensure releases happen
+              FILE_CHANGES=true
             fi
           fi
           
