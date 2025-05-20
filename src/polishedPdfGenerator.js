@@ -70,9 +70,10 @@ function renderSkuAndDate(doc) {
 }
 
 function renderSelectedImage(doc) {
-  const photo = $('#selected-image').attr('src');
-  const encodedPhotoURL = encodeURIComponent(photo);
-  doc.addImage(encodedPhotoURL, 'JPEG', 46, 12, 65, 65);
+  const imgEl = document.getElementById('selected-image');
+  if (imgEl) {
+    doc.addImage(imgEl, 'JPEG', 46, 12, 65, 65);
+  }
 }
 
 function renderItemCode(doc, selectedOptions) {
