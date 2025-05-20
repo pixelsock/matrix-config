@@ -1,0 +1,96 @@
+name: Deploy to CDN (jsDelivr)
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      forceVersionBump:
+        description: 'Force a version bump'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Check for code changes
+        id: check-changes
+        run: |
+          # Check if there are file changes in src/ directory since last tag
+          LAST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+          
+          if [ "$LAST_TAG" = "none" ]; then
+            # No tags yet, consider all files
+            FILE_CHANGES=true
+          else
+            # Check for changes in src directory
+            CHANGES=$(git diff --name-only $LAST_TAG HEAD -- 'src/')
+            if [ -n "$CHANGES" ]; then
+              FILE_CHANGES=true
+            else
+              FILE_CHANGES=false
+            fi
+          fi
+          
+          echo "file_changes=$FILE_CHANGES" >> $GITHUB_OUTPUT
+
+      - name: Bump version if needed
+        if: steps.check-changes.outputs.file_changes == 'true' || github.event.inputs.forceVersionBump == 'true'
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "github-actions@github.com"
+          
+          # Bump patch version
+          npm version patch -m "Bump version to %s [skip ci]"
+          
+          # Push updated package.json and new tag
+          git push --follow-tags
+
+      - name: Get version
+        id: get-version
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        if: steps.check-changes.outputs.file_changes == 'true' || github.event.inputs.forceVersionBump == 'true'
+        uses: softprops/action-gh-release@v1
+        with:
+          name: v${{ steps.get-version.outputs.version }}
+          tag_name: v${{ steps.get-version.outputs.version }}
+          generate_release_notes: true
+          files: |
+            dist/*
+
+      - name: Purge jsDelivr cache (optional)
+        if: steps.check-changes.outputs.file_changes == 'true' || github.event.inputs.forceVersionBump == 'true'
+        run: |
+          # Purge the jsDelivr cache for the files
+          # This is optional as jsDelivr will eventually refresh its cache
+          # But it can be helpful for immediate updates
+          curl -X POST \
+            "https://purge.jsdelivr.net/gh/pixelsock/matrix-config@${{ steps.get-version.outputs.version }}/dist/main.build.js" \
+            "https://purge.jsdelivr.net/gh/pixelsock/matrix-config@${{ steps.get-version.outputs.version }}/dist/productsPage.build.js"
