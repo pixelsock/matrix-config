@@ -1,6 +1,6 @@
 {
   "name": "matrix-config",
-  "version": "4.9.16",
+  "version": "4.9.17",
   "description": "",
   "main": "build.js",
   "scripts": {
