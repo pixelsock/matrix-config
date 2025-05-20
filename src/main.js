@@ -281,6 +281,9 @@ initializeReset();
 $(document).ready(function() {
   // Only show the loader initially
   $('#loader').show();
+  setTimeout(() => {
+    $('#loader').fadeOut();
+  }, 5000);
   
   // Rest of your document.ready code...
 });
