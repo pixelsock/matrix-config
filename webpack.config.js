@@ -11,7 +11,8 @@ module.exports = {
   output: {
     filename: '[name].build.js',
     path: path.resolve(__dirname, 'dist'),
-    publicPath: '/'
+    publicPath: '/',
+    clean: true // Clean the output directory before emit
   },
   devtool: 'inline-source-map',
   
