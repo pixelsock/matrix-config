@@ -83,6 +83,11 @@ jobs:
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "Current version is $VERSION"
+          
+          # List dist files to confirm they exist
+          echo "Dist files to be included in release:"
+          ls -la dist/
 
       - name: Create GitHub Release
         if: steps.check-changes.outputs.file_changes == 'true' || github.event.inputs.forceVersionBump == 'true'
