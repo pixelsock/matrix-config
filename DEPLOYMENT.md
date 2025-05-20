@@ -16,7 +16,11 @@ This single command will:
 3. Create a commit with the build artifacts
 4. Bump the version in package.json
 5. Push changes and tags to GitHub
-6. Trigger the CDN deployment workflow
+6. Trigger the CDN deployment workflow with force version bump enabled
+
+**Note:** The deployment process involves two version bumps:
+1. First, locally during the `npm run deploy` command
+2. Second, in the GitHub Actions workflow to ensure GitHub releases are created correctly
 
 ## CDN URLs
 
