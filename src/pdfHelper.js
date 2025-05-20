@@ -167,8 +167,7 @@ const PDFHelper = {
       renderSelectedImage(doc) {
         // Selected Image
         const photo = $('#selected-image').attr('src');
-        const encodedPhotoURL = encodeURIComponent(photo);
-        doc.addImage(encodedPhotoURL, 'JPEG', 46, 12, 65, 65);
+        doc.addImage(photo, 'JPEG', 46, 12, 65, 65);
       },
       renderSizeDetails(doc, selectedOptions) {
         let sizeDetailsLabel = '';
