@@ -258,34 +258,37 @@ window.fsAttributes.push([
     filterInstances[0].listInstance.on('renderitems', () => {
       updateSelectedOptionsDisplay(filterInstances);
       
+      // Hide loader immediately when items are rendered
+      $('#loader').hide();
+      
       if (!initialLoadComplete) {
         // This is the first load
         initialLoadComplete = true;
-        setTimeout(() => {
-          $('#loader').hide();
-          $('#product-collection').css('display', 'grid').hide().fadeIn(600);
-          $('#tag-wrapper').fadeIn(400);
-        }, 100);
+        $('#product-collection').css('display', 'grid').hide().fadeIn(600);
+        $('#tag-wrapper').fadeIn(400);
       } else {
-        // This is a subsequent filter operation - no delay needed
-        $('#loader').hide();
+        // This is a subsequent filter operation
         $('#product-collection').fadeIn(600);
         $('#tag-wrapper').fadeIn(400);
       }
     });
+    
+    // Add a safety timeout to hide loader if renderitems doesn't fire
+    setTimeout(() => {
+      if ($('#loader').is(':visible')) {
+        $('#loader').hide();
+        $('#product-collection').css('display', 'grid').hide().fadeIn(600);
+        $('#tag-wrapper').fadeIn(400);
+      }
+    }, 3000);
   },
 ]);
 
 initializeReset();
 
 $(document).ready(function() {
-  // Only show the loader initially
-  $('#loader').show();
-  setTimeout(() => {
-    $('#loader').fadeOut();
-  }, 5000);
-  
-  // Rest of your document.ready code...
+  // Loader is now managed by the filter renderitems event
+  // Additional document.ready code can go here
 });
 
 $(document).ready(function() {
