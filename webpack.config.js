@@ -78,11 +78,8 @@ module.exports = {
         }
       ],
     }),
-    new CopyWebpackPlugin({
-      patterns: [
-        { from: 'index.html', to: 'index.html' }
-      ]
-    }),
+    // No files to copy
+    
   ],
 };
 
