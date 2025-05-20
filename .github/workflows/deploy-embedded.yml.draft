@@ -1,0 +1,117 @@
+name: Deploy to Embedded Sites
+
+on:
+  # This workflow is triggered by:
+  push:
+    branches:
+      - main
+  # Manual trigger
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build-output
+          path: dist/
+
+  deploy-webflow:
+    needs: build
+    runs-on: ubuntu-latest
+    # Only run if workflow dispatch with environment=production or on push to main
+    if: github.event_name == 'push' || github.event.inputs.environment == 'production'
+    steps:
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: build-output
+          path: dist/
+
+      # Option 1: Deploy to Webflow using Finsweet's dev.to CLI
+      # This requires setting up the dev.to CLI and configuring it
+      - name: Install Finsweet dev.to CLI
+        run: npm install -g @finsweet/dev-to
+        
+      - name: Deploy to Webflow
+        run: dev-to webflow --token ${{ secrets.WEBFLOW_API_KEY }} --site-id ${{ secrets.WEBFLOW_SITE_ID }} --files './dist/*'
+
+      # Option 2: Upload to a custom server via FTP/SFTP
+      - name: Upload to FTP server
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./dist/
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          
+      # Option 3: Upload to AWS S3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-west-1
+          
+      - name: Upload to S3
+        run: aws s3 sync ./dist/ s3://${{ secrets.S3_BUCKET }}/matrix-config/ --delete
+        
+      # Option 4: Upload to Netlify  
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v2
+        with:
+          publish-dir: './dist'
+          production-branch: main
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from GitHub Actions"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+
+  # Add additional deployment jobs for other platforms as needed
+  
+  notify:
+    needs: [deploy-webflow]  # Add other deploy jobs as dependencies
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send deployment notification
+        uses: act10ns/slack@v2
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#deployments'
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+        if: always()
