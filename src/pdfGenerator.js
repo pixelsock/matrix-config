@@ -443,10 +443,6 @@ function renderHeaderOpener(doc, headerText) {
                     skuText = accessoriesOptions.length > 0 ? 'AN' : 'NA';
                     text = accessoriesOptions.length > 0 ? 'Anti-Fog & Night Light' : 'Wall Switch Only';
                     break;
-                  case 'Matrix Touch System':
-                    skuText = accessoriesOptions.some(opt => opt.value === 'Night-Light') ? 'TL' : 'TR';
-                    text = accessoriesOptions.some(opt => opt.value === 'Night-Light') ? 'Matrix Touch System & Night Light' : 'Matrix Touch System';
-                    break;
                   case 'Touch Sensor - Light Controls Only':
                     if (accessoriesOptions.length === 2) {
                       skuText = 'AL';
@@ -460,21 +456,6 @@ function renderHeaderOpener(doc, headerText) {
                     } else {
                       skuText = 'TS';
                       text = 'Touch Sensor';
-                    }
-                    break;
-                  case 'CCTSync':
-                    if (accessoriesOptions.length === 2) {
-                      skuText = 'CL';
-                      text = 'CCTSync, Anti-Fog & Night Light';
-                    } else if (accessoriesOptions.some(opt => opt.value === 'Anti-Fog')) {
-                      skuText = 'CF';
-                      text = 'CCTSync & Anti-Fog';
-                    } else if (accessoriesOptions.some(opt => opt.value === 'Night-Light')) {
-                      skuText = 'CN';
-                      text = 'CCTSync & Night Light';
-                    } else {
-                      skuText = 'CT';
-                      text = 'CCTSync';
                     }
                     break;
                 }
@@ -560,9 +541,7 @@ function getAccessoriesValue(selectedOptions) {
   const mirrorControls = selectedOptions.find(option => option.dataName === 'Mirror Controls')?.value;
   const accessories = selectedOptions.filter(option => option.dataName === 'Accessories').map(option => option.value);
 
-  if (mirrorControls === 'Matrix Touch System') {
-    return accessories.includes('Night-Light') ? 'Matrix Touch System & Night Light (TL)' : 'Matrix Touch System (TR)';
-  } else if (mirrorControls === 'Touch Sensor - Light Controls Only') {
+  if (mirrorControls === 'Touch Sensor - Light Controls Only') {
     if (accessories.includes('Anti-Fog') && accessories.includes('Night-Light')) {
       return 'All Accessories (AL)';
     } else if (accessories.includes('Night-Light')) {

@@ -15,12 +15,6 @@ const rules = {
       enable: ['High', 'Non-Dimming', 'Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'Adjustable'],
       excludeProductLines: ['Anti-Ligature'],
     },
-    'Matrix Touch System': {
-      showAndClick: ['Adjustable', 'High', 'Non-Dimming'],
-      disable: ['Anti-Fog', '5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable'],
-      enable: ['Adjustable', 'High', 'Non-Dimming'],
-      excludeProductLines: ['Anti-Ligature'],
-    },
     'CCTSync': {
       showAndClick: ['Adjustable', 'High', 'Non-Dimming'],
       disable: ['5000', '4000', '3000', '3500','2700', 'Standard', 'ELV-Dimmable', '0-10-Dimmable'],
@@ -76,7 +70,7 @@ const rules = {
       
     },
 
-    '!Round':{
+    '!Circle':{
       showAndClick: [],
       disable: [],
       enable: ['Horizontal-Mounting'],
@@ -84,7 +78,7 @@ const rules = {
     },
     
     
-    'Round': {
+    'Circle': {
       showAndClick: ['Vertical-Mounting', 'Indirect'],
       disable: ['Direct', 'Both-Direct-And-Indirect', 'Horizontal-Mounting'],
       enable: ['Vertical-Mounting'],
@@ -92,16 +86,16 @@ const rules = {
       
     },
    
-    '! Round Full Frame Edge': {
+    '! Circle Full Frame Edge': {
       showAndClick: [],
       disable: [],
-      enable: ['Matrix-Touch-System'],
+      enable: [],
       excludeProductLines: [],
     },
 
-    'Round Full Frame Edge': {
+    'Circle Full Frame Edge': {
       showAndClick: ['Indirect'],
-      disable: ['Matrix-Touch-System', 'Horizontal-Mounting'],
+      disable: ['Horizontal-Mounting'],
       enable: [],
       excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
     },
@@ -147,7 +141,7 @@ const rules = {
     },
     'Polished': {
       showAndClick: [],
-      disable: ['Matrix-Touch-System', 'Touch-Sensor', 'CCTSync', 'Anti-Fog', 'Night-Light',
+      disable: ['Touch-Sensor', 'CCTSync', 'Anti-Fog', 'Night-Light',
                 'Direct', 'Indirect', 'Both-Direct-And-Indirect', 'Standard', 'High',
                 'Non-Dimming', 'ELV-Dimmable', '0-10-Dimmable', '2700', '3000', '3500', '4000', '5000', 'Adjustable'],
       enable: ['J-Channels', 'Sliver-Z-Brackets', 'Anodized-Hanger-Clips', 'Vertical-Mounting', 'Horizontal-Mounting'],
