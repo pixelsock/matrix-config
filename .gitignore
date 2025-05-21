@@ -5,7 +5,10 @@ yarn-debug.log
 yarn-error.log
 
 # Build outputs
-dist/
+# Only allow main.build.js and productsPage.build.js in dist/
+dist/*
+!dist/main.build.js
+!dist/productsPage.build.js
 build/
 *.build.js
 *.build.js.map
