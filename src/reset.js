@@ -1,10 +1,6 @@
 import { getSelectedOptions } from './main.js';
 
 const resetRules = {
-  'Matrix Touch System': {
-    ifSelected: ['*'],
-    resetKey: ['accessories'],
-  },
   'Wall Switch Only': {
     ifSelected: ['Adjustable'], // this is the id not the value
     resetKey: ['color temperature'] // this is the category filter key (always lowercased no dashes)
@@ -25,7 +21,6 @@ const resetRules = {
     fallback: ['Indirect']
   },
   'Circle Full Frame Edge': {
-    ifSelected: ['Matrix Touch System'],
     resetKey: ['mirror controls', 'light direction'],
     fallback: ['Touch Sensor - Light Controls Only']
   },

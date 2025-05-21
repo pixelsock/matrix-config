@@ -53,17 +53,12 @@ export function getSelectedOptions() {
 
 function updateAccessoriesDisplay(selectedOptionElement, options, selectedOptions) {
   const {
-    isMatrixTouchSystemSelected,
     isTouchSensorSelected,
     isNightLightSelected,
     isAntiFogSelected,
     isCCTSyncSelected,
     values
   } = options;
-
-  if (isMatrixTouchSystemSelected) {
-    return updateMatrixTouchSystem(selectedOptionElement, isNightLightSelected, selectedOptions);
-  }
 
   if (isTouchSensorSelected) {
     return updateTouchSensor(selectedOptionElement, isAntiFogSelected, isNightLightSelected, selectedOptions);
@@ -74,13 +69,6 @@ function updateAccessoriesDisplay(selectedOptionElement, options, selectedOption
   }
 
   return updateStandardAccessories(selectedOptionElement, values, selectedOptions);
-}
-
-function updateMatrixTouchSystem(element, isNightLightSelected, selectedOptions) {
-  const text = isNightLightSelected
-    ? 'Matrix Touch System & Night Light (TL)'
-    : 'Matrix Touch System (TR)';
-  updateSelectedOption(element, text, selectedOptions);
 }
 
 function updateTouchSensor(element, isAntiFogSelected, isNightLightSelected, selectedOptions) {
@@ -126,10 +114,9 @@ function updateSelectedOptionsDisplay(filterInstances) {
   // Test comment for development branch
   const filtersData = filterInstances[0].filtersData;
   let options = {
-    isMatrixTouchSystemSelected: false,
     isTouchSensorSelected: false,
-    isAntiFogSelected: false,
     isNightLightSelected: false,
+    isAntiFogSelected: false,
     isCCTSyncSelected: false,
     values: []
   };
@@ -141,7 +128,6 @@ function updateSelectedOptionsDisplay(filterInstances) {
     const values = Array.from(filter.values);
 
     // Update options based on all filters
-    options.isMatrixTouchSystemSelected = options.isMatrixTouchSystemSelected || values.includes('Matrix Touch System');
     options.isTouchSensorSelected = options.isTouchSensorSelected || values.includes('Touch Sensor - Light Controls Only');
     options.isAntiFogSelected = options.isAntiFogSelected || values.includes('Anti-Fog (AF)');
     options.isNightLightSelected = options.isNightLightSelected || values.includes('Night Light (NL)');
