@@ -30,8 +30,7 @@ function setDocStyles(doc) {
 }
 
 function renderHeader(doc) {
-  doc.addImage('https://uploads-ssl.webflow.com/638fbc9b6d164e234dc677d7/64e2abfbd5f18f06696996ba_usa.png', 'PNG', 165, 3, 40, 5, 'right'); 
-  doc.addImage('https://uploads-ssl.webflow.com/638fbc9b6d164e234dc677d7/64e27f2a344c637a5c2038d4_logo.png', 'PNG', 5, 283, 33, 10);
+  doc.addImage('https://cdn.prod.website-files.com/638fbc9b6d164e234dc677d7/683623ad2f191498f22b9a65_matrix_logo.png', 'PNG', 5, 283, 33, 10);
   doc.setFont("Inter", "bold");
   drawHeaderLines(doc);
 }
