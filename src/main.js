@@ -9,8 +9,6 @@ import { generatePdf } from './pdfGenerator.js';
 import { generatePolishedPdf } from './polishedPdfGenerator.js';
 import { generateSuspendedPdf } from './suspendedPdfGenerator.js';
 
-alert('hello')
-
 export function getSelectedOptions() {
  
   const form = $('#full-filter-form');
