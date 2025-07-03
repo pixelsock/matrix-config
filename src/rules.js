@@ -1,5 +1,3 @@
-import { productLine } from "./utils";
-
 const rules = {
     'Wall Switch': {
       showAndClick: [],
@@ -101,16 +99,16 @@ const rules = {
     },
 
     'Oval': {
-      showAndClick: ['Vertical-Mounting', 'Indirect'],
-      disable: ['Direct', 'Both-Direct-And-Indirect', 'Horizontal-Mounting'],
-      enable: ['Vertical-Mounting'],
+      showAndClick: ['Indirect'],
+      disable: ['Direct', 'Both-Direct-And-Indirect'],
+      enable: [],
       excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
     },
 
     'Stadium': {
-      showAndClick: ['Vertical-Mounting', 'Indirect'],
-      disable: ['Horizontal-Mounting', 'Direct', 'Both-Direct-And-Indirect'],
-      enable: ['Vertical-Mounting', 'Indirect'],
+      showAndClick: ['Indirect'],
+      disable: ['Direct', 'Both-Direct-And-Indirect'],
+      enable: [],
       excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
     },
  
@@ -136,8 +134,8 @@ const rules = {
     'Arch': {
       showAndClick: ['Indirect'],
       disable: ['Direct', 'Both-Direct-And-Indirect'],
-      enable: ['Indirect'],
-      excludeProductLines: [],
+      enable: [],
+      excludeProductLines: ['Deco', 'Future', 'Bright Line', 'Anti-Ligature'],
     },
     'Polished': {
       showAndClick: [],
@@ -149,13 +147,4 @@ const rules = {
     }
   };
 
-  if (productLine === 'Future') {
-    rules['Edge'] = {
-      showAndClick: ['Indirect'],
-      disable: ['Both-Direct-And-Indirect', 'Direct'],
-      enable: ['Indirect'],
-      excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
-    };
-  }
-
-  export { rules };
+export { rules };
