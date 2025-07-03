@@ -13,10 +13,7 @@ export function matchesCombination(selectedOptions, combination) {
     return andConditions.every(cond => {
       if (cond.startsWith('!')) {
         const negatedRule = cond.slice(1);
-        return selectedOptions.every(option => {
-          const rule = rules[option.key];
-          return !rule || !rule.excludeProductLines || !rule.excludeProductLines.includes(negatedRule);
-        });
+        return !selectedOptions.some(option => option.value.includes(negatedRule));
       } else {
         return selectedOptions.some(option => option.value.includes(cond));
       }
@@ -25,10 +22,7 @@ export function matchesCombination(selectedOptions, combination) {
     return orConditions.some(cond => {
       if (cond.startsWith('!')) {
         const negatedRule = cond.slice(1);
-        return selectedOptions.every(option => {
-          const rule = rules[option.key];
-          return !rule || !rule.excludeProductLines || !rule.excludeProductLines.includes(negatedRule);
-        });
+        return !selectedOptions.some(option => option.value.includes(negatedRule));
       } else {
         return selectedOptions.some(option => option.value.includes(cond));
       }
@@ -37,10 +31,7 @@ export function matchesCombination(selectedOptions, combination) {
     const cond = combination.trim();
     if (cond.startsWith('!')) {
       const negatedRule = cond.slice(1);
-      return selectedOptions.every(option => {
-        const rule = rules[option.key];
-        return !rule || !rule.excludeProductLines || !rule.excludeProductLines.includes(negatedRule);
-      });
+      return !selectedOptions.some(option => option.value.includes(negatedRule));
     } else {
       return selectedOptions.some(option => option.value.includes(cond));
     }

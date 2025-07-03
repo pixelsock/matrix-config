@@ -197,12 +197,22 @@ function updateConfigurator() {
 }
 
 function applyRules(selectedOptions, rules) {
+  // Handle special case for Future product line - modify the Edge rule
+  if (productLine === 'Future') {
+    rules['Edge'] = {
+      showAndClick: ['Indirect'],
+      disable: ['Both-Direct-And-Indirect', 'Direct'],
+      enable: ['Indirect'],
+      excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
+    };
+  }
+
   Object.entries(rules).forEach(([ruleKey, ruleValue]) => {
     // First check if this rule should be excluded for the current product line
     if (ruleValue.excludeProductLines && ruleValue.excludeProductLines.includes(productLine)) {
       return; // Skip this rule if it's excluded for the current product line
     }
-    
+
     // Only apply the rule if it matches and isn't excluded
     if (matchesCombination(selectedOptions, ruleKey)) {
       FilterHelper.disableOptions(ruleValue.disable);
