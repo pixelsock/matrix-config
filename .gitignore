@@ -5,13 +5,14 @@ yarn-debug.log
 yarn-error.log
 
 # Build outputs
-# Only allow main.build.js and productsPage.build.js in dist/
+# Allow all build files in dist/ directory for releases
 dist/*
-!dist/main.build.js
-!dist/productsPage.build.js
+!dist/*.build.js
+!dist/*.build.js.LICENSE.txt
 build/
-*.build.js
-*.build.js.map
+# Exclude build files outside of dist/
+/*.build.js
+/*.build.js.map
 
 # IDE and Editor files
 .idea/

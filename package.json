@@ -4,9 +4,16 @@
   "description": "",
   "main": "build.js",
   "scripts": {
-    "build": "git add -A && (git diff --cached --quiet || git commit -m 'Auto-commit before version bump [skip ci]') && npm version patch -m 'Bump version to %s [skip ci]' && webpack --mode production",
+    "build": "webpack --mode production",
+    "build:dev": "webpack --mode development",
     "start": "webpack-dev-server --open",
-    "deploy": "npm run build && git push --follow-tags && gh release create v$(node -p \"require('./package.json').version\") --latest --title \"Release v$(node -p \"require('./package.json').version\")\" --notes \"Automated release\""
+    "version:patch": "npm version patch -m 'Bump version to %s [skip ci]'",
+    "prebuild": "echo 'Starting build process...'",
+    "postbuild": "echo 'Build completed successfully'",
+    "predeploy": "echo 'Starting deployment process...' && git status --porcelain",
+    "deploy": "npm run build && git add dist/ && (git diff --cached --quiet || git commit -m 'Update build files [skip ci]') && npm run version:patch && git push --follow-tags && gh release create v$(node -p \"require('./package.json').version\") --latest --title \"Release v$(node -p \"require('./package.json').version\")\" --notes \"Automated release\"",
+    "deploy:test": "npm run build && git add dist/ && echo 'Files staged for commit:' && git diff --cached --name-only && echo 'Would commit build files and create release...'",
+    "postdeploy": "echo 'Deployment completed successfully!'"
   },
   "keywords": [],
   "author": "",
