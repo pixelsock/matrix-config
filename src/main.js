@@ -202,7 +202,7 @@ function applyRules(selectedOptions, rules) {
   const currentProductLine = $('#product-line').text().trim();
 
   // Handle special case for Future product line - modify the Edge rule
-  if (currentProductLine === 'Future') {
+  if (currentProductLine.includes('Future')) {
     rules['Edge'] = {
       showAndClick: ['Indirect'],
       disable: ['Both-Direct-And-Indirect', 'Direct'],
