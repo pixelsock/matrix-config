@@ -9,6 +9,7 @@ import { generatePdf } from './pdfGenerator.js';
 import { generatePolishedPdf } from './polishedPdfGenerator.js';
 import { generateSuspendedPdf } from './suspendedPdfGenerator.js';
 
+
 export function getSelectedOptions() {
  
   const form = $('#full-filter-form');
@@ -197,19 +198,23 @@ function updateConfigurator() {
 }
 
 function applyRules(selectedOptions, rules) {
+  // Get current product line dynamically
+  const currentProductLine = $('#product-line').text().trim();
+
   // Handle special case for Future product line - modify the Edge rule
-  if (productLine === 'Future') {
+  if (currentProductLine === 'Future') {
     rules['Edge'] = {
       showAndClick: ['Indirect'],
       disable: ['Both-Direct-And-Indirect', 'Direct'],
       enable: ['Indirect'],
-      excludeProductLines: ['Future', 'Classic', 'Bright Line', 'Anti-Ligature'],
+      excludeProductLines: ['Classic', 'Bright Line', 'Anti-Ligature'],
     };
   }
 
+
   Object.entries(rules).forEach(([ruleKey, ruleValue]) => {
     // First check if this rule should be excluded for the current product line
-    if (ruleValue.excludeProductLines && ruleValue.excludeProductLines.includes(productLine)) {
+    if (ruleValue.excludeProductLines && ruleValue.excludeProductLines.includes(currentProductLine)) {
       return; // Skip this rule if it's excluded for the current product line
     }
 

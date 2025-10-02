@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SKU Generation Test</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Matrix Config SKU Generation Test</h1>
+
+    <!-- Mock form elements for testing -->
+    <div id="full-filter-form">
+        <div id="product-line">Bright Line</div>
+
+        <input type="radio" id="mirror-style-1" name="mirror-style" value="Full Frame Edge" data-name="Mirror Style" checked>
+        <label for="mirror-style-1">Full Frame Edge</label><br>
+
+        <input type="radio" id="frame-color-1" name="frame-color" value="Black Frame" data-name="Frame Color" checked>
+        <label for="frame-color-1">Black Frame</label><br>
+
+        <input type="radio" id="orientation-1" name="orientation" value="Vertical Mounting" data-name="Orientation" checked>
+        <label for="orientation-1">Vertical Mounting</label><br>
+
+        <input type="radio" id="light-direction-1" name="light-direction" value="Direct" data-name="Light Direction" checked>
+        <label for="light-direction-1">Direct</label><br>
+
+        <input type="radio" id="color-temp-1" name="color-temp" value="3000" data-name="Color Temperature" checked>
+        <label for="color-temp-1">3000K</label><br>
+
+        <input type="radio" id="light-output-1" name="light-output" value="Standard" data-name="Light Output" checked>
+        <label for="light-output-1">Standard</label><br>
+
+        <input type="radio" id="dimming-1" name="dimming" value="Non-Dimming" data-name="Dimming" checked>
+        <label for="dimming-1">Non-Dimming</label><br>
+
+        <input type="radio" id="controls-1" name="controls" value="Wall Switch Only" data-name="Mirror Controls" checked>
+        <label for="controls-1">Wall Switch Only</label><br>
+
+        <select id="Standard-Size">
+            <option value="24x36">24" x 36"</option>
+            <option value="30x40" selected>30" x 40"</option>
+        </select>
+
+        <input type="checkbox" id="Custom-Size-Checkbox">
+        <input type="text" id="Width" placeholder="Width">
+        <input type="text" id="Height" placeholder="Height">
+        <input type="text" id="Diameter" placeholder="Diameter">
+        <input type="text" id="Standard-Diameter" placeholder="Standard Diameter">
+    </div>
+
+    <button id="generate-sku-btn">Generate SKU</button>
+    <div id="productSku" style="font-weight: bold; margin-top: 20px; padding: 10px; background: #f0f0f0;">
+        SKU will appear here
+    </div>
+
+    <script type="module">
+        import { generateSku } from './dist/main.build.js';
+
+        function getSelectedOptions() {
+            const form = $('#full-filter-form');
+            const selectedOptions = [];
+
+            // Handle radio inputs
+            form.find('input[type="radio"]:checked').each(function() {
+                const id = $(this).attr('id');
+                const value = $(this).val();
+                const dataName = $(this).attr('data-name');
+                selectedOptions.push({ id, value, dataName });
+            });
+
+            // Handle checkbox inputs
+            form.find('input[type="checkbox"]:checked').each(function() {
+                const id = $(this).attr('id');
+                const value = $(this).attr('id');
+                const dataName = $(this).attr('data-name');
+                selectedOptions.push({ id, value, dataName });
+            });
+
+            // Handle text inputs
+            form.find('input[type="text"], input[type="number"]').each(function() {
+                const id = $(this).attr('id');
+                const value = $(this).val() || '';
+                const dataName = $(this).attr('data-name');
+                if (value) {
+                    selectedOptions.push({ id, value, dataName });
+                }
+            });
+
+            // Handle select elements
+            form.find('select').each(function() {
+                const id = $(this).attr('id');
+                const value = $(this).find('option:selected').text();
+                const dataName = $(this).attr('data-name');
+                selectedOptions.push({ id, value, dataName });
+            });
+
+            return selectedOptions;
+        }
+
+        $('#generate-sku-btn').click(function() {
+            console.log('Generating SKU...');
+            const selectedOptions = getSelectedOptions();
+            console.log('Selected options:', selectedOptions);
+            generateSku(selectedOptions);
+        });
+
+        // Auto-generate on page load
+        $(document).ready(function() {
+            setTimeout(() => {
+                $('#generate-sku-btn').click();
+            }, 500);
+        });
+    </script>
+</body>
+</html>
