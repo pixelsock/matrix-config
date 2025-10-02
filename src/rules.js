@@ -49,8 +49,8 @@ const rules = {
       showAndClick: [],
       disable: ['Both-Direct-And-Indirect'],
       enable: [ 'Direct', 'Indirect'],
-      excludeProductLines: ['Bright Line', 'Anti-Ligature'],
-      
+      excludeProductLines: ['Anti-Ligature'],
+
     },
     'Thin Frame && Edge': {
       showAndClick: ['Indirect'],
