@@ -3,7 +3,7 @@
   base = "."
   
   # Build command to run
-  command = "npm run build"
+  command = "npm ci && npm run build:netlify"
   
   # Directory to publish (where the built files are)
   publish = "netlify-deploy"
@@ -12,11 +12,14 @@
   functions = ""
 
 [build.environment]
-  # Node.js version
-  NODE_VERSION = "18"
+  # Node.js version (compatible with current Netlify build image)
+  NODE_VERSION = "16"
   
   # NPM version
-  NPM_VERSION = "9"
+  NPM_VERSION = "8"
+  
+  # CI flag for npm ci
+  CI = "true"
 
 # Redirect rules for SPA-like behavior
 [[redirects]]
