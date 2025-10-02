@@ -12,11 +12,11 @@
   functions = ""
 
 [build.environment]
-  # Node.js version (compatible with current Netlify build image)
-  NODE_VERSION = "16"
+  # Node.js version (latest LTS)
+  NODE_VERSION = "22"
   
   # NPM version
-  NPM_VERSION = "8"
+  NPM_VERSION = "10"
   
   # CI flag for npm ci
   CI = "true"
