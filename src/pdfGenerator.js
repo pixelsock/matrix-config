@@ -420,7 +420,9 @@ function renderHeaderOpener(doc, headerText) {
         if (!isExcluded('Frame Thickness')) {
           details.push({ circle: 1, value: selectedOptions.find(option => option.dataName === 'Frame Thickness')?.value || 'N/A', x: 50, y: 171 });
         } else {
-          details.push({ label: 'Product Line', circle: 1, value: productLine, x: 50, y: 171 });
+          // Get the product line code from skuMapping instead of raw text
+          const productLineCode = skuMapping['Product Line'][productLine] || 'N/A';
+          details.push({ label: 'Product Line', circle: 1, value: productLineCode, x: 50, y: 171 });
         }
     
         details.forEach(detail => {
