@@ -1,0 +1,16 @@
+{
+  "deploymentDate": "2025-10-02T17:25:55.867Z",
+  "version": "4.9.32",
+  "files": [
+    {
+      "name": "main.build.js",
+      "size": 3867590,
+      "sizeKB": 3777
+    },
+    {
+      "name": "productsPage.build.js",
+      "size": 3616,
+      "sizeKB": 4
+    }
+  ]
+}

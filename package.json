@@ -4,8 +4,9 @@
   "description": "",
   "main": "build.js",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "webpack --mode production && node build-for-netlify.js",
     "build:dev": "webpack --mode development",
+    "build:netlify": "webpack --mode production && node build-for-netlify.js",
     "start": "webpack-dev-server --open",
     "version:patch": "npm version patch -m 'Bump version to %s [skip ci]'",
     "prebuild": "echo 'Starting build process...'",
@@ -13,7 +14,12 @@
     "predeploy": "echo 'Starting deployment process...' && git status --porcelain",
     "deploy": "npm run build && git add dist/ && (git diff --cached --quiet || git commit -m 'Update build files [skip ci]') && npm run version:patch && git push --follow-tags && gh release create v$(node -p \"require('./package.json').version\") --latest --title \"Release v$(node -p \"require('./package.json').version\")\" --notes \"Automated release\"",
     "deploy:test": "npm run build && git add dist/ && echo 'Files staged for commit:' && git diff --cached --name-only && echo 'Would commit build files and create release...'",
-    "postdeploy": "echo 'Deployment completed successfully!'"
+    "postdeploy": "echo 'Deployment completed successfully!'",
+    "deploy:webflow": "npm run build && node deploy-netlify.js",
+    "webflow:deploy": "node deploy-netlify.js",
+    "deploy:github": "npm run build && node deploy-github-pages.js",
+    "github:deploy": "node deploy-github-pages.js",
+    "webflow:test": "node test-webflow-api.js"
   },
   "keywords": [],
   "author": "",
@@ -26,6 +32,7 @@
     "babel-loader": "^8.4.1",
     "browser-sync": "^2.29.3",
     "copy-webpack-plugin": "^12.0.2",
+    "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "gh-pages": "^6.3.0",
     "live-server": "^1.2.2",

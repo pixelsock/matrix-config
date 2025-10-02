@@ -1,0 +1,44 @@
+[build]
+  # Base directory (root of the repository)
+  base = "."
+  
+  # Build command to run
+  command = "npm run build"
+  
+  # Directory to publish (where the built files are)
+  publish = "netlify-deploy"
+  
+  # Functions directory (leave empty since we don't have serverless functions)
+  functions = ""
+
+[build.environment]
+  # Node.js version
+  NODE_VERSION = "18"
+  
+  # NPM version
+  NPM_VERSION = "9"
+
+# Redirect rules for SPA-like behavior
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# Headers for better performance and security
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+    Content-Type = "application/javascript; charset=utf-8"
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+    Content-Type = "text/html; charset=utf-8"
+
+# Custom 404 page (optional)
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 404
