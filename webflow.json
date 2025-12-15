@@ -1,0 +1,17 @@
+{
+  "siteId": "638fbc9b6d164e234dc677d7",
+  "workspaceId": "633af77b8d286201733659d9",
+  "cloud": {
+    "framework": "astro",
+    "buildCommand": "npm run build:webflow-cloud",
+    "outputDirectory": "webflow-cloud-dist",
+    "project_id": "85e33a1c-eec8-41c0-b72e-26cfdfe3651d"
+  },
+  "telemetry": {
+    "global": {
+      "allowTelemetry": true,
+      "lastPrompted": 1765835237158,
+      "version": "1.9.0"
+    }
+  }
+}
