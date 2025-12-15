@@ -5,10 +5,10 @@ yarn-debug.log
 yarn-error.log
 
 # Build outputs
-# Allow all build files in dist/ directory for releases
-dist/*
-!dist/*.build.js
-!dist/*.build.js.LICENSE.txt
+# Allow all build files in app/ directory for releases
+app/*
+!app/*.build.js
+!app/*.build.js.LICENSE.txt
 build/
 # Exclude build files outside of dist/
 /*.build.js

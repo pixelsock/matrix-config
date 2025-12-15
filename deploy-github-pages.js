@@ -11,7 +11,7 @@ const { execSync } = require('child_process');
 
 // Configuration
 const config = {
-  distPath: path.join(__dirname, 'dist'),
+  distPath: path.join(__dirname, 'app'),
   ghPagesPath: path.join(__dirname, 'gh-pages'),
   scriptNames: [
     'main.build.js',
@@ -25,9 +25,9 @@ const config = {
 function deployToGitHubPages() {
   console.log('🚀 Deploying to GitHub Pages...\n');
 
-  // Check if dist directory exists
+  // Check if app directory exists
   if (!fs.existsSync(config.distPath)) {
-    console.error('❌ Dist directory not found. Run "npm run build" first.');
+    console.error('❌ App directory not found. Run "npm run build" first.');
     process.exit(1);
   }
 

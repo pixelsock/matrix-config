@@ -10,7 +10,7 @@ module.exports = {
   },
   output: {
     filename: '[name].build.js',
-    path: path.resolve(__dirname, 'dist'),
+    path: path.resolve(__dirname, 'app'),
     publicPath: '/',
     clean: true // Clean the output directory before emit
   },
@@ -51,7 +51,7 @@ module.exports = {
       'Access-Control-Allow-Headers': 'X-Requested-With, content-type, Authorization'
     },
     static: {
-      directory: path.join(__dirname, 'dist')
+      directory: path.join(__dirname, 'app')
     }
   },
   stats: 'errors-only',

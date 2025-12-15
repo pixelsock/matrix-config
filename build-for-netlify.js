@@ -10,7 +10,7 @@ const path = require('path');
 
 // Configuration
 const config = {
-  distPath: path.join(__dirname, 'dist'),
+  distPath: path.join(__dirname, 'app'),
   netlifyPath: path.join(__dirname, 'netlify-deploy'),
   scriptNames: [
     'main.build.js',
@@ -24,9 +24,9 @@ const config = {
 function buildForNetlify() {
   console.log('🏗️  Building for Netlify deployment...\n');
 
-  // Check if dist directory exists
+  // Check if app directory exists
   if (!fs.existsSync(config.distPath)) {
-    console.error('❌ Dist directory not found. Run "npm run build" first.');
+    console.error('❌ App directory not found. Run "npm run build" first.');
     process.exit(1);
   }
 
