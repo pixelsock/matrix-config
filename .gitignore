@@ -22,6 +22,11 @@ build/
 .DS_Store
 Thumbs.db
 
+# AI Coding Tools
+.agent-os/
+.cursor/
+CLAUDE.md
+
 # Environment files
 .env
 .env.local
