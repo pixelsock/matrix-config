@@ -8,7 +8,7 @@ This application provides interactive product configuration functionality for th
 
 - **main.build.js** - Main configurator for `/configure/*` pages
 - **productsPage.build.js** - Product listing functionality for `/products` page
-- **quoteApp.build.js** - Quote generation app with PDF export and Dropbox integration
+- **quoteApp.build.js** - Quote generation app for `/portal/*` pages with PDF export and Dropbox integration
 
 ## Architecture
 
@@ -142,6 +142,8 @@ Add this to your Webflow site's **Project Settings → Custom Code → Head Code
       loadScript(getScriptUrl('main.build.js'));
     } else if (window.location.pathname === '/products') {
       loadScript(getScriptUrl('productsPage.build.js'));
+    } else if (window.location.pathname.startsWith('/portal')) {
+      loadScript(getScriptUrl('quoteApp.build.js'));
     }
   });
 </script>
