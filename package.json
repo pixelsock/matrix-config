@@ -11,23 +11,30 @@
     "deploy": "npm run build:cloud && webflow cloud deploy --environment main --mount /scripts --no-input",
     "preview": "astro preview"
   },
-  "keywords": ["webflow", "configurator", "matrix-mirrors"],
+  "keywords": [
+    "webflow",
+    "configurator",
+    "matrix-mirrors"
+  ],
   "author": "Matrix Mirrors",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.28.4",
     "@babel/preset-env": "^7.28.3",
+    "@soda/friendly-errors-webpack-plugin": "^1.8.1",
     "astro": "^5.16.5",
     "babel-loader": "^10.0.0",
+    "dotenv": "^17.2.3",
     "webpack": "^5.102.0",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.2",
-    "@soda/friendly-errors-webpack-plugin": "^1.8.1"
+    "webpack-node-externals": "^3.0.0"
   },
   "dependencies": {
     "@astrojs/cloudflare": "^12.6.12",
     "@babel/types": "^7.28.4",
     "jspdf": "^3.0.3",
+    "jspdf-autotable": "^5.0.2",
     "webfontloader": "^1.6.28"
   }
 }

@@ -1,12 +1,14 @@
 const path = require('path');
+const webpack = require('webpack');
 const FriendlyErrorsWebpackPlugin = require('@soda/friendly-errors-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
+require('dotenv').config();
 
 module.exports = {
   mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   entry: {
     main: path.resolve(__dirname, 'src', 'main.js'),
-    productsPage: path.resolve(__dirname, 'src', 'products-page.js')
+    productsPage: path.resolve(__dirname, 'src', 'products-page.js'),
+    quoteApp: path.resolve(__dirname, 'src', 'quote-app', 'index.js')
   },
   output: {
     filename: '[name].build.js',
@@ -79,8 +81,13 @@ module.exports = {
         }
       ],
     }),
-    // No files to copy
-    
+    // Inject environment variables for quoteApp (Dropbox credentials)
+    new webpack.DefinePlugin({
+      'process.env.DROPBOX_ACCESS_TOKEN': JSON.stringify(process.env.DROPBOX_ACCESS_TOKEN || ''),
+      'process.env.CLIENT_ID': JSON.stringify(process.env.CLIENT_ID || ''),
+      'process.env.CLIENT_SECRET': JSON.stringify(process.env.CLIENT_SECRET || ''),
+      'process.env.REFRESH_TOKEN': JSON.stringify(process.env.REFRESH_TOKEN || '')
+    }),
   ],
 };
 

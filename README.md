@@ -8,6 +8,7 @@ This application provides interactive product configuration functionality for th
 
 - **main.build.js** - Main configurator for `/configure/*` pages
 - **productsPage.build.js** - Product listing functionality for `/products` page
+- **quoteApp.build.js** - Quote generation app with PDF export and Dropbox integration
 
 ## Architecture
 
@@ -23,6 +24,7 @@ This application provides interactive product configuration functionality for th
 │  Webflow Cloud (/scripts)                                   │
 │  ├─ main.build.js                                           │
 │  ├─ productsPage.build.js                                   │
+│  ├─ quoteApp.build.js                                       │
 │  └─ (chunk files)                                           │
 └─────────────────────────────────────────────────────────────┘
 ```
@@ -33,7 +35,11 @@ This application provides interactive product configuration functionality for th
 matrix-config/
 ├── src/                    # Source JavaScript files
 │   ├── main.js             # Main configurator entry point
-│   └── products-page.js    # Products page entry point
+│   ├── products-page.js    # Products page entry point
+│   └── quote-app/          # Quote generation app
+│       ├── index.js        # Quote app entry point
+│       ├── generatePDF.js  # PDF generation logic
+│       └── dropbox.js      # Dropbox integration
 ├── app/                    # Webpack build output
 ├── dist/                   # Astro/Cloudflare build output
 ├── .github/workflows/      # CI/CD automation
@@ -146,6 +152,7 @@ Add this to your Webflow site's **Project Settings → Custom Code → Head Code
 Once deployed, scripts are available at:
 - `https://matrixmirrors.com/scripts/main.build.js`
 - `https://matrixmirrors.com/scripts/productsPage.build.js`
+- `https://matrixmirrors.com/scripts/quoteApp.build.js`
 
 ## Configuration Files
 
@@ -170,6 +177,10 @@ For CI/CD deployment, set these in GitHub repository secrets:
 |----------|-------------|
 | `WEBFLOW_SITE_ID` | `638fbc9b6d164e234dc677d7` |
 | `WEBFLOW_SITE_API_TOKEN` | Your Webflow API token |
+| `CLIENT_ID` | Dropbox app client ID (for quoteApp) |
+| `CLIENT_SECRET` | Dropbox app client secret |
+| `REFRESH_TOKEN` | Dropbox refresh token |
+| `DROPBOX_ACCESS_TOKEN` | Dropbox access token |
 
 ## Troubleshooting
 

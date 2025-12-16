@@ -9,8 +9,11 @@ dist/
 
 # Keep app/ build files for reference but ignore chunks
 app/*
-!app/*.build.js
-!app/*.build.js.LICENSE.txt
+!app/main.build.js
+!app/main.build.js.LICENSE.txt
+!app/productsPage.build.js
+!app/quoteApp.build.js
+!app/quoteApp.build.js.LICENSE.txt
 
 # Environment
 .env
