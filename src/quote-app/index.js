@@ -365,7 +365,8 @@ function handleRemoveItemClick(event) {
     }
 }
 
-document.addEventListener('DOMContentLoaded', async () => {
+// Initialize function - handles both direct load and dynamic load scenarios
+async function initQuoteApp() {
     // Attach a single event listener to the parent container
     const lineItemContainer = document.getElementById('line-item-container');
     if (lineItemContainer) {
@@ -514,7 +515,15 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
         });
     }
-});
+}
+
+// Run initialization - handles both direct load and dynamic load (after DOMContentLoaded)
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initQuoteApp);
+} else {
+    // DOM already loaded, run immediately
+    initQuoteApp();
+}
 
 function addFilteredItemToQuote() {
     const description = generateProductDescription(currentSelections);
